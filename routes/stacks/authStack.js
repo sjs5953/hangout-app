@@ -10,7 +10,7 @@ const AuthStack = createStackNavigator();
 export default function AuthStackScreen () {
   return (
   <AuthStack.Navigator>
-    <AuthStack.Screen name='SignIn' component={SignIn} options={{title: 'Login'}} />
+    <AuthStack.Screen name='SignIn' component={SignIn} options={{title: 'Login', animationEnabled:false}} />
     <AuthStack.Screen name='SignUp' component={SignUp} options={{title:'Create Account'}}/>
   </AuthStack.Navigator>
   )}
