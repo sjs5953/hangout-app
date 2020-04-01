@@ -1,10 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const Event = () => {
+const Event = ({navigation, route}) => {
+  const title = route.params.item.title;
   return (
     <View>
-      <Text></Text>
+      <Text>{title}</Text>
     </View>
   )
 }
