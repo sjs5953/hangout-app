@@ -12,6 +12,6 @@ export default function EventsStackScreen () {
   return (
   <EventsStack.Navigator>
     <EventsStack.Screen name='Events' component={Events} options={{title: 'Events List'}} />
-    <EventsStack.Screen name='Event' component={Event} options={{title:'One Particular Event'}}/>
+    <EventsStack.Screen name='Event' component={Event} options={(({route})=>({title:route.params.item.title}))}/>
   </EventsStack.Navigator>
   )}
