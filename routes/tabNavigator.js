@@ -12,15 +12,18 @@ import NotificationsStackScreen from  './stacks/notificationsStack'
 
 const Tabs = createBottomTabNavigator();
 
-export default function TabNavigator () {
+export default function TabNavigator ({ userToken, setUserToken }) {
   return (
   <NavigationContainer>
-    <Tabs.Navigator>
-      <Tabs.Screen name='EventsStack' component={EventsStackScreen}/>
-      <Tabs.Screen name='CreateStack' component={CreateStackScreen}/>
-      <Tabs.Screen name='NotificationsStack' component={NotificationsStackScreen}/>
-      <Tabs.Screen name='UserStack' component={UserStackScreen}/>
-    </Tabs.Navigator>
+    {userToken ? 
+      <Tabs.Navigator>
+        <Tabs.Screen name='EventsStack' component={EventsStackScreen}/>
+        <Tabs.Screen name='CreateStack' component={CreateStackScreen}/>
+        <Tabs.Screen name='NotificationsStack' component={NotificationsStackScreen}/>
+        <Tabs.Screen name='UserStack' component={UserStackScreen}/>
+      </Tabs.Navigator>
+      : <AuthStackScreen />
+    }
     
   </NavigationContainer>
   )}
