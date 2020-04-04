@@ -17,22 +17,27 @@ export default function TabNavigator ({ userToken, setUserToken }) {
   return (
   <NavigationContainer>
     {userToken ? 
-      <Tabs.Navigator>
+      <Tabs.Navigator
+      tabBarOptions={
+        {
+          showLabel:false
+        }
+      }>
         <Tabs.Screen name='EventsStack' component={EventsStackScreen} labeled={false} options={{
           tabBarLabel:"Home",
-          tabBarIcon: ({color, focused}) => <AntDesign name="home" color={color} size={27} />
+          tabBarIcon: ({color}) => <AntDesign name="home" color={color} size={30} />
         }}/>
         <Tabs.Screen name='CreateStack' component={CreateStackScreen} options={{
           tabBarLabel:"Create",
-          tabBarIcon: () => <FontAwesome name="plus-square-o" size={27} />
+          tabBarIcon: ({color}) => <FontAwesome name="plus-square-o" color={color} size={30} />
         }}/>
         <Tabs.Screen name='NotificationsStack' component={NotificationsStackScreen} options={{
           tabBarLabel:"Notification",
-          tabBarIcon: () => <Ionicons name="ios-notifications-outline" size={27} />
+          tabBarIcon: ({color}) => <Ionicons name="ios-notifications-outline" color={color} size={33} />
         }}/>
         <Tabs.Screen name='UserStack' component={UserStackScreen} options={{
           tabBarLabel:"Profile",
-          tabBarIcon: () => <AntDesign name="user" size={27} />
+          tabBarIcon: ({color}) => <AntDesign name="user" color={color} size={30} />
         }}/>
       </Tabs.Navigator>
       : <AuthStackScreen />
