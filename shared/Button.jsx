@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-export const FlatButton = ({text, onPress}) => {
+export const FlatButton = ({style, text, onPress}) => {
   
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.flatButton}>
-        <Text style={styles.faltButtonText}> { text } </Text>
+        <Text style={styles.flatButtonText}> { text } </Text>
       </View>
     </TouchableOpacity>
   )
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   roundButtonText: {
     color:'#333',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     textTransform:'uppercase',
     fontSize:16,
     textAlign:'center'

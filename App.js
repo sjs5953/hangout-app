@@ -8,7 +8,7 @@ import { globalStyles } from './styles/global';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState('')
+  const [userToken, setUserToken] = useState('Jay')
   
   const authContext = useMemo(()=>{
     return {
@@ -37,7 +37,7 @@ export default function App() {
   },[])
 
   if(isLoading) {
-    console.log('imhere')
+
     return (
       <View style={styles.container}>
         <Text>Loading...</Text>

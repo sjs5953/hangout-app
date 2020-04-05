@@ -28,6 +28,7 @@ export default function TabNavigator ({ userToken, setUserToken }) {
           tabBarIcon: ({color}) => <AntDesign name="home" color={color} size={30} />
         }}/>
         <Tabs.Screen name='CreateStack' component={CreateStackScreen} options={{
+          unmountOnBlur:true,
           tabBarLabel:"Create",
           tabBarIcon: ({color}) => <FontAwesome name="plus-square-o" color={color} size={30} />
         }}/>
