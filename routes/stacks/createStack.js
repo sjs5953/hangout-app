@@ -6,9 +6,11 @@ import Create from '../../screens/create/Create';
 
 const CreateStack = createStackNavigator();
 
-export default function CreateStackScreen () {
+export default function CreateStackScreen ({navigation}) {
+  
   return (
   <CreateStack.Navigator>
-    <CreateStack.Screen name='Create' component={Create} options={{title: 'Post Event'}} />
+    <CreateStack.Screen name='Create' component={Create} options={{title: 'Post Event'}} initialParams={{ "tabNavi":navigation }}
+ />
   </CreateStack.Navigator>
   )}

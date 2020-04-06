@@ -72,7 +72,6 @@ const Events = ({navigation,route}) => {
         <Text style={globalStyles.titleText}>MapView!</Text>
         }
      
-
     {/* a component that needs to stay for all screens inside events screen */}
       <View style={styles.toggleContainer}>
         <RoundButton style={styles.toggleButton} onPress={toggleView}>
