@@ -1,14 +1,13 @@
 import React from "react";
-import { StyleSheet, Button, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Modal } from "react-native";
+import { StyleSheet, Button, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Alert} from "react-native";
 // import { globalStyles } from "../styles/global";
 import {globalStyles} from '../../styles/global'
 import { Formik } from "formik";
 import * as yup from "yup";
 import {FlatButton} from '../../shared/Button'
+import axios from 'axios';
 
-const Create = ({navigation,route}) => {
-
-  const tabNavi = route.params.tabNavi;
+const Create = ({navigation}) => {
   const reviewSchema = yup.object({
     name: yup.string()
       .required()
@@ -22,6 +21,7 @@ const Create = ({navigation,route}) => {
       )
   })
 
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
@@ -29,7 +29,7 @@ const Create = ({navigation,route}) => {
           initialValues={
             {
               "name": "",
-              "minimumParticipants": null,
+              "minimumParticipants": "",
               // "location": {
               //   "lat": null,
               //   "lng": null
@@ -41,18 +41,33 @@ const Create = ({navigation,route}) => {
           }
           validationSchema={reviewSchema}
           onSubmit={(values,actions)=>{
-            //all values are in the object values
-            // axios
-            // then
-            // navigation.navigate('EventsStack', {
-            //   screen:'Events',
-            //   params: {submitted: values}
-            // });
-
-            // console.log(values)
-            console.log('tabnavi ', tabNavi)
-            tabNavi.goBack()
-            actions.resetForm();
+            // axios.post("/events")
+            Promise.resolve({data:1})
+              .then((res)=>{
+                const eventKey = res.data;
+                Alert.alert('Success!','Event has been sucessfully deleted.', [
+                  {text:'go to my post', onPress: ()=>  {
+                   navigation.navigate('EventsStack', {
+                    screen:'Event',
+                    params: {eventKey}
+                    });
+                    actions.resetForm();
+                    }
+                  },
+                    
+                  {text:'finish', onPress: ()=>{
+                    navigation.goBack();
+                    actions.resetForm();
+                  }}
+                  ])
+              })
+              .catch(err=>{
+                 Alert.alert('Oops!',`Failed to post event! Please try again!`, [
+                  {text:'understood', onPress: ()=> console.log('post request faild!', err)}
+                  ])
+              }) 
+           
+           
             return;
           }}
         >

@@ -1,36 +1,85 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React,{useEffect, useState} from 'react'
+import { StyleSheet, Text, View, Alert } from 'react-native'
 import Card from '../../shared/Card'
 import {FlatButton} from '../../shared/Button';
+import axios from 'axios';
+import {eventsFromBackend} from '../../mockData/mockData'
+import {globalStyles} from '../../styles/global'
+
+
+const getEvent = (key) => {
+  const event = eventsFromBackend.events.filter(event=>(
+    event.id == key
+  ))
+
+  return event[0]
+}
+
 
 const Event = ({navigation, route}) => {
-  const event = route.params.item;
-  
-  const setEvents = route.params.setEvents;
+
+  const eventKey = route.params.eventKey;
+
+  const deleteEvent = () => {
+    // axios.delete(`/events/${item.id}`)
+    Promise.resolve()
+    .then(res=>{
+      Alert.alert('Success!','Event has been sucessfully deleted.', [
+        {text:'understood', onPress: ()=>  navigation.goBack() }
+        ])
+    })
+    .catch(err=>{
+       Alert.alert('Oops!',`Failed to delete event! Please try again!`, [
+        {text:'understood', onPress: ()=> console.log('Delete request faild!', err)}
+        ])
+    })
+  };
 
   const handlePress = () => {
-    setEvents((events)=>{
-      const newState = [...events];
-      for (let i = 0; i<events.length; i++) {
-        if(events[i].id == event.id) {
-         newState.splice(i,1);
-         return newState;
-        }
-      }
-    });
-    navigation.goBack();
+ 
+    Alert.alert(
+      'Please Confirm',
+      'Are you sure you want to delete?',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Confirm', onPress: () => { deleteEvent() }},
+      ],
+      { cancelable: false }
+    )
   }
 
+  const [event, setEvent] = useState({});
+  const [error, setError] = useState(false);
+
+  useEffect(()=>{
+    // axios.get(`/events/${event.id}`)
+    Promise.resolve({data:getEvent(eventKey)})
+      .then(res=>{
+        setError(false);
+        const result = res.data;
+        setEvent(result);
+      })
+      .catch((err)=>{
+        setError(true);
+        console.log("err: ",err)
+      })
+  },[]);
+
+
   return (
-    <View>
-      <Card>
+    <View style={styles.container}>
+    {error? 
+        <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
+     :
+     <>
+       <Card>
         <Text>Event Name: {event.name}</Text>
         <Text>Min Participants:  {event.minimumParticipants}</Text>
         <Text>Address: {event.address}</Text>
-      </Card>
+       </Card>
       <FlatButton style={styles.deleteButton} text={'Delete'} onPress={handlePress}/>
-      {/* <Text>Voting Ends at: {event.voteEndTime}</Text>
-      <Text>Event starts at: {event.startTime}</Text> */}
+     </>
+    }
     </View>
   )
 }

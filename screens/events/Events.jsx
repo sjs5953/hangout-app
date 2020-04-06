@@ -10,14 +10,6 @@ import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
 
 
-// const events = [
-//   {title: 'Pickup Soccer Game', location: '123', time:'', key:'1'},
-//   {title: 'Pokemon Go Raid', location: '123', time:'', key:'2'},
-//   {title: 'Cooking Breads', location: '123', time:'', key:'3'},
-//   {title: 'Playing Chess', location: '123', time:'', key:'4'},
-//   {title: 'Playing SuperSmash', location: '123', time:'', key:'5'},
-// ]
-
 const Events = ({navigation,route}) => {
 
   // ListView = false, MapView = true
@@ -28,49 +20,56 @@ const Events = ({navigation,route}) => {
   }
 
   const [events, setEvents] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(()=>{
-    // const initialEvents = await axios.get("https://postman-echo.com/events");
+    // axios.get("/events",{lat:123,long:123})
     const initialEvents = mockData.eventsFromBackend.events;
-    setEvents(initialEvents);
+    Promise.resolve({data: initialEvents})
+    .then(res=>{
+      setError(false);
+      const result = res.data;
+      setEvents(result);
+    })
+    .catch(err=>{
+      setError(true);
+    })
   },[]);
 
 
-  if (route.params && route.params.submitted) {
-    let addedEvent = route.params.submitted;
-    addedEvent.id = Math.random().toString();
-    // const newState = [
-    //   ...events, addedEvent
-    // ];
-    // setEvents(newState);
-    console.log(addedEvent);
-  }
+    // addedEvent.id = Math.random().toString();
 
   return (
     <View style={globalStyles.container}>
-      {listView? 
-         <FlatList
-         keyExtractor={item=>item.id.toString()}
-         data={events}
-         renderItem={({item})=>(
-           <TouchableOpacity style={globalStyles.titleText} onPress={debounce(
-             () =>
-             navigation.push('Event', {item,setEvents}), 500,{
-               'leading': true,
-               'trailing': false
-             }
-           )}>
-             <Card>
-               <Text style={globalStyles.titleText}>
-                 {item.name}
-               </Text>
-             </Card>
-           </TouchableOpacity>
-         )}
-       />
-        :
-        <Text style={globalStyles.titleText}>MapView!</Text>
-        }
+
+      {error? 
+        <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
+     :
+
+     {listView}? 
+      <FlatList
+      keyExtractor={item=>item.id.toString()}
+      data={events}
+      renderItem={({item})=>(
+        <TouchableOpacity style={globalStyles.titleText} onPress={debounce(
+          () =>
+          navigation.push('Event', {eventKey:item.id}), 500,{
+            'leading': true,
+            'trailing': false
+          }
+        )}>
+          <Card>
+            <Text style={globalStyles.titleText}>
+              {item.name}
+            </Text>
+          </Card>
+        </TouchableOpacity>
+        )}
+      />
+     :
+     <Text style={globalStyles.titleText}>MapView!</Text>
+    }
+     
      
     {/* a component that needs to stay for all screens inside events screen */}
       <View style={styles.toggleContainer}>

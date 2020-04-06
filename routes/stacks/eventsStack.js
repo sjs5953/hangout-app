@@ -10,8 +10,11 @@ const EventsStack = createStackNavigator();
 
 export default function EventsStackScreen () {
   return (
-  <EventsStack.Navigator>
+  <EventsStack.Navigator mode="modal" >
     <EventsStack.Screen name='Events' component={Events} options={{title: 'Events List'}} />
-    <EventsStack.Screen name='Event' component={Event} options={(({route})=>({title:route.params.item.title}))}/>
+    <EventsStack.Screen name='Event' component={Event} 
+    // options={(({route})=>({title:route.params.item.name}))}
+    options={{title:''}}
+    />
   </EventsStack.Navigator>
   )}

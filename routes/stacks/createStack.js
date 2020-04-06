@@ -9,8 +9,9 @@ const CreateStack = createStackNavigator();
 export default function CreateStackScreen ({navigation}) {
   
   return (
-  <CreateStack.Navigator>
-    <CreateStack.Screen name='Create' component={Create} options={{title: 'Post Event'}} initialParams={{ "tabNavi":navigation }}
+  <CreateStack.Navigator mode="modal">
+    <CreateStack.Screen name='Create' component={Create} options={{title: 'Post Event'}} 
+    // initialParams={{ "tabNavi":navigation }}
  />
   </CreateStack.Navigator>
   )}

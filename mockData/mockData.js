@@ -106,3 +106,10 @@ export const event = {
   "category": "Meet"
 };
 
+export const notifications = [
+  {title: 'noti1', content:'noti about Coffee', key:'1', eventKey:'1'},
+  {title: 'noti2', content:"noti about Scary Movie", key:'2', eventKey:'2'},
+  {title: 'noti3', content:"noti about Cooking", key:'3', eventKey:'3'},
+  {title: 'noti4', content:"noti about Do Something", key:'4', eventKey:'4'},
+  {title: 'noti5', content:"noti about Switch", key:'5', eventKey:'5'},
+]
