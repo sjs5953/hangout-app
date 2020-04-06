@@ -45,8 +45,7 @@ const Events = ({navigation,route}) => {
       {error? 
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
      :
-
-     {listView}? 
+     listView? 
       <FlatList
       keyExtractor={item=>item.id.toString()}
       data={events}
