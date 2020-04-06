@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, FlatList,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, FlatList,TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
@@ -21,34 +21,47 @@ const Events = ({navigation,route}) => {
 
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(()=>{
     // axios.get("/events",{lat:123,long:123})
     const initialEvents = mockData.eventsFromBackend.events;
-    Promise.resolve({data: initialEvents})
-    .then(res=>{
-      setError(false);
-      const result = res.data;
-      setEvents(result);
-    })
-    .catch(err=>{
-      setError(true);
-    })
+    setTimeout(() => {
+      Promise.resolve({data:initialEvents})
+      .then(res=>{
+        setError(false);
+        setIsLoading(false);
+        const result = res.data;
+        setEvents(result);
+      })
+      .catch(err=>{
+        setError(true);
+        setIsLoading(false);
+      })
+    }, 1000);
+   
   },[]);
 
 
     // addedEvent.id = Math.random().toString();
 
-  return (
-    <View style={globalStyles.container}>
 
-      {error? 
+  if(isLoading) {
+    return (<View style={styles.loadingContainer}><ActivityIndicator animating size={'large'}/></View>)
+  }
+
+  return (
+    <SafeAreaView style={globalStyles.container}>
+
+    {error? 
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
      :
      listView? 
       <FlatList
       keyExtractor={item=>item.id.toString()}
       data={events}
+      // ListFooterComponent={<ActivityIndicator animating size={'large'}/>}
       renderItem={({item})=>(
         <TouchableOpacity style={globalStyles.titleText} onPress={debounce(
           () =>
@@ -66,19 +79,20 @@ const Events = ({navigation,route}) => {
         )}
       />
      :
-     <Text style={globalStyles.titleText}>MapView!</Text>
+    //  <Text style={globalStyles.titleText}>MapView!</Text>
+    <ActivityIndicator animating size={'large'}/>
     }
      
      
     {/* a component that needs to stay for all screens inside events screen */}
       <View style={styles.toggleContainer}>
-        <RoundButton style={styles.toggleButton} onPress={toggleView}>
+        <RoundButton onPress={toggleView}>
           {listView?
             <FontAwesome5 name="map" color={"black"} size={30} /> :
             <FontAwesome5 name="list-ul" color={"black"} size={30} />}
         </RoundButton>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -88,8 +102,11 @@ const styles = StyleSheet.create({
   toggleContainer:{
     position:'absolute',
     bottom:20,
-    right:25,
-    flexDirection:'row',
-    justifyContent:'flex-end'
+    right:25
   },
+  loadingContainer: {
+    justifyContent:'center',
+    alignItems:'center',
+    flex:1
+  }
 })

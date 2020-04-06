@@ -1,5 +1,5 @@
 import React,{useState, useEffect, useContext} from 'react'
-import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native'
 import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
@@ -10,21 +10,31 @@ const Notifications = ({navigation}) => {
 
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(()=>{
-    // axios.get(`/notifications/${userId}`)
-    const notificationsFromBack = mockData.notifications;
-    Promise.resolve({data: notificationsFromBack})
-    .then(res=>{
-      setError(false);
-      const result = res.data;
-      setNotifications(result);
-    })
-    .catch(err=>{
-      setError(true);
-    })
+
+    setTimeout(() => {
+      // axios.get(`/notifications/${userId}`)
+      const notificationsFromBack = mockData.notifications;
+      Promise.resolve({data: notificationsFromBack})
+      .then(res=>{
+        setError(false);
+        const result = res.data;
+        setNotifications(result);
+        setIsLoading(false);
+      })
+      .catch(err=>{
+        setError(true);
+        setIsLoading(false);
+      })
+    }, 1000);
   },[]);
 
+
+  if(isLoading) {
+    return (<View style={styles.loadingContainer}><ActivityIndicator animating size={'large'}/></View>)
+  }
 
   return (
     <View style={globalStyles.container}>
@@ -65,4 +75,10 @@ const Notifications = ({navigation}) => {
 
 export default Notifications
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  loadingContainer: {
+    justifyContent:'center',
+    alignItems:'center',
+    flex:1
+  }
+})

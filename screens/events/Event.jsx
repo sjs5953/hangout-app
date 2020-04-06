@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react'
-import { StyleSheet, Text, View, Alert } from 'react-native'
+import { StyleSheet, Text, View, Alert,ActivityIndicator } from 'react-native'
 import Card from '../../shared/Card'
 import {FlatButton} from '../../shared/Button';
 import axios from 'axios';
@@ -22,17 +22,27 @@ const Event = ({navigation, route}) => {
 
   const deleteEvent = () => {
     // axios.delete(`/events/${item.id}`)
-    Promise.resolve()
+    setIsLoading(true);
+    setTimeout(() => {
+      Promise.reject()
     .then(res=>{
       Alert.alert('Success!','Event has been sucessfully deleted.', [
-        {text:'understood', onPress: ()=>  navigation.goBack() }
+        {text:'understood', onPress: ()=>  {
+          navigation.goBack();
+          setIsLoading(false);
+        } }
         ])
     })
     .catch(err=>{
+      setIsLoading(false);
        Alert.alert('Oops!',`Failed to delete event! Please try again!`, [
-        {text:'understood', onPress: ()=> console.log('Delete request faild!', err)}
+        {text:'understood', onPress: ()=> {
+          console.log('Delete request faild!', err);
+        }}
         ])
     })
+    }, 2500);
+    
   };
 
   const handlePress = () => {
@@ -50,21 +60,30 @@ const Event = ({navigation, route}) => {
 
   const [event, setEvent] = useState({});
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=>{
-    // axios.get(`/events/${event.id}`)
-    Promise.resolve({data:getEvent(eventKey)})
-      .then(res=>{
-        setError(false);
-        const result = res.data;
-        setEvent(result);
-      })
-      .catch((err)=>{
-        setError(true);
-        console.log("err: ",err)
-      })
+      setTimeout(() => {
+      // axios.get(`/events/${event.id}`)
+      Promise.resolve({data:getEvent(eventKey)})
+        .then(res=>{
+          setError(false);
+          const result = res.data;
+          setEvent(result);
+          setIsLoading(false);
+        })
+        .catch((err)=>{
+          setError(true);
+          console.log("err: ",err)
+          setIsLoading(false);
+        })
+      }, 1000);
   },[]);
 
+  
+  if(isLoading) {
+    return (<View style={styles.loadingContainer}><ActivityIndicator animating size={'large'}/></View>)
+  }
 
   return (
     <View style={styles.container}>
@@ -87,4 +106,9 @@ const Event = ({navigation, route}) => {
 export default Event
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    justifyContent:'center',
+    alignItems:'center',
+    flex:1
+  }
 })

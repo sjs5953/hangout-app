@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Button, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Alert} from "react-native";
+import React,{useState} from "react";
+import { StyleSheet, Button, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Alert, ActivityIndicator} from "react-native";
 // import { globalStyles } from "../styles/global";
 import {globalStyles} from '../../styles/global'
 import { Formik } from "formik";
@@ -21,6 +21,11 @@ const Create = ({navigation}) => {
       )
   })
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  if(isLoading) {
+    return (<View style={styles.loadingContainer}><ActivityIndicator animating size={'large'}/></View>)
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -41,40 +46,43 @@ const Create = ({navigation}) => {
           }
           validationSchema={reviewSchema}
           onSubmit={(values,actions)=>{
+
+            setIsLoading(true);
+
             // axios.post("/events")
-            Promise.resolve({data:1})
+            setTimeout(() => {
+              Promise.resolve({data:1})
               .then((res)=>{
                 const eventKey = res.data;
                 Alert.alert('Success!','Event has been sucessfully deleted.', [
-                  {text:'go to my post', onPress: ()=>  {
+                  {text:'Go to my post', onPress: ()=>  {
                    navigation.navigate('EventsStack', {
                     screen:'Event',
                     params: {eventKey}
                     });
                     actions.resetForm();
+                    setIsLoading(false);
                     }
                   },
-                    
-                  {text:'finish', onPress: ()=>{
+                  {text:'Finish', onPress: ()=>{
                     navigation.goBack();
                     actions.resetForm();
+                    setIsLoading(false);
                   }}
                   ])
               })
               .catch(err=>{
+                setIsLoading(false);
                  Alert.alert('Oops!',`Failed to post event! Please try again!`, [
                   {text:'understood', onPress: ()=> console.log('post request faild!', err)}
                   ])
               }) 
-           
-           
-            return;
+            }, 1000);
           }}
         >
           {props=>{
             return (
               <View>
-                
                 <TextInput
                   style={globalStyles.input}
                   placeholder="Event Name"
@@ -111,5 +119,10 @@ const Create = ({navigation}) => {
 
 export default Create
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  loadingContainer: {
+    justifyContent:'center',
+    alignItems:'center',
+    flex:1
+  }})
 

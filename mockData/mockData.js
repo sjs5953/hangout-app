@@ -83,6 +83,132 @@ export const eventsFromBackend = {
       "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
       "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
       "category": "Meet"
+    },
+    {
+      "id":6777,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":6666,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":655555,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":61313,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":6233,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":6123555,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":65,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":62,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    },
+    {
+      "id":613,
+      "name": "Just talking",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
     }
   ]
 };

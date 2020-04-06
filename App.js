@@ -1,6 +1,6 @@
 import React,{useState, useEffect, useMemo} from 'react';
 import { AppLoading } from 'expo'
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { AuthContext } from './context'
 
 import TabNavigator from './routes/tabNavigator'
@@ -40,7 +40,7 @@ export default function App() {
 
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <ActivityIndicator animating size={"large"}/>
       </View>
     )
   }

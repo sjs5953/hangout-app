@@ -17,7 +17,7 @@ export default function TabNavigator ({ userToken, setUserToken }) {
   return (
   <NavigationContainer>
     {userToken ? 
-      <Tabs.Navigator tabBarOptions={{showLabel:false}}>
+      <Tabs.Navigator tabBarOptions={{showLabel:false}} >
         <Tabs.Screen name='EventsStack' component={EventsStackScreen} labeled={false} options={{
           tabBarLabel:"Home",
           tabBarIcon: ({color}) => <AntDesign name="home" color={color} size={30} />

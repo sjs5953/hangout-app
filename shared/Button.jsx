@@ -40,10 +40,11 @@ const styles = StyleSheet.create({
   },
   roundButton: {
     borderRadius:100,
-    paddingVertical: 14,
-    paddingHorizontal: 10,
+    // paddingVertical: 14,
+    // paddingHorizontal: 10,
     // backgroundColor: '#f01d71',
-    height:50,
+    padding:0,
+    height:55,
     width:80,
     justifyContent:'center',
     alignItems:'center',
@@ -63,8 +64,10 @@ const styles = StyleSheet.create({
     color:'#333',
     // fontWeight: 'bold',
     textTransform:'uppercase',
-    fontSize:16,
-    textAlign:'center'
+    fontSize:0,
+    textAlign:'center',
+    margin:0,
+    padding:0
   },
  
 })
