@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, FlatList,TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, FlatList,TouchableOpacity, SafeAreaView, ActivityIndicator, Button } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
@@ -20,48 +20,97 @@ const Events = ({navigation,route}) => {
   }
 
   const [events, setEvents] = useState([]);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+ 
+  const [status, setStatus] = useState({
+    error:false,
+    isLoading:true,
+    isLoadingMore:false
+  })
 
 
   useEffect(()=>{
     // axios.get("/events",{lat:123,long:123})
-    const initialEvents = mockData.eventsFromBackend.events;
+    const initialEvents = mockData.eventsFromBackend.events
     setTimeout(() => {
       Promise.resolve({data:initialEvents})
       .then(res=>{
-        setError(false);
-        setIsLoading(false);
         const result = res.data;
         setEvents(result);
+        setStatus({
+          error: false,
+          isLoading:false,
+          isLoadingMore:false
+        })
       })
       .catch(err=>{
-        setError(true);
-        setIsLoading(false);
+        setStatus({
+          error: true,
+          isLoading:false,
+          isLoadingMore:false
+        })
       })
     }, 1000);
-   
   },[]);
+    // console.log("what about here?")
+    const loadMore = () => {
+      console.log(events.length)
+      setStatus({...status,isLoadingMore:true});
+      const moreEvents =[]
+   
+      for (let i=0; i<5; i++) {
+        const id = (Math.random()*100).toString();
+        const name = `event ${i}`
+        const newEvent = {
+          id,
+          name
+        }
+        moreEvents.push(newEvent);
+      }
 
+      setTimeout(() => {
+        Promise.resolve({data:moreEvents})
+        .then(res=>{    
+          const moreEvents = res.data;
+          setEvents([...events, ...moreEvents]);
+          setStatus({
+            error: false,
+            isLoading:false,
+            isLoadingMore:false
+          })
+        })
+        .catch(err=>{
+          setStatus({
+            error: true,
+            isLoading:false,
+            isLoadingMore:false
+          })
+        })
+      }, 1000);
+    }
 
-    // addedEvent.id = Math.random().toString();
+    const renderFooter = () => {
+      if (status.isLoadingMore)
+      return <ActivityIndicator animating size={'large'}/>
+    }
 
-
-  if(isLoading) {
+  if(status.isLoading) {
     return (<View style={styles.loadingContainer}><ActivityIndicator animating size={'large'}/></View>)
   }
 
   return (
     <SafeAreaView style={globalStyles.container}>
 
-    {error? 
+    {status.error? 
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
      :
      listView? 
       <FlatList
       keyExtractor={item=>item.id.toString()}
       data={events}
-      // ListFooterComponent={<ActivityIndicator animating size={'large'}/>}
+      onEndReached={()=> loadMore()}
+      ListFooterComponent={renderFooter()}
+      onEndReachedThreshold={0.1}
+      ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
       renderItem={({item})=>(
         <TouchableOpacity style={globalStyles.titleText} onPress={debounce(
           () =>
@@ -108,5 +157,11 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     flex:1
+  },
+  noResults :{
+    justifyContent:'center',
+    alignItems:'center',
+    flex:2,
+    marginTop:20
   }
 })

@@ -24,7 +24,7 @@ const Event = ({navigation, route}) => {
     // axios.delete(`/events/${item.id}`)
     setIsLoading(true);
     setTimeout(() => {
-      Promise.reject()
+      Promise.resolve()
     .then(res=>{
       Alert.alert('Success!','Event has been sucessfully deleted.', [
         {text:'understood', onPress: ()=>  {

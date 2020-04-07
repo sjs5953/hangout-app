@@ -85,8 +85,8 @@ export const eventsFromBackend = {
       "category": "Meet"
     },
     {
-      "id":6777,
-      "name": "Just talking",
+      "id":7,
+      "name": "Watching Youtube",
       "minimumParticipants": 5,
       "currentParticipants": 1,
       "location": {
@@ -99,8 +99,8 @@ export const eventsFromBackend = {
       "category": "Meet"
     },
     {
-      "id":6666,
-      "name": "Just talking",
+      "id":8,
+      "name": "Exercising",
       "minimumParticipants": 5,
       "currentParticipants": 1,
       "location": {
@@ -113,8 +113,8 @@ export const eventsFromBackend = {
       "category": "Meet"
     },
     {
-      "id":655555,
-      "name": "Just talking",
+      "id":9,
+      "name": "123~~",
       "minimumParticipants": 5,
       "currentParticipants": 1,
       "location": {
@@ -127,8 +127,8 @@ export const eventsFromBackend = {
       "category": "Meet"
     },
     {
-      "id":61313,
-      "name": "Just talking",
+      "id":10,
+      "name": "3~~",
       "minimumParticipants": 5,
       "currentParticipants": 1,
       "location": {
@@ -141,64 +141,8 @@ export const eventsFromBackend = {
       "category": "Meet"
     },
     {
-      "id":6233,
-      "name": "Just talking",
-      "minimumParticipants": 5,
-      "currentParticipants": 1,
-      "location": {
-        "lat": 123,
-        "lng": 321
-      },
-      "address": "Tim hortons downtown",
-      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "category": "Meet"
-    },
-    {
-      "id":6123555,
-      "name": "Just talking",
-      "minimumParticipants": 5,
-      "currentParticipants": 1,
-      "location": {
-        "lat": 123,
-        "lng": 321
-      },
-      "address": "Tim hortons downtown",
-      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "category": "Meet"
-    },
-    {
-      "id":65,
-      "name": "Just talking",
-      "minimumParticipants": 5,
-      "currentParticipants": 1,
-      "location": {
-        "lat": 123,
-        "lng": 321
-      },
-      "address": "Tim hortons downtown",
-      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "category": "Meet"
-    },
-    {
-      "id":62,
-      "name": "Just talking",
-      "minimumParticipants": 5,
-      "currentParticipants": 1,
-      "location": {
-        "lat": 123,
-        "lng": 321
-      },
-      "address": "Tim hortons downtown",
-      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
-      "category": "Meet"
-    },
-    {
-      "id":613,
-      "name": "Just talking",
+      "id":11,
+      "name": "fflfl~~",
       "minimumParticipants": 5,
       "currentParticipants": 1,
       "location": {
@@ -212,6 +156,23 @@ export const eventsFromBackend = {
     }
   ]
 };
+
+export const moreEvents = [
+    {
+      "id":12,
+      "name": "New One",
+      "minimumParticipants": 5,
+      "currentParticipants": 1,
+      "location": {
+        "lat": 123,
+        "lng": 321
+      },
+      "address": "Tim hortons downtown",
+      "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "voteEndTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+      "category": "Meet"
+    }
+]
 
 export const event = {
   "_id": "625f713a-bd22-4340-8fef-0a2d8b670aba",
