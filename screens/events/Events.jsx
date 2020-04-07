@@ -4,7 +4,7 @@ import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
 import { RoundButton } from '../../shared/Button';
-import { AntDesign, FontAwesome5, Ionicons, Foundation, Fontisto } from '@expo/vector-icons';
+import {FontAwesome5} from '@expo/vector-icons';
 
 import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
@@ -16,7 +16,24 @@ const Events = ({navigation,route}) => {
   const [listView, setlistView] = useState(true);
 
   const toggleView = () => {
-    setlistView(!listView);
+    setStatus({...status, isLoading:true})
+
+    setTimeout(()=>{
+      Promise.resolve({data:"Map Data Here"})
+      .then(res=>{
+        setlistView(!listView);
+        setStatus({...status, isLoading:false})
+      })
+      .catch(err=>{
+        setStatus({
+          error: true,
+          isLoading:false,
+          isLoadingMore:false
+        })
+      })
+     },1000)
+      
+   
   }
 
   const [events, setEvents] = useState([]);
@@ -49,7 +66,7 @@ const Events = ({navigation,route}) => {
           isLoadingMore:false
         })
       })
-    }, 1000);
+    }, 500);
   },[]);
     // console.log("what about here?")
     const loadMore = () => {
@@ -85,7 +102,7 @@ const Events = ({navigation,route}) => {
             isLoadingMore:false
           })
         })
-      }, 1000);
+      }, 500);
     }
 
     const renderFooter = () => {
@@ -128,8 +145,7 @@ const Events = ({navigation,route}) => {
         )}
       />
      :
-    //  <Text style={globalStyles.titleText}>MapView!</Text>
-    <ActivityIndicator animating size={'large'}/>
+     <Text style={globalStyles.titleText}>===========MapViewHere!==========</Text>
     }
      
      

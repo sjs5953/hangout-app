@@ -41,7 +41,7 @@ const Event = ({navigation, route}) => {
         }}
         ])
     })
-    }, 2500);
+    }, 1000);
     
   };
 
