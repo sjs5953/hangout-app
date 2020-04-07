@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, FlatList,TouchableOpacity, SafeAreaView, ActivityIndicator, Button } from 'react-native'
+import { RefreshControl, StyleSheet, Text, View, FlatList,TouchableOpacity, SafeAreaView, ActivityIndicator, Button } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
@@ -32,22 +32,20 @@ const Events = ({navigation,route}) => {
         })
       })
      },1000)
-      
-   
   }
 
+  const [refreshing, setRefreshing] = useState(false);
   const [events, setEvents] = useState([]);
- 
   const [status, setStatus] = useState({
     error:false,
     isLoading:true,
     isLoadingMore:false
   })
 
-
+  let initialEvents;
   useEffect(()=>{
     // axios.get("/events",{lat:123,long:123})
-    const initialEvents = mockData.eventsFromBackend.events
+    initialEvents = mockData.eventsFromBackend.events
     setTimeout(() => {
       Promise.resolve({data:initialEvents})
       .then(res=>{
@@ -105,6 +103,36 @@ const Events = ({navigation,route}) => {
       }, 500);
     }
 
+    const onRefresh = React.useCallback(async () => {
+      setRefreshing(true);
+      if (true) {
+        try {
+          // let response = await axios.get(
+          //   '/events'
+          // );
+          let response = {data:[
+            {
+            "id":"123123123",
+            "name":"Data after refreshing"
+            }
+          ]}
+          // let responseJson = await response.json();
+          // console.log(responseJson);
+          setEvents([...response.data,...initialEvents]);
+          setRefreshing(false)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      else{
+        // ToastAndroid.show('No more new data available', ToastAndroid.SHORT);
+        setRefreshing(false)
+      }
+    }, [refreshing]);
+
+
+
+
     const renderFooter = () => {
       if (status.isLoadingMore)
       return <ActivityIndicator animating size={'large'}/>
@@ -128,6 +156,9 @@ const Events = ({navigation,route}) => {
       ListFooterComponent={renderFooter()}
       onEndReachedThreshold={0.1}
       ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       renderItem={({item})=>(
         <TouchableOpacity style={globalStyles.titleText} onPress={debounce(
           () =>

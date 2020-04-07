@@ -1,5 +1,5 @@
 import React,{useState, useEffect, useContext} from 'react'
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native'
+import { RefreshControl, StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native'
 import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
@@ -9,6 +9,7 @@ import * as mockData from '../../mockData/mockData'
 const Notifications = ({navigation}) => {
 
   const [notifications, setNotifications] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [status, setStatus] = useState({
     error:false,
@@ -16,11 +17,12 @@ const Notifications = ({navigation}) => {
     isLoadingMore:false
   })
 
+  let initialNotifications;
   useEffect(()=>{
     setTimeout(() => {
       // axios.get(`/notifications/${userId}`)
-      const notificationsFromBack = mockData.notifications;
-      Promise.resolve({data: notificationsFromBack})
+      initialNotifications = mockData.notifications;
+      Promise.resolve({data: initialNotifications})
       .then(res=>{
         const result = res.data;
         setNotifications(result);
@@ -76,6 +78,36 @@ const Notifications = ({navigation}) => {
     }, 500);
   }
 
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    if (true) {
+      try {
+        // let response = await axios.get(
+        //   '/events'
+        // );
+        let response = {data:[
+          {
+          "id":"123123123",
+          "title":"Data after refreshing",
+          "eventKey":"1",
+          "content":"refreshing is cool"
+          }
+        ]}
+        // let responseJson = await response.json();
+        // console.log(responseJson);
+        setNotifications([...response.data,...initialNotifications]);
+        setRefreshing(false)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    else{
+      // ToastAndroid.show('No more new data available', ToastAndroid.SHORT);
+      setRefreshing(false)
+    }
+  }, [refreshing]);
+
   const renderFooter = () => {
     if (status.isLoadingMore)
     return <ActivityIndicator animating size={'large'}/>
@@ -97,6 +129,9 @@ const Notifications = ({navigation}) => {
         ListFooterComponent={renderFooter()}
         onEndReachedThreshold={0.1}
         ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={({item})=>(
           <TouchableOpacity style={globalStyles.titleText} onPress={
             debounce(
