@@ -13,17 +13,17 @@ export default function App() {
   const authContext = useMemo(()=>{
     return {
       signIn: () => {
-        setIsLoading(false);
+        // setIsLoading(false);
         setUserToken('Jay');
         console.log("Signed In");
       },
       signUp: () => {
-        setIsLoading(false);
+        // setIsLoading(false);
         setUserToken('Jay');
         console.log("Signed Up");
       },
       signOut: () => {
-        setIsLoading(false);
+        // setIsLoading(false);
         setUserToken(null);
         console.log("Signed Out");
       }

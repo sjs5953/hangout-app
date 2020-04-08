@@ -1,11 +1,9 @@
 import React,{useEffect, useState} from 'react'
-import { StyleSheet, Text, View, Alert,ActivityIndicator } from 'react-native'
-import Card from '../../shared/Card'
-import {FlatButton} from '../../shared/Button';
+import { Alert } from 'react-native'
 import axios from 'axios';
 import {eventsFromBackend} from '../../mockData/mockData'
-import {globalStyles} from '../../styles/global'
-
+import LoadingScreen from '../../shared/LoadingScreen'
+import EventScreen from  './view';
 
 const getEvent = (key) => {
   const event = eventsFromBackend.events.filter(event=>(
@@ -82,33 +80,12 @@ const Event = ({navigation, route}) => {
 
   
   if(isLoading) {
-    return (<View style={styles.loadingContainer}><ActivityIndicator animating size={'large'}/></View>)
+    return (<LoadingScreen/>)
   }
 
   return (
-    <View style={styles.container}>
-    {error? 
-        <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
-     :
-     <>
-       <Card>
-        <Text>Event Name: {event.name}</Text>
-        <Text>Min Participants:  {event.minimumParticipants}</Text>
-        <Text>Address: {event.address}</Text>
-       </Card>
-      <FlatButton style={styles.deleteButton} text={'Delete'} onPress={handlePress}/>
-     </>
-    }
-    </View>
+    <EventScreen handlePress={handlePress} event={event} error={error} />
   )
 }
 
 export default Event
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    justifyContent:'center',
-    alignItems:'center',
-    flex:1
-  }
-})
