@@ -194,9 +194,9 @@ export const event = {
 };
 
 export const notifications = [
-  {title: 'noti1', content:'noti about Coffee', id:'1', eventKey:'1'},
-  {title: 'noti2', content:"noti about Scary Movie", id:'2', eventKey:'2'},
-  {title: 'noti3', content:"noti about Cooking", id:'3', eventKey:'3'},
-  {title: 'noti4', content:"noti about Do Something", id:'4', eventKey:'4'},
-  {title: 'noti5', content:"noti about Switch", id:'5', eventKey:'5'},
+  {title: 'noti1', content:'noti about Coffee', id:'1', eventKey:'5e9004e8e7179a7912b8d343'},
+  {title: 'noti2', content:"noti about Scary Movie", id:'2', eventKey:'5e90052ee7179a7912b8d365'},
+  {title: 'noti3', content:"noti about Cooking", id:'3', eventKey:'5e9006a9e7179a7912b8d3a1'},
+  {title: 'noti4', content:"noti about Do Something", id:'4', eventKey:'5e9006bbe7179a7912b8d3aa'},
+  {title: 'noti5', content:"noti about Switch", id:'5', eventKey:'5e90096ce7179a7912b8d45a'},
 ]

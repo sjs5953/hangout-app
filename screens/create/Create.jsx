@@ -24,48 +24,48 @@ export default Create = ({navigation}) => {
   const submitForm = (values, actions) => {
     setIsLoading(true);
     // axios.post("/events",{values})
-    setTimeout(() => {
-      Promise.resolve({ data: 1 })
-        .then((res) => {
-          console.log("Submitted Values: ",values)
-          const eventKey = res.data;
-          Alert.alert("Success!", "Event has been sucessfully deleted.", [
-            {
-              text: "Go to my post",
-              onPress: () => {
-                setIsLoading(false);
-                actions.resetForm();
-                navigation.navigate("EventsStack", {
-                  screen: "Event",
-                  params: { eventKey },
-                });
-               
-              },
+
+    axios.post('https://meetnow.herokuapp.com/events')
+      .then((res) => {
+        console.log("Submitted Values: ",values)
+        // const eventKey = res.data.id;
+        const eventKey='5e9004e8e7179a7912b8d343';
+        Alert.alert("Success!", "Event has been sucessfully deleted.", [
+          {
+            text: "Go to my post",
+            onPress: () => {
+              setIsLoading(false);
+              actions.resetForm();
+              navigation.navigate("EventsStack", {
+                screen: "Event",
+                params: { eventKey },
+              });
+              
             },
-            {
-              text: "Finish",
-              onPress: () => {
-                setIsLoading(false);
-                actions.resetForm();
-                navigation.goBack();
-              },
+          },
+          {
+            text: "Finish",
+            onPress: () => {
+              setIsLoading(false);
+              actions.resetForm();
+              navigation.goBack();
             },
-          ]);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          Alert.alert(
-            "Oops!",
-            `Failed to post event! Please try again!`,
-            [
-              {
-                text: "understood",
-                onPress: () => console.log("post request faild!", err),
-              },
-            ]
-          );
-        });
-    }, 1000);
+          },
+        ]);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        Alert.alert(
+          "Oops!",
+          `Failed to post event! Please try again!`,
+          [
+            {
+              text: "understood",
+              onPress: () => console.log("post request faild!", err),
+            },
+          ]
+        );
+      });
   }
 
   if(isLoading) {

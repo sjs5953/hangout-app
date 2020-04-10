@@ -6,7 +6,10 @@ import { AuthContext } from '../../context';
 
 const Notifications = ({navigation}) => {
 
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState({
+    data:[],
+    currentPage:1
+  });
   const [refreshing, setRefreshing] = useState(false);
 
   const [status, setStatus] = useState({
@@ -21,55 +24,70 @@ const Notifications = ({navigation}) => {
 
   console.log("User Id: ",userId)
 
-  let initialNotifications;
   useEffect(()=>{
-    setTimeout(() => {
-      // axios.get(`/notifications/${userId}`)
-      initialNotifications = mockData.notifications;
-      Promise.resolve({data: initialNotifications})
-      .then(res=>{
-        const result = res.data;
-        setNotifications(result);
-        setStatus({...status, isLoading:false});
+ 
+    // axios.get(`/notifications/${userId}`)
+    const initialNotifications = mockData.notifications;
+    Promise.resolve({data:{
+      notifications:initialNotifications,
+      totalPage:1
+    }})
+    .then(res=>{
+      const result = res.data;
+      setNotifications({
+        ...notifications,
+        data: result.notifications,
+      });
+      setStatus({...status, isLoading:false});
+    })
+    .catch(err=>{
+      setStatus({
+        error: true,
+        isLoading:false,
+        isLoadingMore:false
       })
-      .catch(err=>{
-        setStatus({
-          error: true,
-          isLoading:false,
-          isLoadingMore:false
-        })
-      })
-    }, 1000);
+    })
   },[]);
 
 
-  const loadMore = () => {
-    console.log(notifications.length)
-    setStatus({...status,isLoadingMore:true});
-    const moreNotifications =[]
- 
-    for (let i=0; i<5; i++) {
-      const id = (Math.random()*100).toString();
-      const title = `noti ${i}`
-      const newNoti = {
-        id,
-        title,
-        content:"dont click this",
-        eventKey:'1'
-      }
-      moreNotifications.push(newNoti);
-    }
 
+  const loadMore = () => {
+    setStatus({...status,isLoadingMore:true});
+  
+    
     setTimeout(() => {
-      Promise.resolve({data:moreNotifications})
-      .then(res=>{    
-        const moreNotifications = res.data;
-        setNotifications([...notifications, ...moreNotifications]);
-        setStatus({
-          error: false,
-          isLoading:false,
-          isLoadingMore:false
-        })
+      const tempData = mockData.notifications;
+      Promise.resolve({data:{
+        notifications: tempData,
+        totalPage:1
+      }})
+      .then(res=>{
+    
+        const result = res.data;
+        console.log("notifications.currentPage", notifications.currentPage)
+        console.log("result.totalPage", result.totalPage)
+        console.log("notifications: ", notifications)
+        if(notifications.currentPage != result.totalPage){
+          const moreNotis = result.notifications;
+          setNotifications({
+            data: [...notifications, ...moreNotis],
+            currentPage: notifications.currentPage+1
+          });
+          setStatus({
+            error: false,
+            isLoading:false,
+            isLoadingMore:false
+          })}
+          else {
+            setTimeout(()=>{
+              setStatus({
+                error: false,
+                isLoading:false,
+                isLoadingMore:false
+              })
+            },1500)
+        }
+  
       })
       .catch(err=>{
         setStatus({
@@ -90,17 +108,15 @@ const Notifications = ({navigation}) => {
         // let response = await axios.get(
         //   '/events'
         // );
-        let response = {data:[
-          {
-          "id":"123123123",
-          "title":"Data after refreshing",
-          "eventKey":"1",
-          "content":"refreshing is cool"
-          }
-        ]}
-        // let responseJson = await response.json();
-        // console.log(responseJson);
-        setNotifications([...response.data,...initialNotifications]);
+        let response = {data:{
+          notifications: mockData.notifications,
+          totalPage:1
+        }}
+        // // let responseJson = await response.json();
+        // // console.log(responseJson);
+        const refreshedNotis = response.data.notifications;
+        console.log(refreshedNotis)
+        setNotifications({data:refreshedNotis, currentPage:1});
         setRefreshing(false)
       } catch (error) {
         console.error(error);
@@ -123,7 +139,7 @@ const Notifications = ({navigation}) => {
       onRefresh={onRefresh}
       loadMore={loadMore}
       status={status}
-      notifications={notifications}
+      notifications={notifications.data}
     />
   )
 }

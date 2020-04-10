@@ -95,8 +95,7 @@ const Events = ({navigation}) => {
           const moreEvents = result.events;
           setEvents({
             data:[...events.data,...moreEvents],
-            currentPage: events.currentPage+1,
-            totalPage: result.totalPage
+            currentPage: events.currentPage+1
           });
           setStatus({
             error: false,
