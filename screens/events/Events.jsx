@@ -44,19 +44,9 @@ const Events = ({navigation}) => {
   useEffect(()=>{
     // axios.get("/events",{lat:123,long:123})
 
-    axios.get(`https://meetnow.herokuapp.com/events?page=${events.currentPage}`)
+    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${events.currentPage}`)
     .then(res=>{
-      // console.log(res.data)
-
-      //Just for now
-      const eventArrays = res.data;
-      const result = {
-        events: eventArrays,
-        totalPage:1
-      }
-      //Just for now
-
-
+      const result = res.data;
       setEvents({
         ...events,
         data: result.events,
@@ -78,19 +68,9 @@ const Events = ({navigation}) => {
 
   const loadMore = () => {
     setStatus({...status,isLoadingMore:true});
-    axios.get(`https://meetnow.herokuapp.com/events?page=${events.currentPage+1}`)
+    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${events.currentPage+1}`)
       .then(res=>{
-
-
-        //Just For now
-        const eventArrays = res.data;
-        const result = {
-          events: eventArrays,
-          totalPage:1
-        }
-         //Just For now
-
-
+        const result = res.data;
         if (events.currentPage != result.totalPage){
           const moreEvents = result.events;
           setEvents({
@@ -126,16 +106,9 @@ const Events = ({navigation}) => {
     setRefreshing(true);
     if (true) {
       try {
-        let res = await axios.get('https://meetnow.herokuapp.com/events?page=1')
+        let res = await axios.get('https://meetnow.herokuapp.com/events?limit=5&page=1')
         
-          //Just For now
-          const eventArrays = res.data;
-          const result = {
-            events: eventArrays,
-            totalPage:1
-          }
-           //Just for now
-
+        const result = res.data;
 
         let newEvents = result.events;
         // let resultJson = await result.json();
@@ -143,7 +116,6 @@ const Events = ({navigation}) => {
         setEvents({
           data:newEvents,
           currentPage:1,
-          totalPage:result.totalPage
         });
         setRefreshing(false)
       } catch (error) {
@@ -156,6 +128,7 @@ const Events = ({navigation}) => {
     }
   }, [refreshing]);
 
+  console.log(events.data.length)
 
   if(status.isLoading) {
     return (<LoadingScreen/>)

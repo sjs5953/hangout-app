@@ -25,11 +25,10 @@ export default Create = ({navigation}) => {
     setIsLoading(true);
     // axios.post("/events",{values})
 
-    axios.post('https://meetnow.herokuapp.com/events')
+    axios.post('https://meetnow.herokuapp.com/events',values)
       .then((res) => {
-        console.log("Submitted Values: ",values)
-        // const eventKey = res.data.id;
-        const eventKey='5e9004e8e7179a7912b8d343';
+        const eventKey = res.data;
+     
         Alert.alert("Success!", "Event has been sucessfully deleted.", [
           {
             text: "Go to my post",

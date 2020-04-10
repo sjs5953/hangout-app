@@ -21,7 +21,7 @@ export default ({navigation, refreshing, onRefresh, loadMore, status, events}) =
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
       :
       <FlatList
-      keyExtractor={item=>`${item.id}`}
+      keyExtractor={item=>`${item._id}`}
       data={events}
       onEndReached={()=> loadMore()}
       ListFooterComponent={renderFooter()}

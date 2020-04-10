@@ -19,13 +19,13 @@ export default ({submitForm, reviewSchema}) => {
         initialValues={{
           name: "",
           minimumParticipants: "",
-          // "location": {
-          //   "lat": null,
-          //   "lng": null
-          // },
-          // "address": "",
-          // "startTime": "",
-          // "category": ""
+          "location": {
+            "lat": 333,
+            "lng": 444
+          },
+          "address": "My house",
+          "startTime": "Wed Apr 01 2020 13:24:52 GMT-0700 (Pacific Daylight Time)",
+          "category": "Meet"
         }}
         validationSchema={reviewSchema}
         onSubmit={(values, actions) => {
