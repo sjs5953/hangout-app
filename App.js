@@ -5,6 +5,8 @@ import { AuthContext } from './context'
 
 import TabNavigator from './routes/tabNavigator'
 import { globalStyles } from './styles/global';
+import { AppRegistry } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,10 +49,14 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <TabNavigator userToken={userToken} setUserToken={setUserToken} />
+      <PaperProvider>
+        <TabNavigator userToken={userToken} setUserToken={setUserToken} />
+      </PaperProvider>
     </AuthContext.Provider>
   );
 }
+
+AppRegistry.registerComponent('app', () => App);
 
 const styles = StyleSheet.create({
   container: {
