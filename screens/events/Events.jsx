@@ -47,7 +47,15 @@ const Events = ({navigation}) => {
     axios.get(`https://meetnow.herokuapp.com/events?page=${events.currentPage}`)
     .then(res=>{
       // console.log(res.data)
-      const result = res.data[0];
+
+      //Just for now
+      const eventArrays = res.data;
+      const result = {
+        events: eventArrays,
+        totalPage:1
+      }
+      //Just for now
+
 
       setEvents({
         ...events,
@@ -72,7 +80,17 @@ const Events = ({navigation}) => {
     setStatus({...status,isLoadingMore:true});
     axios.get(`https://meetnow.herokuapp.com/events?page=${events.currentPage+1}`)
       .then(res=>{
-        const result = res.data[0];
+
+
+        //Just For now
+        const eventArrays = res.data;
+        const result = {
+          events: eventArrays,
+          totalPage:1
+        }
+         //Just For now
+
+
         if (events.currentPage != result.totalPage){
           const moreEvents = result.events;
           setEvents({
@@ -109,8 +127,18 @@ const Events = ({navigation}) => {
     setRefreshing(true);
     if (true) {
       try {
-        let result = await axios.get('https://meetnow.herokuapp.com/events?page=1')
-        let newEvents = result.data[0].events;
+        let res = await axios.get('https://meetnow.herokuapp.com/events?page=1')
+        
+          //Just For now
+          const eventArrays = res.data;
+          const result = {
+            events: eventArrays,
+            totalPage:1
+          }
+           //Just for now
+
+
+        let newEvents = result.events;
         // let resultJson = await result.json();
         // console.log(resultJson);
         setEvents({

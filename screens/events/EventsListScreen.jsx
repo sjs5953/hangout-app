@@ -21,7 +21,7 @@ export default ({navigation, refreshing, onRefresh, loadMore, status, events}) =
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
       :
       <FlatList
-      keyExtractor={item=>item.id.toString()}
+      keyExtractor={item=>item.id}
       data={events}
       onEndReached={()=> loadMore()}
       ListFooterComponent={renderFooter()}
@@ -33,7 +33,7 @@ export default ({navigation, refreshing, onRefresh, loadMore, status, events}) =
       renderItem={({item})=>(
         <TouchableOpacity style={globalStyles.titleText} onPress={debounce(
           () =>
-          navigation.push('Event', {eventKey:item.id}), 500,{
+          navigation.push('Event', {eventKey:item._id}), 500,{
             'leading': true,
             'trailing': false
           }

@@ -18,17 +18,19 @@ const Event = ({navigation, route}) => {
 
   const eventKey = route.params.eventKey;
 
+  console.log("eventkey: ", eventKey)
+
   const deleteEvent = () => {
-    // axios.delete(`/events/${item.id}`)
+   
     setIsLoading(true);
-    setTimeout(() => {
-      Promise.resolve()
+   
+    axios.delete(`https://meetnow.herokuapp.com/events/${eventKey}`)
     .then(res=>{
       Alert.alert('Success!','Event has been sucessfully deleted.', [
         {text:'understood', onPress: ()=>  {
           navigation.goBack();
           setIsLoading(false);
-        } }
+        }}
         ])
     })
     .catch(err=>{
@@ -39,8 +41,6 @@ const Event = ({navigation, route}) => {
         }}
         ])
     })
-    }, 1000);
-    
   };
 
   const handlePress = () => {
@@ -62,8 +62,7 @@ const Event = ({navigation, route}) => {
 
   useEffect(()=>{
       setTimeout(() => {
-      // axios.get(`/events/${event.id}`)
-      Promise.resolve({data:getEvent(eventKey)})
+        axios.get(`https://meetnow.herokuapp.com/events/${eventKey}`)
         .then(res=>{
           setError(false);
           const result = res.data;
