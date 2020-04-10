@@ -2,7 +2,7 @@ import React,{useState, useEffect, useContext} from 'react'
 import * as mockData from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
 import NotificationsScreen from './NotificationsScreen'
-
+import { AuthContext } from '../../context';
 
 const Notifications = ({navigation}) => {
 
@@ -14,6 +14,12 @@ const Notifications = ({navigation}) => {
     isLoading:true,
     isLoadingMore:false
   })
+
+  const { user } = useContext(AuthContext);
+  // put that in the header
+  const userId = user.id;
+
+  console.log("User Id: ",userId)
 
   let initialNotifications;
   useEffect(()=>{

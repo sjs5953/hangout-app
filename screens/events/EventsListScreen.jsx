@@ -42,6 +42,9 @@ export default ({navigation, refreshing, onRefresh, loadMore, status, events}) =
             <Text style={globalStyles.titleText}>
               {item.name}
             </Text>
+            <Card>
+                <Text style={{lineHeight:50}}>Some Description Here</Text>
+            </Card>
           </Card>
         </TouchableOpacity>
         )}

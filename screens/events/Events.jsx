@@ -8,7 +8,6 @@ import ListScreen from './EventsListScreen'
 import MapScreen from './EventsMapScreen'
 import ToggleButton from './ToggleButton'
 
-
 const Events = ({navigation}) => {
 
   // ListView = false, MapView = true
@@ -17,7 +16,6 @@ const Events = ({navigation}) => {
   const toggleView = () => {
     setStatus({...status, isLoading:true})
 
-    setTimeout(()=>{
       Promise.resolve({data:"Map Data Here"})
       .then(res=>{
         setlistView(!listView);
@@ -30,68 +28,72 @@ const Events = ({navigation}) => {
           isLoadingMore:false
         })
       })
-     },1000)
   }
 
   const [refreshing, setRefreshing] = useState(false);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState({
+    data:[],
+    currentPage:1
+  });
   const [status, setStatus] = useState({
     error:false,
     isLoading:true,
     isLoadingMore:false
   })
 
-  let initialEvents;
-
   useEffect(()=>{
     // axios.get("/events",{lat:123,long:123})
-    initialEvents = mockData.eventsFromBackend.events
-    setTimeout(() => {
-      Promise.resolve({data:initialEvents})
-      .then(res=>{
-        const result = res.data;
-        setEvents(result);
-        setStatus({
-          error: false,
-          isLoading:false,
-          isLoadingMore:false
-        })
-      })
-      .catch(err=>{
-        setStatus({
-          error: true,
-          isLoading:false,
-          isLoadingMore:false
-        })
-      })
-    }, 500);
-  },[]);
-    // console.log("what about here?")
-  const loadMore = () => {
-    console.log(events.length)
-    setStatus({...status,isLoadingMore:true});
-    const moreEvents =[]
-  
-    for (let i=0; i<5; i++) {
-      const id = (Math.random()*100).toString();
-      const name = `event ${i}`
-      const newEvent = {
-        id,
-        name
-      }
-      moreEvents.push(newEvent);
-    }
 
-    setTimeout(() => {
-      Promise.resolve({data:moreEvents})
-      .then(res=>{    
-        const moreEvents = res.data;
-        setEvents([...events, ...moreEvents]);
-        setStatus({
-          error: false,
-          isLoading:false,
-          isLoadingMore:false
-        })
+    axios.get(`https://meetnow.herokuapp.com/events?page=${events.currentPage}`)
+    .then(res=>{
+      // console.log(res.data)
+      const result = res.data[0];
+
+      setEvents({
+        ...events,
+        data: result.events,
+      });
+      setStatus({
+        error: false,
+        isLoading:false,
+        isLoadingMore:false
+      })
+    })
+    .catch(err=>{
+      setStatus({
+        error: true,
+        isLoading:false,
+        isLoadingMore:false
+      })
+    })
+  },[]);
+
+  const loadMore = () => {
+    setStatus({...status,isLoadingMore:true});
+    axios.get(`https://meetnow.herokuapp.com/events?page=${events.currentPage+1}`)
+      .then(res=>{
+        const result = res.data[0];
+        if (events.currentPage != result.totalPage){
+          const moreEvents = result.events;
+          setEvents({
+            data:[...events.data,...moreEvents],
+            currentPage: events.currentPage+1,
+            totalPage: result.totalPage
+          });
+          setStatus({
+            error: false,
+            isLoading:false,
+            isLoadingMore:false
+          })
+        } else {
+          setTimeout(()=>{
+            setStatus({
+              error: false,
+              isLoading:false,
+              isLoadingMore:false
+            })
+          },1500)
+        }
       })
       .catch(err=>{
         setStatus({
@@ -99,26 +101,23 @@ const Events = ({navigation}) => {
           isLoading:false,
           isLoadingMore:false
         })
+        console.log(err)
       })
-    }, 500);
   }
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     if (true) {
       try {
-        // let response = await axios.get(
-        //   '/events'
-        // );
-        let response = {data:[
-          {
-          "id":"123123123",
-          "name":"Data after refreshing"
-          }
-        ]}
-        // let responseJson = await response.json();
-        // console.log(responseJson);
-        setEvents([...response.data,...initialEvents]);
+        let result = await axios.get('https://meetnow.herokuapp.com/events?page=1')
+        let newEvents = result.data[0].events;
+        // let resultJson = await result.json();
+        // console.log(resultJson);
+        setEvents({
+          data:newEvents,
+          currentPage:1,
+          totalPage:result.totalPage
+        });
         setRefreshing(false)
       } catch (error) {
         console.error(error);
@@ -143,7 +142,7 @@ const Events = ({navigation}) => {
          onRefresh={onRefresh} 
          loadMore={loadMore} 
          status={status}
-         events={events}
+         events={events.data}
        />
       :
       <MapScreen 
@@ -152,7 +151,7 @@ const Events = ({navigation}) => {
       onRefresh={onRefresh} 
       loadMore={loadMore} 
       status={status}
-      events={events}
+      events={events.data}
     />
     }
       <ToggleButton listView={listView} toggleView={toggleView}/>
