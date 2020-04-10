@@ -1,7 +1,7 @@
 import React,{useState, useEffect, useContext} from 'react'
 import * as mockData from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
-import NotificationsScreen from './view'
+import NotificationsScreen from './NotificationsScreen'
 
 
 const Notifications = ({navigation}) => {

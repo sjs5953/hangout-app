@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import { Alert } from "react-native";
 import * as yup from "yup";
 import axios from 'axios';
-import CreateScreen from './view'
+import CreateScreen from './CreateScreen'
 import LoadingScreen from '../../shared/LoadingScreen'
 
 export default Create = ({navigation}) => {

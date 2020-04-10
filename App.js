@@ -6,25 +6,33 @@ import { AuthContext } from './context'
 import TabNavigator from './routes/tabNavigator'
 import { globalStyles } from './styles/global';
 import { AppRegistry } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 export default function App() {
+
+  const tempUser = {
+    id:1,
+    username: "Jay",
+    email:"sjs5953@hotmail.com"
+  }
+
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState('Jay')
+  const [userToken, setUserToken] = useState(tempUser)
   
   const authContext = useMemo(()=>{
     return {
-      signIn: () => {
+      user: userToken,
+      signIn: (user) => {
         // setIsLoading(false);
-        setUserToken('Jay');
+        setUserToken(tempUser);
         console.log("Signed In");
       },
-      signUp: () => {
+      signUp: (user) => {
         // setIsLoading(false);
-        setUserToken('Jay');
+        setUserToken(tempUser);
         console.log("Signed Up");
       },
-      signOut: () => {
+      signOut: (user) => {
         // setIsLoading(false);
         setUserToken(null);
         console.log("Signed Out");
@@ -47,9 +55,20 @@ export default function App() {
     )
   }
 
+  const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: '#3498db',
+      accent: '#f1c40f',
+    },
+  };
+  
+
   return (
     <AuthContext.Provider value={authContext}>
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         <TabNavigator userToken={userToken} setUserToken={setUserToken} />
       </PaperProvider>
     </AuthContext.Provider>

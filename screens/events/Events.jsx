@@ -4,8 +4,8 @@ import {globalStyles} from '../../styles/global'
 import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
 import LoadingScreen from '../../shared/LoadingScreen'
-import ListScreen from './listView'
-import MapScreen from './mapView'
+import ListScreen from './EventsListScreen'
+import MapScreen from './EventsMapScreen'
 import ToggleButton from './ToggleButton'
 
 

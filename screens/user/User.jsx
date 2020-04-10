@@ -2,12 +2,13 @@ import React, { useContext } from 'react'
 import { Text, View, Button } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import { AuthContext } from '../../context'
-import UserScreen from './view'
+import UserScreen from './UserScreen'
 
 const User = ({navigation}) => {
-  const { signOut } = useContext(AuthContext);
+  const { user,signOut } = useContext(AuthContext);
+
   return (
-   <UserScreen signOut={signOut}/>
+   <UserScreen user={user} signOut={signOut}/>
   )
 }
 export default User

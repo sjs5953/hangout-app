@@ -4,6 +4,8 @@ import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
 import { styles } from './styles'
+import { Button } from 'react-native-paper';
+
 
 
 export default ({navigation, refreshing, onRefresh, loadMore, status, events}) => {
@@ -15,7 +17,6 @@ export default ({navigation, refreshing, onRefresh, loadMore, status, events}) =
 
   return (
     <View>
-
     {status.error? 
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
       :

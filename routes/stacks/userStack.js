@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import User from '../../screens/user/index';
+import User from '../../screens/user/User';
 
 const UserStack = createStackNavigator();
 

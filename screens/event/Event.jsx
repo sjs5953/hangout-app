@@ -3,7 +3,7 @@ import { Alert } from 'react-native'
 import axios from 'axios';
 import {eventsFromBackend} from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
-import EventScreen from  './view';
+import EventScreen from  './EventScreen';
 
 const getEvent = (key) => {
   const event = eventsFromBackend.events.filter(event=>(
