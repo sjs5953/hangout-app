@@ -5,6 +5,9 @@ import {eventsFromBackend} from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
 import EventScreen from  './EventScreen';
 
+// status list
+const ERROR = "error";
+const LOADING = "loading";
 
 const Event = ({navigation, route}) => {
 
@@ -12,15 +15,20 @@ const Event = ({navigation, route}) => {
 
   console.log("eventkey: ", eventKey)
 
+  const [state, setState] = useState({
+    event:{},
+    status:LOADING
+  })
+
   const deleteEvent = () => {
    
-    setIsLoading(true);
+    setState({...state, status:LOADING})
    
     axios.delete(`https://meetnow.herokuapp.com/events/${eventKey}`)
     .then(res=>{
       Alert.alert('Success!','Event has been sucessfully deleted.', [
         {text:'understood', onPress: ()=>  {
-          setIsLoading(false);
+          setState({...state, status:""})
           navigation.navigate('Events',{updated:`Deleted: ${eventKey}`});
         }}
         ])
@@ -48,34 +56,25 @@ const Event = ({navigation, route}) => {
     )
   }
 
-  const [event, setEvent] = useState({});
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=>{
-      setTimeout(() => {
-        axios.get(`https://meetnow.herokuapp.com/events/${eventKey}`)
-        .then(res=>{
-          setError(false);
-          const result = res.data;
-          setEvent(result);
-          setIsLoading(false);
-        })
-        .catch((err)=>{
-          setError(true);
-          console.log("err: ",err)
-          setIsLoading(false);
-        })
-      }, 1000);
+    axios.get(`https://meetnow.herokuapp.com/events/${eventKey}`)
+    .then(res=>{
+      const result = res.data;
+      setState({...state, event:result, status:""})
+    })
+    .catch((err)=>{
+      setState({...state, status:ERROR})
+    })
   },[]);
 
   
-  if(isLoading) {
+  if(state.status == LOADING) {
     return (<LoadingScreen/>)
   }
 
   return (
-    <EventScreen handlePress={handlePress} event={event} error={error} />
+    <EventScreen handlePress={handlePress} event={state.event} status={state.status} />
   )
 }
 

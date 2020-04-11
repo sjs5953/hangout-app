@@ -6,11 +6,11 @@ import axios from 'axios';
 import {globalStyles} from '../../styles/global'
 import {styles} from './styles'
 
-export default ({handlePress, event, error}) => {
+export default ({handlePress, event, status}) => {
 
   return (
     <View style={styles.container}>
-    {error? 
+    {status=='error'? 
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
      :
      <>
