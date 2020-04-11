@@ -9,8 +9,6 @@ import MapScreen from './EventsMapScreen'
 import ToggleButton from './ToggleButton'
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 
-// status list
-
 const Events = ({navigation,route}) => { 
 
   const [state, setState] = useState({
@@ -20,24 +18,6 @@ const Events = ({navigation,route}) => {
     status:LOADING,
     listView: true
   });
-
-  useEffect(()=>{
-    // axios.get("/events",{lat:123,long:123})
-    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${state.currentPage}`)
-    .then(res=>{
-      const result = res.data;
-      setState({
-        ...state,
-        events: result.events,
-        totalPages:result.totalPages,
-        status:""
-      })
-    })
-    .catch(err=>{
-      setState({...state, status:ERROR})
-    })
-  },[]);
-
 
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;
@@ -88,7 +68,6 @@ const Events = ({navigation,route}) => {
     }
   }
   
-  // console.log("route ",route.params)
   useEffect(()=>{
     console.log("refreshed")
     onRefresh()
@@ -142,3 +121,15 @@ const Events = ({navigation,route}) => {
 }
 
 export default Events
+
+
+
+ // useEffect(()=>{
+  //   axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${state.currentPage}`)
+  //   .then(res=>{
+  //     // result = res.data;
+  //   })
+  //   .catch(err=>{
+  //     error = true;
+  //   })
+  // },[]);

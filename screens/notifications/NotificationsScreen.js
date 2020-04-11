@@ -23,7 +23,7 @@ export default ({navigation, onRefresh, loadMore, status, notifications}) => {
         onEndReached={()=> loadMore()}
         ListFooterComponent={renderFooter()}
         onEndReachedThreshold={0.1}
-        ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
+        // ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
         refreshControl={
           <RefreshControl refreshing={status=='refreshing'} onRefresh={onRefresh} />
         }

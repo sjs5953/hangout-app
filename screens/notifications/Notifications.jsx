@@ -6,7 +6,7 @@ import { AuthContext } from '../../context';
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 
 
-const Notifications = ({navigation}) => {
+const Notifications = ({navigation,route}) => {
 
   const [state, setState] = useState({
     notifications:[],
@@ -20,29 +20,6 @@ const Notifications = ({navigation}) => {
   const userId = user.id;
 
   console.log("User Id: ",userId)
-
-  useEffect(()=>{
-    // axios.get(`/notifications/${userId}`)
-    const initialNotifications = mockData.notifications;
-    Promise.resolve({data:{
-      notifications:initialNotifications,
-      totalPages:1
-    }})
-    .then(res=>{
-      const result = res.data;
-      setState({
-        ...state,
-        notifications: result.notifications,
-        totalPages:result.totalPages,
-        status:""
-      });
-    })
-    .catch(err=>{
-      setState({...state, status:ERROR})
-    })
-  },[]);
-
-
 
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;
@@ -60,7 +37,7 @@ const Notifications = ({navigation}) => {
         const moreNotis = result.notifications;
         setState({
           ...state,
-          events:[...state.notifications,...moreNotis],
+          notifications:[...state.notifications,...moreNotis],
           currentPage: state.currentPage+1,
           totalPages: result.totalPages,
           status:""
@@ -92,10 +69,9 @@ const Notifications = ({navigation}) => {
         // // let responseJson = await response.json();
         // // console.log(responseJson);
         const refreshedNotis = response.data.notifications;
-        console.log(refreshedNotis)
         setState({
           ...state,
-          events:refreshedNotis,
+          notifications:refreshedNotis,
           currentPage:1,
           totalPages:response.data.totalPages,
           status:""
@@ -111,10 +87,15 @@ const Notifications = ({navigation}) => {
     }
   }
 
+  useEffect(()=>{
+    console.log("refreshed")
+    onRefresh()
+  },[])
+
   if(state.status == LOADING) {
     return (<LoadingScreen/>)
   }
-
+ 
   return (
     <NotificationsScreen 
       navigation={navigation}
@@ -127,3 +108,19 @@ const Notifications = ({navigation}) => {
 }
 
 export default Notifications
+
+  // useEffect(()=>{
+  //   // axios.get(`/notifications/${userId}`)
+  //   const initialNotifications = mockData.notifications;
+  //   Promise.resolve({data:{
+  //     notifications:initialNotifications,
+  //     totalPages:1
+  //   }})
+  //   .then(res=>{
+  //     result = res.data;
+  //     console.log(res.data)
+  //   })
+  //   .catch(err=>{
+  //     error = err
+  //   })
+  // },[]);
