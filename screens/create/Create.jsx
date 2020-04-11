@@ -28,7 +28,6 @@ export default Create = ({navigation}) => {
     axios.post('https://meetnow.herokuapp.com/events',values)
       .then((res) => {
         const eventKey = res.data;
-     
         Alert.alert("Success!", "Event has been sucessfully deleted.", [
           {
             text: "Go to my post",
@@ -39,7 +38,6 @@ export default Create = ({navigation}) => {
                 screen: "Event",
                 params: { eventKey },
               });
-              
             },
           },
           {
@@ -47,7 +45,7 @@ export default Create = ({navigation}) => {
             onPress: () => {
               setIsLoading(false);
               actions.resetForm();
-              navigation.goBack();
+              navigation.navigate('Events',{updated:true});
             },
           },
         ]);

@@ -5,14 +5,6 @@ import {eventsFromBackend} from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
 import EventScreen from  './EventScreen';
 
-const getEvent = (key) => {
-  const event = eventsFromBackend.events.filter(event=>(
-    event.id == key
-  ))
-
-  return event[0]
-}
-
 
 const Event = ({navigation, route}) => {
 
@@ -28,8 +20,8 @@ const Event = ({navigation, route}) => {
     .then(res=>{
       Alert.alert('Success!','Event has been sucessfully deleted.', [
         {text:'understood', onPress: ()=>  {
-          navigation.goBack();
           setIsLoading(false);
+          navigation.navigate('Events',{updated:true});
         }}
         ])
     })

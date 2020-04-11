@@ -5,14 +5,14 @@ import { AuthContext } from '../../context'
 import { Button } from 'react-native-paper';
 
 const SignIn = ({navigation}) => {
-  const { signIn } = useContext(AuthContext);
+  const { signIn, signUp } = useContext(AuthContext);
   return (
     <View style={globalStyles.container}>
       <Text>SignIn</Text>
       <Button raised theme={{ roundness: 3 }} onPress={()=> signIn()}>
         Sign In
       </Button>
-      <Button raised theme={{ roundness: 3 }} onPress={()=> signOut()}>
+      <Button raised theme={{ roundness: 3 }} onPress={()=> signUp()}>
         Sign Up
       </Button>
     </View>

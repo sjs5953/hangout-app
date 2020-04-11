@@ -19,11 +19,12 @@ export default function TabNavigator ({ userToken, setUserToken }) {
     {userToken ? 
       <Tabs.Navigator tabBarOptions={{showLabel:false}} >
         <Tabs.Screen name='EventsStack' component={EventsStackScreen} labeled={false} options={{
+          // unmountOnBlur:true,
           tabBarLabel:"Home",
           tabBarIcon: ({color}) => <AntDesign name="home" color={color} size={30} />
         }}/>
         <Tabs.Screen name='CreateStack' component={CreateStackScreen} options={{
-          unmountOnBlur:true,
+          // unmountOnBlur:true,
           tabBarLabel:"Create",
           tabBarIcon: ({color}) => <FontAwesome name="plus-square-o" color={color} size={30} />
         }}/>

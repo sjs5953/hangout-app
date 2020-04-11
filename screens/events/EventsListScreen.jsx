@@ -6,18 +6,16 @@ import Card from '../../shared/Card'
 import { styles } from './styles'
 import { Button } from 'react-native-paper';
 
-
-
-export default ({navigation, refreshing, onRefresh, loadMore, status, events}) => {
+export default ({navigation, onRefresh, loadMore, status, events}) => {
 
   const renderFooter = () => {
-    if (status.isLoadingMore)
+    if (status == "loading-more")
     return <ActivityIndicator animating size='large'/>
   }
 
   return (
     <View>
-    {status.error? 
+    {status=='erro'? 
         <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
       :
       <FlatList
@@ -26,9 +24,9 @@ export default ({navigation, refreshing, onRefresh, loadMore, status, events}) =
       onEndReached={()=> loadMore()}
       ListFooterComponent={renderFooter()}
       onEndReachedThreshold={0.1}
-      ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
+      // ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl refreshing={status == 'refreshing'} onRefresh={onRefresh} />
       }
       renderItem={({item})=>(
         <TouchableOpacity style={globalStyles.titleText} onPress={debounce(

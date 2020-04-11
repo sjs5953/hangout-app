@@ -8,117 +8,81 @@ import ListScreen from './EventsListScreen'
 import MapScreen from './EventsMapScreen'
 import ToggleButton from './ToggleButton'
 
-const Events = ({navigation}) => {
+// status list
+const ERROR = "error";
+const REFRESHING = "refreshing";
+const LOADING = "loading";
+const LOADINGMORE = "loading-more";
 
-  // ListView = false, MapView = true
-  const [listView, setlistView] = useState(true);
 
-  const toggleView = () => {
-    setStatus({...status, isLoading:true})
+const Events = ({navigation,route}) => { 
 
-      Promise.resolve({data:"Map Data Here"})
-      .then(res=>{
-        setlistView(!listView);
-        setStatus({...status, isLoading:false})
-      })
-      .catch(err=>{
-        setStatus({
-          error: true,
-          isLoading:false,
-          isLoadingMore:false
-        })
-      })
-  }
-
-  const [refreshing, setRefreshing] = useState(false);
-  const [events, setEvents] = useState({
-    data:[],
-    currentPage:1
+  const [state, setState] = useState({
+    events:[],
+    currentPage:1,
+    totalPages:null,
+    status:LOADING,
+    listView: true
   });
-  const [status, setStatus] = useState({
-    error:false,
-    isLoading:true,
-    isLoadingMore:false
-  })
 
   useEffect(()=>{
     // axios.get("/events",{lat:123,long:123})
-
-    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${events.currentPage}`)
+    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${state.currentPage}`)
     .then(res=>{
       const result = res.data;
-      setEvents({
-        ...events,
-        data: result.events,
-      });
-      setStatus({
-        error: false,
-        isLoading:false,
-        isLoadingMore:false
+      setState({
+        ...state,
+        events: result.events,
+        totalPages:result.totalPages,
+        status:""
       })
     })
     .catch(err=>{
-      setStatus({
-        error: true,
-        isLoading:false,
-        isLoadingMore:false
-      })
+      setState({...state, status:ERROR})
     })
   },[]);
 
+
   const loadMore = () => {
-    setStatus({...status,isLoadingMore:true});
-    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${events.currentPage+1}`)
+    if (state.currentPage == state.totalPages) return;
+    
+    console.log("loaded more")
+    setState({...state, status:LOADINGMORE})
+
+    axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=${state.currentPage+1}`)
       .then(res=>{
         const result = res.data;
-        if (events.currentPage != result.totalPage){
-          const moreEvents = result.events;
-          setEvents({
-            data:[...events.data,...moreEvents],
-            currentPage: events.currentPage+1
-          });
-          setStatus({
-            error: false,
-            isLoading:false,
-            isLoadingMore:false
-          })
-        } else {
-          setTimeout(()=>{
-            setStatus({
-              error: false,
-              isLoading:false,
-              isLoadingMore:false
-            })
-          },1500)
-        }
+        const moreEvents = result.events;
+        setState({
+          ...state,
+          events:[...state.events,...moreEvents],
+          currentPage: state.currentPage+1,
+          totalPages: result.totalPages,
+          status:""
+        });
       })
       .catch(err=>{
-        setStatus({
-          error: true,
-          isLoading:false,
-          isLoadingMore:false
-        })
+        setState({...state, status:ERROR})
         console.log(err)
       })
   }
 
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
+  const onRefresh = async () => {
+    setState({...state, status:REFRESHING})
     if (true) {
       try {
         let res = await axios.get('https://meetnow.herokuapp.com/events?limit=5&page=1')
-        
         const result = res.data;
-
         let newEvents = result.events;
-        // let resultJson = await result.json();
-        // console.log(resultJson);
-        setEvents({
-          data:newEvents,
+        setState({
+          ...state,
+          events:newEvents,
           currentPage:1,
+          totalPages:result.totalPages,
+          status:""
         });
-        setRefreshing(false)
       } catch (error) {
+        setState({...state, status:ERROR})
         console.error(error);
       }
     }
@@ -126,35 +90,57 @@ const Events = ({navigation}) => {
       // ToastAndroid.show('No more new data available', ToastAndroid.SHORT);
       setRefreshing(false)
     }
-  }, [refreshing]);
+  }
+  
+  console.log("route ",route.params)
+  useEffect(()=>{
+    console.log("refreshed")
+    onRefresh()
+  },[route.params])
 
-  console.log(events.data.length)
+  const toggleView = () => {
+    setState({...state, status:LOADING})
+      Promise.resolve({data:"Map Data Here"})
+      .then(res=>{
+        setState({
+          ...state,
+          listView: !state.listView
+        })
+      })
+      .catch(err=>{
+        setState({...state, status:ERROR})
+      })
+  }
 
-  if(status.isLoading) {
+
+  // console.log("i am rerendered and the events are :",state.events.length)
+
+  // console.log("list view: ", state.listView)
+
+
+  if(state.status == LOADING) {
     return (<LoadingScreen/>)
   }
   return (
     <SafeAreaView style={globalStyles.container}>
-       {listView?
+       {state.listView?
          <ListScreen 
          navigation={navigation} 
-         refreshing={refreshing}
          onRefresh={onRefresh} 
          loadMore={loadMore} 
-         status={status}
-         events={events.data}
+         status={state.status}
+         events={state.events}
        />
       :
       <MapScreen 
       navigation={navigation} 
-      refreshing={refreshing}
       onRefresh={onRefresh} 
       loadMore={loadMore} 
-      status={status}
-      events={events.data}
+      status={state.status}
+      events={state.events}
     />
     }
-      <ToggleButton listView={listView} toggleView={toggleView}/>
+      <ToggleButton listView={state.listView} toggleView={toggleView}/>
     </SafeAreaView>
   ) 
 }
