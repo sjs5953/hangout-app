@@ -7,13 +7,9 @@ import LoadingScreen from '../../shared/LoadingScreen'
 import ListScreen from './EventsListScreen'
 import MapScreen from './EventsMapScreen'
 import ToggleButton from './ToggleButton'
+import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 
 // status list
-const ERROR = "error";
-const REFRESHING = "refreshing";
-const LOADING = "loading";
-const LOADINGMORE = "loading-more";
-
 
 const Events = ({navigation,route}) => { 
 

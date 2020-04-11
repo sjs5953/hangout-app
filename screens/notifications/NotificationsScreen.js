@@ -5,27 +5,27 @@ import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
 import {styles} from './styles'
 
-export default ({navigation, refreshing, onRefresh, loadMore, status, notifications}) => {
+export default ({navigation, onRefresh, loadMore, status, notifications}) => {
 
   const renderFooter = () => {
-    if (status.isLoadingMore)
+    if (status=="loading-more")
     return <ActivityIndicator animating size={'large'}/>
   }
 
   return (
     <View style={globalStyles.container}>
-      {status.error?
+      {status=='error'?
       <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
       : 
       <FlatList
-        keyExtractor={item=>item.id.toString()}
+        keyExtractor={item=>`${item.id}`}
         data={notifications}
         onEndReached={()=> loadMore()}
         ListFooterComponent={renderFooter()}
         onEndReachedThreshold={0.1}
         ListEmptyComponent={<View style={styles.noResults}><Text>No results found</Text></View>}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={status=='refreshing'} onRefresh={onRefresh} />
         }
         renderItem={({item})=>(
           <TouchableOpacity style={globalStyles.titleText} onPress={

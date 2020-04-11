@@ -3,20 +3,17 @@ import * as mockData from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
 import NotificationsScreen from './NotificationsScreen'
 import { AuthContext } from '../../context';
+import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
+
 
 const Notifications = ({navigation}) => {
 
-  const [notifications, setNotifications] = useState({
-    data:[],
-    currentPage:1
+  const [state, setState] = useState({
+    notifications:[],
+    currentPage:1,
+    totalPages:null,
+    status:LOADING
   });
-  const [refreshing, setRefreshing] = useState(false);
-
-  const [status, setStatus] = useState({
-    error:false,
-    isLoading:true,
-    isLoadingMore:false
-  })
 
   const { user } = useContext(AuthContext);
   // put that in the header
@@ -25,72 +22,52 @@ const Notifications = ({navigation}) => {
   console.log("User Id: ",userId)
 
   useEffect(()=>{
- 
     // axios.get(`/notifications/${userId}`)
     const initialNotifications = mockData.notifications;
     Promise.resolve({data:{
       notifications:initialNotifications,
-      totalPage:1
+      totalPages:1
     }})
     .then(res=>{
       const result = res.data;
-      setNotifications({
-        ...notifications,
-        data: result.notifications,
+      setState({
+        ...state,
+        notifications: result.notifications,
+        totalPages:result.totalPages,
+        status:""
       });
-      setStatus({...status, isLoading:false});
     })
     .catch(err=>{
-      setStatus({
-        error: true,
-        isLoading:false,
-        isLoadingMore:false
-      })
+      setState({...state, status:ERROR})
     })
   },[]);
 
 
 
   const loadMore = () => {
-    setStatus({...status,isLoadingMore:true});
-  
+    if (state.currentPage == state.totalPages) return;
     
+    setState({...state, status:LOADINGMORE})
+
     setTimeout(() => {
       const tempData = mockData.notifications;
       Promise.resolve({data:{
         notifications: tempData,
-        totalPage:1
+        totalPages:1
       }})
       .then(res=>{
-    
         const result = res.data;
-        console.log("notifications.currentPage", notifications.currentPage)
-        console.log("result.totalPage", result.totalPage)
-        console.log("notifications: ", notifications)
-        if(notifications.currentPage != result.totalPage){
-          const moreNotis = result.notifications;
-          setNotifications({
-            data: [...notifications, ...moreNotis],
-            currentPage: notifications.currentPage+1
-          });
-          setStatus({
-            error: false,
-            isLoading:false,
-            isLoadingMore:false
-          })}
-          else {
-            setTimeout(()=>{
-              setStatus({
-                error: false,
-                isLoading:false,
-                isLoadingMore:false
-              })
-            },1500)
-        }
-  
+        const moreNotis = result.notifications;
+        setState({
+          ...state,
+          events:[...state.notifications,...moreNotis],
+          currentPage: state.currentPage+1,
+          totalPages: result.totalPages,
+          status:""
+        });
       })
       .catch(err=>{
-        setStatus({
+        setState({
           error: true,
           isLoading:false,
           isLoadingMore:false
@@ -101,8 +78,8 @@ const Notifications = ({navigation}) => {
   }
 
 
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
+  const onRefresh = async () => {
+    setState({...state, status:REFRESHING})
     if (true) {
       try {
         // let response = await axios.get(
@@ -110,36 +87,41 @@ const Notifications = ({navigation}) => {
         // );
         let response = {data:{
           notifications: mockData.notifications,
-          totalPage:1
+          totalPages:1
         }}
         // // let responseJson = await response.json();
         // // console.log(responseJson);
         const refreshedNotis = response.data.notifications;
         console.log(refreshedNotis)
-        setNotifications({data:refreshedNotis, currentPage:1});
-        setRefreshing(false)
+        setState({
+          ...state,
+          events:refreshedNotis,
+          currentPage:1,
+          totalPages:response.data.totalPages,
+          status:""
+        });
       } catch (error) {
         console.error(error);
+        setState({...state, status:ERROR})
       }
     }
     else{
       // ToastAndroid.show('No more new data available', ToastAndroid.SHORT);
       setRefreshing(false)
     }
-  }, [refreshing]);
+  }
 
-  if(status.isLoading) {
+  if(state.status == LOADING) {
     return (<LoadingScreen/>)
   }
 
   return (
     <NotificationsScreen 
       navigation={navigation}
-      refreshing={refreshing}
       onRefresh={onRefresh}
       loadMore={loadMore}
-      status={status}
-      notifications={notifications.data}
+      status={state.status}
+      notifications={state.notifications}
     />
   )
 }

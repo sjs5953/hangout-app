@@ -4,10 +4,8 @@ import axios from 'axios';
 import {eventsFromBackend} from '../../mockData/mockData'
 import LoadingScreen from '../../shared/LoadingScreen'
 import EventScreen from  './EventScreen';
+import { ERROR, LOADING } from '../../shared/status'
 
-// status list
-const ERROR = "error";
-const LOADING = "loading";
 
 const Event = ({navigation, route}) => {
 
