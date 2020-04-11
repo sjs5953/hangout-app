@@ -22,7 +22,13 @@ export default function TabNavigator ({ userToken, setUserToken }) {
           // unmountOnBlur:true,
           tabBarLabel:"Home",
           tabBarIcon: ({color}) => <AntDesign name="home" color={color} size={30} />
-        }}/>
+        }}
+        // listeners={{
+        //   tabPress: e=>{
+        //     console.log("im pressed: ", e)
+        //   }
+        // }}
+        />
         <Tabs.Screen name='CreateStack' component={CreateStackScreen} options={{
           // unmountOnBlur:true,
           tabBarLabel:"Create",

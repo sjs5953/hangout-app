@@ -21,7 +21,7 @@ const Event = ({navigation, route}) => {
       Alert.alert('Success!','Event has been sucessfully deleted.', [
         {text:'understood', onPress: ()=>  {
           setIsLoading(false);
-          navigation.navigate('Events',{updated:true});
+          navigation.navigate('Events',{updated:`Deleted: ${eventKey}`});
         }}
         ])
     })

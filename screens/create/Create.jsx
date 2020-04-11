@@ -45,7 +45,7 @@ export default Create = ({navigation}) => {
             onPress: () => {
               setIsLoading(false);
               actions.resetForm();
-              navigation.navigate('Events',{updated:true});
+              navigation.navigate('Events',{updated:`Created: ${eventKey}`});
             },
           },
         ]);

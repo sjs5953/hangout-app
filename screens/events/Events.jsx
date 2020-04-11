@@ -92,7 +92,7 @@ const Events = ({navigation,route}) => {
     }
   }
   
-  console.log("route ",route.params)
+  // console.log("route ",route.params)
   useEffect(()=>{
     console.log("refreshed")
     onRefresh()
