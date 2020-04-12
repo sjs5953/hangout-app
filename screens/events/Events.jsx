@@ -43,20 +43,21 @@ const Events = ({navigation,route}) => {
       })
   }
 
-  const onRefresh = async () => {
-    setState({...state, status:REFRESHING})
+  const onRefresh = async (loading) => {
+    const loadingStatus = loading || REFRESHING
+    setState({...state, status:loadingStatus})
     if (true) {
       try {
         let res = await axios.get('https://meetnow.herokuapp.com/events?limit=5&page=1')
         const result = res.data;
         let newEvents = result.events;
         setState({
-          ...state,
-          events:newEvents,
-          currentPage:1,
-          totalPages:result.totalPages,
-          status:""
-        });
+            ...state,
+            events:newEvents,
+            currentPage:1,
+            totalPages:result.totalPages,
+            status:""
+          });
       } catch (error) {
         setState({...state, status:ERROR})
         console.error(error);
@@ -70,7 +71,7 @@ const Events = ({navigation,route}) => {
   
   useEffect(()=>{
     console.log("refreshed")
-    onRefresh()
+    onRefresh(LOADING)
   },[route.params])
 
   const toggleView = () => {

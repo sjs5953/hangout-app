@@ -24,7 +24,6 @@ export default Create = ({navigation}) => {
   const submitForm = (values, actions) => {
     setIsLoading(true);
     // axios.post("/events",{values})
-
     axios.post('https://meetnow.herokuapp.com/events',values)
       .then((res) => {
         const eventKey = res.data;
@@ -33,7 +32,7 @@ export default Create = ({navigation}) => {
             text: "Go to my post",
             onPress: () => {
               setIsLoading(false);
-              actions.resetForm();
+              // actions.resetForm();
               navigation.navigate("EventsStack", {
                 screen: "Event",
                 params: { eventKey },
@@ -43,8 +42,8 @@ export default Create = ({navigation}) => {
           {
             text: "Finish",
             onPress: () => {
+              // actions.resetForm();
               setIsLoading(false);
-              actions.resetForm();
               navigation.navigate('Events',{updated:`Created: ${eventKey}`});
             },
           },
