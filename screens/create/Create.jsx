@@ -1,29 +1,38 @@
 import React,{useState} from "react";
 import { Alert } from "react-native";
-import * as yup from "yup";
 import axios from 'axios';
 import CreateScreen from './CreateScreen'
 import LoadingScreen from '../../shared/LoadingScreen'
+import convertDate from '../../helpers/convertDate'
+import * as yup from "yup";
+
+const isIos = Platform.OS === 'ios'
+
+const categories = [
+  "Other",
+  "Sports",
+  "Game",
+  "Movie",
+  "Learning",
+  "Food",
+  "Talking"
+];
+const generateData = () => {
+  const result = ["None"];
+  for (let i = 0; i < 50; i++) {
+    result.push(i);
+  }
+  return result;
+};
+const nums = generateData()
 
 export default Create = ({navigation}) => {
-  const reviewSchema = yup.object({
-    name: yup.string()
-      .required()
-      .min(4),
-    // body: yup.string()
-    //   .required()
-    //   .min(8),
-    minimumParticipants: yup.string()
-      .required()
-      .test('is-num-bigger-than-one','Minimum Participants must be positive number',(value)=> parseInt(value) > 0
-      )
-  })
 
   const [isLoading, setIsLoading] = useState(false);
 
   const submitForm = (values, actions) => {
     setIsLoading(true);
-    // axios.post("/events",{values})
+    console.log("Submitted: ", values)
     axios.post('https://meetnow.herokuapp.com/events',values)
       .then((res) => {
         const eventKey = res.data;
@@ -64,10 +73,39 @@ export default Create = ({navigation}) => {
       });
   }
 
+
+  const reviewSchema = yup.object({
+    name: yup
+      .string()
+      .required()
+      .min(4),
+    startTime: yup
+      .string()
+      .required()
+      .min(1),
+    category: yup
+      .string()
+      .required()
+      .min(1),
+    minimumParticipants: yup
+      .string()
+      .required()
+      // .test('not-a-negative-number','Minimum Participants must be positive number',(value)=> parseInt(value) >=0
+      // )
+      .min(1)
+  });
+
   if(isLoading) {
     return (<LoadingScreen/>)
   }
 
-  return <CreateScreen submitForm={submitForm} reviewSchema={reviewSchema} />
+  return (
+    <CreateScreen 
+      submitForm={submitForm} 
+      categories={categories}
+      nums={nums}
+      reviewSchema={reviewSchema}
+    />
+  )
 }
 

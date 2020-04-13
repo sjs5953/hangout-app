@@ -41,7 +41,7 @@ export default ({navigation, onRefresh, loadMore, status, events}) => {
               {item.name}
             </Text>
             <Card>
-                <Text style={{lineHeight:50}}>Some Description Here</Text>
+                <Text style={{lineHeight:30}}>Some Description Here</Text>
             </Card>
           </Card>
         </TouchableOpacity>

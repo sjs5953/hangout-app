@@ -19,6 +19,7 @@ export default ({handlePress, event, status}) => {
         <Text>Event Name: {event.name}</Text>
         <Text>Min Participants:  {event.minimumParticipants}</Text>
         <Text>Address: {event.address}</Text>
+        <Text>Start Time: {event.startTime} </Text>
        </Card>
        <Button raised color='red' theme={{ roundness: 3 }} onPress={handlePress}>
          Delete

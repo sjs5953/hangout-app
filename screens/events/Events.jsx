@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, SafeAreaView } from 'react-native'
+import { View, SafeAreaView } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import ListScreen from './EventsListScreen'
 import MapScreen from './EventsMapScreen'
 import ToggleButton from './ToggleButton'
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
+import { Button } from 'react-native-paper';
 
 const Events = ({navigation,route}) => { 
 
@@ -93,12 +94,16 @@ const Events = ({navigation,route}) => {
 
   // console.log("list view: ", state.listView)
 
+  const test = () => {
+    axios.get('http://192.168.0.31:3000/')
+    .then(console.log)
+  }
 
   if(state.status == LOADING) {
     return (<LoadingScreen/>)
   }
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={globalStyles.container}>     
        {state.listView?
          <ListScreen 
          navigation={navigation} 
