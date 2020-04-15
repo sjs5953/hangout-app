@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "242584617590",
+    "firebase_url": "https://meetnow-dc908.firebaseio.com",
+    "project_id": "meetnow-dc908",
+    "storage_bucket": "meetnow-dc908.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242584617590:android:ee3c4efd2162c957bd1557",
+        "android_client_info": {
+          "package_name": "com.company.meetnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242584617590-88m8tsrl7abb982ku5mto68fo5s85brp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCtlbg6rz9LwwRYFcgjh40-nS7i5RJ0pQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242584617590-88m8tsrl7abb982ku5mto68fo5s85brp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242584617590-ng3fcu95f2qa4hj9c8kc8cdpg50nqvvl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.company.meetnow",
+                "app_store_id": "595359"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,9 +4,8 @@ import { globalStyles } from '../../styles/global'
 import { AuthContext } from '../../context'
 import { Button } from 'react-native-paper';
 import FBLoginButton from './components/FBLoginButton'
-import { AuthSession, 
-  Linking 
-} from 'expo'
+import GoogleButton from './components/GoogleButton'
+import { AuthSession,Linking} from 'expo'
 import * as WebBrowser from 'expo-web-browser'
 
 const SignIn = ({navigation}) => {
@@ -57,7 +56,9 @@ const SignIn = ({navigation}) => {
       <Text>Hello</Text>
       {/* <FBLoginButton /> */}
 
-      <Button onPress={handleOAuthLogin}>
+      <GoogleButton />
+
+       <Button onPress={handleOAuthLogin}>
        Phone Browser
       </Button>
 

@@ -24,7 +24,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "example.expo.googlesignin",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.242584617590-ng3fcu95f2qa4hj9c8kc8cdpg50nqvvl"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {
+      "package": "example.expo.googlesignin",
+      "googleServicesFile": "./google-services.json"
     }
   }
 }
