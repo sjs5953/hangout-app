@@ -1,7 +1,7 @@
 import React,{useState} from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import axios from 'axios';
-import CreateScreen from './CreateScreen'
+import CreateScreen from './CreateScreen-ios'
 import LoadingScreen from '../../shared/LoadingScreen'
 import convertDate from '../../helpers/convertDate'
 import * as yup from "yup";
@@ -99,12 +99,22 @@ export default Create = ({navigation}) => {
     return (<LoadingScreen/>)
   }
 
+
+  if(!isIos) {
+    return (
+      <CreateScreen 
+        submitForm={submitForm} 
+        reviewSchema={reviewSchema}
+      />
+    )
+  }
+
   return (
     <CreateScreen 
-      submitForm={submitForm} 
-      categories={categories}
-      nums={nums}
-      reviewSchema={reviewSchema}
+    submitForm={submitForm} 
+    categories={categories}
+    nums={nums}
+    reviewSchema={reviewSchema}
     />
   )
 }

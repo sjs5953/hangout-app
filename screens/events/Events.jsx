@@ -47,11 +47,13 @@ const Events = ({navigation,route}) => {
   const onRefresh = async (loading) => {
     const loadingStatus = loading || REFRESHING
     setState({...state, status:loadingStatus})
+    console.log("fetching data...")
     if (true) {
       try {
         let res = await axios.get('https://meetnow.herokuapp.com/events?limit=5&page=1')
         const result = res.data;
         let newEvents = result.events;
+        console.log("successfully fetched! ",newEvents.length)
         setState({
             ...state,
             events:newEvents,
@@ -94,16 +96,25 @@ const Events = ({navigation,route}) => {
 
   // console.log("list view: ", state.listView)
 
-  const test = () => {
-    axios.get('http://192.168.0.31:3000/')
-    .then(console.log)
-  }
+  // const test = () => {
+  //   axios.get('http://192.168.0.31:3000/')
+  //   .then(console.log)
+  // }
 
   if(state.status == LOADING) {
     return (<LoadingScreen/>)
   }
   return (
-    <SafeAreaView style={globalStyles.container}>     
+    <SafeAreaView style={globalStyles.container}>   
+    {/* <Button onPress={()=>{
+        axios.get('http://localhost:3000/events')
+          .then(console.log)
+          .catch(err=>{
+            console.log(err.message)
+          })
+      }}> 
+        Click
+      </Button>   */}
        {state.listView?
          <ListScreen 
          navigation={navigation} 

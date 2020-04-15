@@ -2,28 +2,22 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import { Button } from "react-native-paper";
 import { globalStyles } from "../../styles/global";
 import { Formik } from "formik";
 import { FlatButton } from "../../shared/Button";
-import { Platform } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import convertDate from '../../helpers/convertDate'
-import ItemModal from './components/ItemModal'
+import TextField from './components/TextInput'
 
-const minModal = 'minimum-participants';
-const cateModal = 'category';
 const dateModal = 'date';
 
-let minimumParticipants;
-let category;
 
-export default ({ submitForm, categories, nums, reviewSchema }) => {
+export default ({ submitForm, reviewSchema }) => {
 
   const [visibility, setVisability] = useState("");
   const [selectedDate, setSelectedDate] = useState("Select Time");
@@ -64,7 +58,6 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
           }}
           validationSchema={reviewSchema}
           onSubmit={(values, actions) => {
-            // console.log("values: ", values)
             resetDate();
             submitForm(values, actions);
           }}
@@ -73,55 +66,36 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
             return (
               //Event name
               <View>
-                <TextInput
-                  style={globalStyles.input}
-                  placeholder="Event Name"
-                  onChangeText={props.handleChange("name")}
-                  value={props.values.name}
-                  onBlur={props.handleBlur("name")}
+
+                <TextField 
+                  formikProps={props}
+                  placeholder='Event Name'
+                  field="name"
                 />
                 <Text style={globalStyles.errorText}>
                   {props.touched.name && props.errors.name}
                 </Text>
-
-              {/* Minimum People */}
-                <ItemModal 
-                  formikPropValue={props.values.minimumParticipants}
-                  visibility={visibility}
-                  showModal={showModal}
-                  hideModal={hideModal}
-                  modalValue={minModal}
-                  constant={minimumParticipants}
-                  setValue={props.setFieldValue}
-                  field={'minimumParticipants'}
-                  title='Minimun Participants'
-                  data={nums}
+              
+                <TextField
+                  formikProps={props}
+                  placeholder='Minimum Participants'
+                  keyboardType='numeric'
+                  field="minimumParticipants"
                 />
-
                 <Text style={globalStyles.errorText}>
-                  {props.touched.minimumParticipants &&
-                    props.errors.minimumParticipants}
-                </Text>
+                 {props.touched.minimumParticipants &&
+                   props.errors.minimumParticipants}
+               </Text>
 
-                {/* Category */}
-
-                <ItemModal 
-                  formikPropValue={props.values.category}
-                  visibility={visibility}
-                  showModal={showModal}
-                  hideModal={hideModal}
-                  modalValue={cateModal}
-                  constant={category}
-                  setValue={props.setFieldValue}
-                  field={'category'}
-                  title='Category'
-                  data={categories}
+                <TextField
+                  formikProps={props}
+                  placeholder='Category'
+                  field="category"
                 />
-
-                <Text style={globalStyles.errorText}>
-                  {props.touched.category && props.errors.category}
-                </Text>
-
+                  <Text style={globalStyles.errorText}>
+                 {props.touched.category && props.errors.category}
+               </Text>
+   
                 {/* DATE */}
                 <View style={{ ...globalStyles.input, padding: 4 }}>
                   <Button onPress={()=>showModal(dateModal)}>{selectedDate}</Button>
@@ -165,13 +139,3 @@ const styles = StyleSheet.create({
     marginTop: 40
   }
 });
-
-                {/* <TextInput
-                number
-                style={globalStyles.input}
-                placeholder="Minimum Participants"
-                onChangeText={props.handleChange("minimumParticipants")}
-                value={props.values.minimumParticipants}
-                keyboardType='numeric'
-                onBlur={props.handleBlur("minimumParticipants")}
-              /> */}
