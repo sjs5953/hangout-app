@@ -26,10 +26,6 @@ const isIos = Platform.OS === 'ios'
 let minimumParticipants;
 let category;
 
-
-
-
-
 export default ({ submitForm, categories, nums, reviewSchema }) => {
 
   const [visibility, setVisability] = useState("");

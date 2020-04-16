@@ -12,7 +12,6 @@ export default ({navigation, onRefresh, loadMore, status, events}) => {
     if (status == "loading-more")
     return <ActivityIndicator animating size='large'/>
   }
-
   return (
     <View>
     {status=='erro'? 
