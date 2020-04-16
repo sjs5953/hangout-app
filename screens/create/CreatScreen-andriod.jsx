@@ -106,12 +106,13 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                   : 
                   <Picker
                     selectedValue={props.values.category}
-                    style={{ flex: 1,
+                    style={{ 
+                      flex: 1,
                       alignItems: "center",
                       padding:18.5,
-                      color:blue,
                       marginLeft:150
                     }}
+                    itemStyle={{margin:100}}
                     mode='dialog'
                     prompt='Choose Category'
                     onValueChange={(itemValue, itemIndex) => (
