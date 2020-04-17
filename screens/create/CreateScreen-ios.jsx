@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  Platform
+  Platform,
+  ScrollView
 } from "react-native";
 import { Button } from "react-native-paper";
 import { globalStyles } from "../../styles/global";
@@ -52,7 +53,9 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={globalStyles.container}>
+
+      <ScrollView style={globalStyles.container}>
+
         <Formik
           initialValues={{
             name: "",
@@ -61,6 +64,7 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
               lat: 333,
               lng: 444
             },
+            description:"",
             address: "My house",
             startTime: "",
             category: ""
@@ -86,9 +90,16 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
                   {props.touched.name && props.errors.name}
                 </Text>
 
+                <TextField 
+                  formikProps={props}
+                  placeholder='What is this about?'
+                  field="description"
+                  multiline={true}
+                />
+                <Text style={globalStyles.errorText}>
+                  {props.touched.description && props.errors.description}
+                </Text>
 
-              {isIos? 
-              <>
                  {/* Minimum People */}
                  <ItemModal 
                  formikPropValue={props.values.minimumParticipants}
@@ -126,31 +137,7 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
                <Text style={globalStyles.errorText}>
                  {props.touched.category && props.errors.category}
                </Text>
-              </>
-              :
-              
-              <>
-                <TextField
-                  formikProps={props}
-                  placeholder='Minimum Participants'
-                  keyboardType='numeric'
-                  field="minimumParticipants"
-                />
-                <Text style={globalStyles.errorText}>
-                 {props.touched.minimumParticipants &&
-                   props.errors.minimumParticipants}
-               </Text>
-
-                <TextField
-                  formikProps={props}
-                  placeholder='Category'
-                  field="category"
-                />
-                  <Text style={globalStyles.errorText}>
-                 {props.touched.category && props.errors.category}
-               </Text>
-              </>
-              }
+  
                 {/* DATE */}
                 <View style={{ ...globalStyles.input, padding: 4 }}>
                   <Button onPress={()=>showModal(dateModal)}>{selectedDate}</Button>
@@ -177,7 +164,7 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
             );
           }}
         </Formik>
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

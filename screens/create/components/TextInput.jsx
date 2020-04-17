@@ -9,9 +9,23 @@ export default ({
   formikProps,
   placeholder,
   keyboardType,
-  field
+  field,
+  multiline=false
 }) => {
 
+  if (multiline) {
+    return(
+      <TextInput
+      multiline height={120}
+      keyboardType={keyboardType || 'default'}
+      style={globalStyles.input}
+      placeholder={placeholder}
+      onChangeText={formikProps.handleChange(field)}
+      value={formikProps.values[field]}
+      onBlur={formikProps.handleBlur(field)}
+      />
+    )
+  }
   return(
     <TextInput
     keyboardType={keyboardType || 'default'}

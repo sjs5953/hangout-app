@@ -5,7 +5,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  Picker
+  Picker,
+  ScrollView
 } from "react-native";
 import { Button } from "react-native-paper";
 import { globalStyles } from "../../styles/global";
@@ -14,7 +15,7 @@ import { FlatButton } from "../../shared/Button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import convertDate from '../../helpers/convertDate'
 import TextField from './components/TextInput'
-import { blue } from "ansi-colors";
+
 
 const dateModal = 'date';
 
@@ -47,115 +48,123 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
-        <Formik
-          initialValues={{
-            name: "",
-            minimumParticipants: "",
-            location: {
-              lat: 333,
-              lng: 444
-            },
-            address: "My house",
-            startTime: "",
-            category: ""
-          }}
-          validationSchema={reviewSchema}
-          onSubmit={(values, actions) => {
-            resetDate();
-            submitForm(values, actions);
-          }}
-        >
-          {props => {
-            return (
-              //Event name
-              <View>
-                <TextField 
-                  formikProps={props}
-                  placeholder='Event Name'
-                  field="name"
-                />
-                   
-                <Text style={globalStyles.errorText}>
-                  {props.touched.name && props.errors.name}
-                </Text>
-              
-                <TextField
-                  formikProps={props}
-                  placeholder='Minimum Participants'
-                  keyboardType='numeric'
-                  field="minimumParticipants"
-                />
-                <Text style={globalStyles.errorText}>
-                 {props.touched.minimumParticipants &&
-                   props.errors.minimumParticipants}
-               </Text>
 
-                {/* <TextField
-                  formikProps={props}
-                  placeholder='Category'
-                  field="category"
-                /> */}
-  
-                <View style={{...globalStyles.input,padding:4}}>
-                 {!chooseCategory? 
-                    <Button onPress={()=>setTimeout(() => {
-                      setChooseCategory(true)
-                    }, 100)}>
-                     Choose Category
-                    </Button>
-                  : 
-                  <Picker
-                    selectedValue={props.values.category}
-                    style={{ 
-                      flex: 1,
-                      alignItems: "center",
-                      padding:18.5,
-                      marginLeft:150
-                    }}
-                    itemStyle={{margin:100}}
-                    mode='dialog'
-                    prompt='Choose Category'
-                    onValueChange={(itemValue, itemIndex) => (
-                      props.setFieldValue('category', itemValue)
-                      )}
-                  >
-                    {categories.map((category,index) => {
-                      return <Picker.Item key={index} label={category} value={category}/>
-                    })}
-                  </Picker>  
-                  }
-                 
-                </View>
+          <ScrollView >
+            <Formik
+              style={{flex:1}}
+              initialValues={{
+                name: "",
+                minimumParticipants: "",
+                location: {
+                  lat: 333,
+                  lng: 444
+                },
+                description:"",
+                address: "My house",
+                startTime: "",
+                category: ""
+              }}
+              validationSchema={reviewSchema}
+              onSubmit={(values, actions) => {
+                resetDate();
+                submitForm(values, actions);
+              }}
+            >
+              {props => {
+                return (
+                  //Event name
+                  <View>
+                    <TextField 
+                      formikProps={props}
+                      placeholder='Event Name'
+                      field="name"
+                    />
+                      
+                    <Text style={globalStyles.errorText}>
+                      {props.touched.name && props.errors.name}
+                    </Text>
 
-                  <Text style={globalStyles.errorText}>
-                 {props.touched.category && props.errors.category}
-               </Text>
+                    <TextField 
+                      formikProps={props}
+                      placeholder='What is this about?'
+                      field="description"
+                      multiline={true}
+                    />
+                    <Text style={globalStyles.errorText}>
+                      {props.touched.description && props.errors.description}
+                    </Text>
+                  
+                    <TextField
+                      formikProps={props}
+                      placeholder='Minimum Participants'
+                      keyboardType='numeric'
+                      field="minimumParticipants"
+                    />
+                    <Text style={globalStyles.errorText}>
+                    {props.touched.minimumParticipants &&
+                      props.errors.minimumParticipants}
+                  </Text>
+      
+                    <View style={{...globalStyles.input,padding:4}}>
+                    {!chooseCategory? 
+                        <Button onPress={()=>setTimeout(() => {
+                          setChooseCategory(true)
+                        }, 100)}>
+                        Choose Category
+                        </Button>
+                      : 
+                      <Picker
+                        selectedValue={props.values.category}
+                        style={{ 
+                          flex: 1,
+                          alignItems: "center",
+                          height:37,
+                          marginLeft:150
+                        }}
+                        mode='dialog'
+                        prompt='Choose Category'
+                        onValueChange={(itemValue, itemIndex) => (
+                          props.setFieldValue('category', itemValue)
+                          )}
+                      >
+                        {categories.map((category,index) => {
+                          return <Picker.Item key={index} label={category} value={category}/>
+                        })}
+                      </Picker>  
+                      }
+                    
+                    </View>
 
-                {/* DATE */}
-                <View style={{ ...globalStyles.input, padding: 4 }}>
-                  <Button onPress={()=>showModal(dateModal)}>{selectedDate}</Button>
-                  <DateTimePickerModal
-                    isVisible={visibility==dateModal}
-                    mode="datetime"
-                    onConfirm={date => {
-                      console.log("confirmed")
-                      handleConfirm(props.setFieldValue, date);
-                    }}
-                    onCancel={()=>hideModal()}
-                  />
-                </View>
+                      <Text style={globalStyles.errorText}>
+                    {props.touched.category && props.errors.category}
+                  </Text>
 
-                <Text style={globalStyles.errorText}>
-                  {props.touched.startTime && props.errors.startTime}
-                </Text>
+                    {/* DATE */}
+                    <View style={{ ...globalStyles.input, padding: 4 }}>
+                      <Button onPress={()=>showModal(dateModal)}>{selectedDate}</Button>
+                      <DateTimePickerModal
+                        isVisible={visibility==dateModal}
+                        mode="datetime"
+                        onConfirm={date => {
+                          console.log("confirmed")
+                          handleConfirm(props.setFieldValue, date);
+                        }}
+                        onCancel={()=>hideModal()}
+                      />
+                    </View>
 
-                <View style={styles.submitButton}>
-                  <FlatButton text="submit" onPress={props.handleSubmit} />
-                </View>
-              </View>
-            );
-          }}
-        </Formik>
+                    <Text style={globalStyles.errorText}>
+                      {props.touched.startTime && props.errors.startTime}
+                    </Text>
+
+                    <View style={styles.submitButton}>
+                      <FlatButton text="submit" onPress={props.handleSubmit} />
+                    </View>
+                  </View>
+                );
+              }}
+            </Formik>
+          </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -163,13 +172,14 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   wheelPicker: {
     width: 200,
     height: 150
   },
   submitButton: {
-    marginTop: 40
+    margin: 30,
+    marginTop:0
   }
 });

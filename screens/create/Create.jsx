@@ -79,7 +79,7 @@ export default Create = ({navigation}) => {
     name: yup
       .string()
       .required()
-      .min(4),
+      .min(3),
     startTime: yup
       .string()
       .required()
@@ -93,7 +93,11 @@ export default Create = ({navigation}) => {
       .required()
       // .test('not-a-negative-number','Minimum Participants must be positive number',(value)=> parseInt(value) >=0
       // )
-      .min(1)
+      .min(1),
+    description: yup
+      .string()
+      .required()
+      .min(4)
   });
 
   if(isLoading) {
