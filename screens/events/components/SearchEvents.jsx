@@ -16,7 +16,7 @@ const SearchEvents = ({searchEvents}) => {
       .min(3)
   });
   return (
-    <View>
+    <View style={{marginHorizontal:10}}>
        <Formik
           initialValues={{
             eventName:""
@@ -31,13 +31,13 @@ const SearchEvents = ({searchEvents}) => {
             return (
               <View style={{flexDirection:'row', justifyContent:"space-between", alignItems:'center'}}>
                 <TextInput 
-                  style={{...globalStyles.input, marginHorizontal:10, marginTop:20, marginBottom:10,flex:1}}
+                  style={{...globalStyles.input, marginTop:20, marginBottom:10,flex:1}}
                   placeholder={'search events'}
                   onChangeText={props.handleChange('eventName')}
                   value={props.values.eventName}
                 // onBlur={}
                 />
-                <Button onPress={props.handleSubmit}>
+                <Button style={{marginTop:10}} onPress={props.handleSubmit}>
                   GO
                 </Button>
               </View>

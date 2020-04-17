@@ -28,7 +28,7 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents})
 
   return (
     <View style={{flex:1}}>
-      <View style={{flexDirection:'row', justifyContent:"space-evenly"}}>
+      <View>
         {/*Floating Buttons*/}
         <FloatingButtons searchEvents={searchEvents} onRefresh={onRefresh}/>
       </View>

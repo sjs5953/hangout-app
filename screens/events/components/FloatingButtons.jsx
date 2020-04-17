@@ -15,7 +15,7 @@ const FloatingButtons = ({searchEvents, onRefresh}) => {
   const [selectedItem, setSelectedItem] = useState("");
 
   return (
-    <View>
+    <View style={{marginHorizontal:10,padding:0}}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {categories.map((category,index)=> {
           return(
