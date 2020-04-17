@@ -14,12 +14,14 @@ export const FlatButton = ({style, text, onPress}) => {
   )
 }
 
-export const RoundButton = ({selected, style, onPress, children}) => {
+export const RoundButton = ({selectedItem, style, onPress, children}) => {
   if (style) {
     styles.roundButton = {...styles.roundButton , ...style}
   }
-  if (selected) {
+  if (selectedItem==children) {
     styles.roundButton = {...styles.roundButton , backgroundColor:'grey'}
+  } else {
+    styles.roundButton = {...styles.roundButton , backgroundColor:'#fff'}
   }
   return (
     <TouchableOpacity onPress={onPress}>
@@ -74,7 +76,7 @@ let styles = StyleSheet.create({
     fontSize:13,
     textAlign:'center',
     margin:0,
-    padding:0,
+    paddingRight:4,
     fontWeight:'bold'
   },
  

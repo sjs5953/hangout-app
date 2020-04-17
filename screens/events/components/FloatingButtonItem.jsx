@@ -4,10 +4,10 @@ import { RoundButton } from '../../../shared/Button'
 import {FontAwesome5} from '@expo/vector-icons';
 import {styles} from '../styles'
 
-const FloatingButtonItem = ({text,onPress}) => {
+const FloatingButtonItem = ({text,onPress,selectedItem}) => {
   return (
     <View>
-        <RoundButton onPress={onPress} style={{height:50, marginHorizontal:8, marginVertical:0}} >
+        <RoundButton selectedItem={selectedItem} onPress={onPress} style={{height:40,width:100, marginHorizontal:8, marginVertical:0}} >
           {text}
         </RoundButton>
       </View>

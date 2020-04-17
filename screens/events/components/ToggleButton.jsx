@@ -7,7 +7,7 @@ import {styles} from '../styles'
 const ToggleButton = ({listView, toggleView}) => {
   return (
     <View style={styles.toggleContainer}>
-        <RoundButton onPress={toggleView} style={{height:50}}>
+        <RoundButton onPress={toggleView} style={{height:55,width:75}}>
           {listView?
             <FontAwesome5 name="map" color={"black"} size={30} /> :
             <FontAwesome5 name="list-ul" color={"black"} size={30} />}

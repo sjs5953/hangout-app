@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import FloatingButtonItem from './FloatingButtonItem'
 
@@ -11,7 +11,9 @@ const categories = [
   "Learning"
 ]
 
-const FloatingButtons = ({searchEvents}) => {
+const FloatingButtons = ({searchEvents, onRefresh}) => {
+  const [selectedItem, setSelectedItem] = useState("");
+
   return (
     <View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -19,7 +21,17 @@ const FloatingButtons = ({searchEvents}) => {
           return(
             <FloatingButtonItem 
               key={index}
-              onPress={()=>searchEvents('categoryName',category)}
+              onPress={()=>{
+                if (selectedItem==category) {
+                  setSelectedItem("");
+                  onRefresh();
+                } else {
+                  setSelectedItem(category);
+                  searchEvents('categoryName',category);
+                }
+                
+              }}
+              selectedItem={selectedItem}
               text={category}
             />
           )

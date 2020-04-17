@@ -22,8 +22,6 @@ const minModal = 'minimum-participants';
 const cateModal = 'category';
 const dateModal = 'date';
 
-const isIos = Platform.OS === 'ios'
-
 let minimumParticipants;
 let category;
 

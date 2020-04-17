@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, SafeAreaView } from 'react-native'
+import { View, SafeAreaView, Platform } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
@@ -8,6 +8,8 @@ import MapScreen from './EventsMapScreen'
 import ToggleButton from './components/ToggleButton'
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 import { Button } from 'react-native-paper';
+
+const isIos = Platform.OS === 'ios'
 
 const Events = ({navigation,route}) => { 
 
@@ -47,6 +49,7 @@ const Events = ({navigation,route}) => {
     const loadingStatus = loading || REFRESHING
     setState({...state, status:loadingStatus})
     console.log("fetching data...")
+    console.log('https://meetnow.herokuapp.com/events?limit=5&page=1')
     if (true) {
       try {
         let res = await axios.get('https://meetnow.herokuapp.com/events?limit=5&page=1')
@@ -123,7 +126,7 @@ const Events = ({navigation,route}) => {
 
  
   return (
-    <SafeAreaView style={globalStyles.container}>   
+    <View style={isIos?{...globalStyles.container}:globalStyles.container}>   
     {/* <Button onPress={()=>{
         axios.get('http://localhost:3000/events')
           .then(console.log)
@@ -153,7 +156,7 @@ const Events = ({navigation,route}) => {
     />
     }
       <ToggleButton listView={state.listView} toggleView={toggleView}/>
-    </SafeAreaView>
+    </View>
   ) 
 }
 
