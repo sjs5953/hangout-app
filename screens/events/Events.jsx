@@ -6,7 +6,7 @@ import axios from 'axios';
 import LoadingScreen from '../../shared/LoadingScreen'
 import ListScreen from './EventsListScreen'
 import MapScreen from './EventsMapScreen'
-import ToggleButton from './ToggleButton'
+import ToggleButton from './components/ToggleButton'
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 import { Button } from 'react-native-paper';
 
@@ -91,6 +91,27 @@ const Events = ({navigation,route}) => {
       })
   }
 
+  const searchEvents = async (searchField, searchValue) => {
+    setState({...state, status:LOADING})
+ 
+    try {
+      let res = await axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`)
+      const result = res.data;
+      let newEvents = result.events;
+      console.log("successfully fetched! ",newEvents.length)
+      setState({
+          ...state,
+          events:newEvents,
+          currentPage:1,
+          totalPages:result.totalPages,
+          status:""
+        });
+    } catch (error) {
+      setState({...state, status:ERROR})
+      console.error(error);
+    }
+    
+  }
 
   // console.log("i am rerendered and the events are :",state.events.length)
 
@@ -122,6 +143,7 @@ const Events = ({navigation,route}) => {
          loadMore={loadMore} 
          status={state.status}
          events={state.events}
+         searchEvents={searchEvents}
        />
       :
       <MapScreen 
@@ -130,6 +152,7 @@ const Events = ({navigation,route}) => {
       loadMore={loadMore} 
       status={state.status}
       events={state.events}
+      searchEvents={searchEvents}
     />
     }
       <ToggleButton listView={state.listView} toggleView={toggleView}/>

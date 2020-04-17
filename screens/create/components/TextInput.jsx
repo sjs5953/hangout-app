@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import {
-  TextInput,
-} from "react-native"
+import { TextInput } from "react-native"
 import { globalStyles } from "../../../styles/global";
-
 
 export default ({
   formikProps,
