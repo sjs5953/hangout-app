@@ -2,7 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 export const FlatButton = ({style, text, onPress}) => {
-  
+  if (style) {
+    styles = {...styles, ...style}
+  }
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.flatButton}>
@@ -12,8 +14,13 @@ export const FlatButton = ({style, text, onPress}) => {
   )
 }
 
-export const RoundButton = ({text, onPress, children}) => {
-  
+export const RoundButton = ({selected, style, onPress, children}) => {
+  if (style) {
+    styles.roundButton = {...styles.roundButton , ...style}
+  }
+  if (selected) {
+    styles.roundButton = {...styles.roundButton , backgroundColor:'grey'}
+  }
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.roundButton}>
@@ -24,7 +31,7 @@ export const RoundButton = ({text, onPress, children}) => {
 }
 
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   flatButton: {
     borderRadius:8,
     paddingVertical: 14,
@@ -44,7 +51,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10,
     // backgroundColor: '#f01d71',
     padding:0,
-    height:55,
+    height:44,
     width:80,
     justifyContent:'center',
     alignItems:'center',
@@ -64,10 +71,11 @@ const styles = StyleSheet.create({
     color:'#333',
     // fontWeight: 'bold',
     textTransform:'uppercase',
-    fontSize:0,
+    fontSize:13,
     textAlign:'center',
     margin:0,
-    padding:0
+    padding:0,
+    fontWeight:'bold'
   },
  
 })

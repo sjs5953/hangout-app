@@ -23,7 +23,7 @@ const SearchEvents = ({searchEvents}) => {
           }}
           validationSchema={reviewSchema}
           onSubmit={(values,actions) => {
-            searchEvents(values.eventName);
+            searchEvents('eventName',values.eventName);
             actions.resetForm();
           }}
         >
@@ -31,7 +31,7 @@ const SearchEvents = ({searchEvents}) => {
             return (
               <View style={{flexDirection:'row', justifyContent:"space-between", alignItems:'center'}}>
                 <TextInput 
-                  style={{...globalStyles.input, marginHorizontal:10, marginVertical:20,flex:1}}
+                  style={{...globalStyles.input, marginHorizontal:10, marginTop:20, marginBottom:10,flex:1}}
                   placeholder={'search events'}
                   onChangeText={props.handleChange('eventName')}
                   value={props.values.eventName}

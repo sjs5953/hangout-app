@@ -3,7 +3,6 @@ import { View, SafeAreaView } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
-import LoadingScreen from '../../shared/LoadingScreen'
 import ListScreen from './EventsListScreen'
 import MapScreen from './EventsMapScreen'
 import ToggleButton from './components/ToggleButton'
@@ -93,7 +92,7 @@ const Events = ({navigation,route}) => {
 
   const searchEvents = async (searchField, searchValue) => {
     setState({...state, status:LOADING})
- 
+    console.log(`https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`)
     try {
       let res = await axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`)
       const result = res.data;
@@ -122,9 +121,7 @@ const Events = ({navigation,route}) => {
   //   .then(console.log)
   // }
 
-  if(state.status == LOADING) {
-    return (<LoadingScreen/>)
-  }
+ 
   return (
     <SafeAreaView style={globalStyles.container}>   
     {/* <Button onPress={()=>{

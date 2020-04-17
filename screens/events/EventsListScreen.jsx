@@ -5,10 +5,12 @@ import debounce from'lodash.debounce';
 import Card from '../../shared/Card'
 import { styles } from './styles'
 import { Button } from 'react-native-paper';
+import LoadingScreen from '../../shared/LoadingScreen'
+import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 
 import SearchEvents from './components/SearchEvents'
 import NoResults from './components/NoResults'
-
+import FloatingButtons from './components/FloatingButtons'
 
 export default ({navigation, onRefresh, loadMore, status, events, searchEvents}) => {
 
@@ -18,7 +20,7 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents})
   }
 
 
-  if (status=='erro') {
+  if (status=='error') {
     return (
       <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
     )
@@ -28,10 +30,14 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents})
     <View style={{flex:1}}>
       <View style={{flexDirection:'row', justifyContent:"space-evenly"}}>
         {/*Floating Buttons*/}
+        <FloatingButtons searchEvents={searchEvents}/>
       </View>
 
       <SearchEvents searchEvents={searchEvents}/>
 
+      {status == LOADING ?
+      <LoadingScreen/>
+        :
       <FlatList
         keyExtractor={item=>`${item._id}`}
         data={events}
@@ -55,12 +61,13 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents})
                 {item.name}
               </Text>
               <Card>
-                  <Text style={{lineHeight:30}}>Some Description Here</Text>
+                  <Text style={{lineHeight:30}}>{item.description}</Text>
               </Card>
             </Card>
           </TouchableOpacity>
           )}
         />
+      }
 
     </View>
   )
