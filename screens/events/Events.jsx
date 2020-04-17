@@ -107,10 +107,10 @@ const Events = ({navigation,route}) => {
           status:""
         });
     } catch (error) {
+      console.log("not found")
       setState({...state, status:ERROR})
       console.error(error);
     }
-    
   }
 
   // console.log("i am rerendered and the events are :",state.events.length)
