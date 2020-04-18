@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import FloatingButtonItem from './FloatingButtonItem'
 
@@ -11,8 +11,7 @@ const categories = [
   "Learning"
 ]
 
-const FloatingButtons = ({searchEvents, onRefresh}) => {
-  const [selectedItem, setSelectedItem] = useState("");
+const FloatingButtons = ({selectedItem, setSelectedItem, searchEvents, onRefresh}) => {
 
   return (
     <View style={{marginHorizontal:10,padding:0}}>

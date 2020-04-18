@@ -7,6 +7,7 @@ import FBLoginButton from './components/FBLoginButton'
 import GoogleButton from './components/GoogleButton'
 import { AuthSession,Linking} from 'expo'
 import * as WebBrowser from 'expo-web-browser'
+import { auth } from 'firebase';
 
 const SignIn = ({navigation}) => {
 
@@ -34,11 +35,24 @@ const SignIn = ({navigation}) => {
 
     addLinkingListener()
     
+    authUrl += '?returnTo=' + redirectURL
+
+    // console.log("Auth url: ", authUrl);
+    // console.log("redirect rul: ", redirectURL)
     try {
       let authResult = await WebBrowser.openAuthSessionAsync(authUrl,redirectURL);
       // await setState({authResult})
       if(authResult.type && authResult.type ==='success') {
-        signIn()
+        let url = authResult.url;
+        let index = url.indexOf('=');
+        let arr = url.split("");
+        let id = arr.splice(index+1).join("")
+        // console.log(index)
+        // console.log(authResult);
+        // console.log(arr)
+        // console.log(id)
+        const user = {id}
+        signIn(user)
       } else {
         alert("Login was failed");
       }
@@ -53,23 +67,14 @@ const SignIn = ({navigation}) => {
 
   return (
     <View style={globalStyles.container}>
-      <Text>Hello</Text>
-      {/* <FBLoginButton /> */}
 
-      <GoogleButton />
-
-       <Button onPress={handleOAuthLogin}>
-       Phone Browser
+      <Button onPress={handleOAuthLogin}>
+        SignIn with Google
       </Button>
 
-      <Button onPress={()=> navigation.navigate('browser',{url:`https://meetnow.herokuapp.com/auth/google`})}>
+      {/* <Button onPress={()=> navigation.navigate('browser',{url:`https://meetnow.herokuapp.com/auth/google`})}>
         App Browser
-      </Button>
-
-      <Button raised theme={{ roundness: 3 }} onPress={()=> signIn()}>
-        Sign In
-      </Button>
-
+      </Button> */}
     </View>
   )
 }

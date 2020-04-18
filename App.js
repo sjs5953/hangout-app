@@ -10,29 +10,29 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
 export default function App() {
 
-  const tempUser = {
-    id:1,
-    username: "Jay",
-    email:"sjs5953@hotmail.com"
-  }
+  // const tempUser = {
+  //   id:1,
+  //   username: "Jay",
+  //   email:"sjs5953@hotmail.com"
+  // }
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(tempUser)
+  const [userToken, setUserToken] = useState({})
   
   const authContext = useMemo(()=>{
     return {
       user: userToken,
       signIn: (user) => {
         // setIsLoading(false);
-        setUserToken(tempUser);
-        console.log("Signed In");
+        setUserToken(user);
+        console.log("Signed In as: ", user.id);
       },
-      signUp: (user) => {
-        // setIsLoading(false);
-        setUserToken(tempUser);
-        console.log("Signed Up");
-      },
-      signOut: (user) => {
+      // signUp: (user) => {
+      //   // setIsLoading(false);
+      //   setUserToken(user);
+      //   console.log("Signed Up");
+      // },
+      signOut: () => {
         // setIsLoading(false);
         setUserToken(null);
         console.log("Signed Out");

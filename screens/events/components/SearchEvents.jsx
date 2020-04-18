@@ -8,7 +8,7 @@ import { Button } from 'react-native-paper';
 import { Formik } from "formik";
 import * as yup from "yup";
 
-const SearchEvents = ({searchEvents}) => {
+const SearchEvents = ({selectedItem, searchEvents}) => {
   const reviewSchema = yup.object({
     eventName: yup
       .string()
@@ -23,7 +23,11 @@ const SearchEvents = ({searchEvents}) => {
           }}
           validationSchema={reviewSchema}
           onSubmit={(values,actions) => {
-            searchEvents('eventName',values.eventName);
+            if (selectedItem) {
+              searchEvents('categoryName',selectedItem,'eventName',values.eventName);
+            } else {
+              searchEvents('eventName',values.eventName);
+            }
             actions.resetForm();
           }}
         >

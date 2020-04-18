@@ -93,11 +93,15 @@ const Events = ({navigation,route}) => {
       })
   }
 
-  const searchEvents = async (searchField, searchValue) => {
+  const searchEvents = async (searchField, searchValue, searchField2, searchValue2) => {
     setState({...state, status:LOADING})
-    console.log(`https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`)
+    let url = `https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`
+    if(searchField2 && searchValue2) {
+      url += `&${searchField2}=${searchValue2}`
+    }
+    console.log(url)
     try {
-      let res = await axios.get(`https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`)
+      let res = await axios.get(url)
       const result = res.data;
       let newEvents = result.events;
       console.log("successfully fetched! ",newEvents.length)

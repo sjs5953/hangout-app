@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RefreshControl, Text, View, FlatList,TouchableOpacity, ActivityIndicator, TextInput } from 'react-native'
 import {globalStyles} from '../../styles/global'
 import debounce from'lodash.debounce';
@@ -19,21 +19,23 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents})
     return <ActivityIndicator animating size='large'/>
   }
 
-
   if (status=='error') {
     return (
       <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
     )
   }
 
+  const [selectedItem, setSelectedItem] = useState("");
+
+
   return (
     <View style={{flex:1}}>
       <View>
         {/*Floating Buttons*/}
-        <FloatingButtons searchEvents={searchEvents} onRefresh={onRefresh}/>
+        <FloatingButtons selectedItem={selectedItem} setSelectedItem={setSelectedItem} searchEvents={searchEvents} onRefresh={onRefresh}/>
       </View>
 
-      <SearchEvents searchEvents={searchEvents}/>
+      <SearchEvents selectedItem={selectedItem} searchEvents={searchEvents}/>
 
       {status == LOADING ?
       <LoadingScreen/>
