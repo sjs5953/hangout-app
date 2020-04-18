@@ -8,46 +8,65 @@ import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 
 
 const User = ({navigation,route}) => {
-  const { user,signOut } = useContext(AuthContext);
-  const [ userInfo, setUserInfo ] = useState({});
-  const [state, setState] = useState({
+  const { userToken,signOut } = useContext(AuthContext);
+  // const context = useContext(AuthContext)
+  // console.log(context)
+
+  const [ userInfo, setUserInfo ] = useState({userName:'Jay Seo',email:"sjs5953@hotmail.com"});
+  const [ state, setState ] = useState({
     events:[],
     currentPage:1,
     totalPages:null,
     status:LOADING
   });
 
-  const optionsForUserInfo ={
-    method: 'GET',
-    url: 'https://meetnow.herokuapp.com/me',
-    headers: {
-        'Authorization': `Bearer ${user.id}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-  }
-  const optionsForUserPosts ={
-    method: 'GET',
-    url: `https://meetnow.herokuapp.com/events/me?limit=5&page=1`,
-    headers: {
-        'Authorization': `Bearer ${user.id}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
+  console.log("userToken: ", userToken)
+
+  const getOptions = (page) => {
+    return (
+      {
+        method: 'GET',
+        url: `https://meetnow.herokuapp.com/events?limit=5&page=${page}`,
+        headers: {
+            'Authorization': `Bearer ${userToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    )
   }
 
   useEffect(()=>{
   
-    axios(optionsForUserInfo)
-      .then(res=> {
-        const userInfoFromBack = res.data;
-        // setstate
-      })
-      .catch(console.log)
-
+    const optionsForUserInfo ={
+      method: 'GET',
+      url: 'https://meetnow.herokuapp.com/me',
+      headers: {
+          'Authorization': `Bearer ${userToken}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+      },
+    }
+    // axios(optionsForUserInfo)
+    //   .then(res=> {
+    //     const userInfoFromBack = res.data.userInfo;
+    //     // setUserInfo(userInfoFromBack)
+    //   })
+    //   .catch(err=>console.log(err.message))
+   
+    const optionsForUserPosts = getOptions(1)
+    console.log("optionsForUserPosts: ", optionsForUserPosts.url)
     axios(optionsForUserPosts)
       .then(res=>{
-        const userPostsFromBack = res.data
+        const result = res.data;
+        let newEvents = result.events;
+        setState({
+            ...state,
+            events:newEvents,
+            currentPage:1,
+            totalPages:result.totalPages,
+            status:""
+          });
       })
-      .catch(console.log)
+      .catch(err=>console.log(err.message))
 
   },[])
 
@@ -55,11 +74,12 @@ const User = ({navigation,route}) => {
 
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;
-    
-    console.log("loaded more")
+   
     setState({...state, status:LOADINGMORE})
 
-    axios.get(`https://meetnow.herokuapp.com/events/me?limit=5&page=${state.currentPage+1}`)
+    const options = getOptions(state.currentPage+1)
+    console.log("loaded more: ", options.url)
+    axios(options)
       .then(res=>{
         const result = res.data;
         const moreEvents = result.events;
@@ -80,11 +100,13 @@ const User = ({navigation,route}) => {
   const onRefresh = async (loading) => {
     const loadingStatus = loading || REFRESHING
     setState({...state, status:loadingStatus})
-    console.log("fetching data...")
-    console.log('https://meetnow.herokuapp.com/events?limit=5&page=1')
+    
+    const options = getOptions(1)
+
+    console.log("fetching data...", options.url)
     if (true) {
       try {
-        let res = await axios.get('https://meetnow.herokuapp.com/events?limit=5&page=1')
+        let res = await axios(options)
         const result = res.data;
         let newEvents = result.events;
         console.log("successfully fetched! ",newEvents.length)
@@ -106,14 +128,22 @@ const User = ({navigation,route}) => {
     }
   }
   
-  useEffect(()=>{
-    console.log("refreshed")
-    onRefresh(LOADING)
-  },[route.params])
+  // useEffect(()=>{
+  //   console.log("refreshed")
+  //   onRefresh(LOADING)
+  // },[route.params])
 
 
   return (
-   <UserScreen user={user} signOut={signOut}/>
+   <UserScreen 
+    userInfo={userInfo}
+    navigation={navigation} 
+    onRefresh={onRefresh} 
+    loadMore={loadMore} 
+    status={state.status}
+    events={state.events}
+    signOut={signOut}
+   />
   )
 }
 export default User

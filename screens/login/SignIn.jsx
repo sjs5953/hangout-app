@@ -13,10 +13,10 @@ const SignIn = ({navigation}) => {
 
   // const [state, setState] = useState({})
 
-  const { signIn, signUp } = useContext(AuthContext);
+  const { signIn, setUserToken } = useContext(AuthContext);
 
   const handleRedirect = async (event) => {
-    WebBrowser.dismissBrowser();
+    // WebBrowser.dismissBrowser();
   }
 
   const addLinkingListener = () => {
@@ -51,8 +51,10 @@ const SignIn = ({navigation}) => {
         // console.log(authResult);
         // console.log(arr)
         // console.log(id)
-        const user = {id}
-        signIn(user)
+        const token = id
+        // signIn(token);
+        setUserToken(token);
+        console.log("signin as ", token)
       } else {
         alert("Login was failed");
       }
