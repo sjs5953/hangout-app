@@ -9,6 +9,7 @@ import { Button } from 'react-native-paper';
 
 export default ({handlePress, event, status}) => {
 
+
   return (
     <View style={styles.container}>
     {status=='error'? 
@@ -20,6 +21,8 @@ export default ({handlePress, event, status}) => {
         <Text>Min Participants:  {event.minimumParticipants}</Text>
         <Text>Address: {event.address}</Text>
         <Text>Start Time: {event.startTime} </Text>
+        <Text>Category: {event.category}</Text>
+        <Text>Decription: {event.description}</Text>
        </Card>
        <Button raised color='red' theme={{ roundness: 3 }} onPress={handlePress}>
          Delete
