@@ -39,7 +39,7 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents, 
           loadMore={loadMore} 
           status={status}
           events={events}
-        />  
+        />
         :
         <MapScreen 
           navigation={navigation} 

@@ -25,9 +25,10 @@ export default function App() {
       setUserToken,
       signIn: (token) => {
         // setIsLoading(false);
-        setUserToken(token);
-        console.log("Signed In as: ", token);
-        console.log("usertoken is: ", userToken)
+        setUserToken(prev=>{
+          console.log("Signed In as: ", token);
+          return token
+        });
       },
       // signUp: (user) => {
       //   // setIsLoading(false);
@@ -41,6 +42,7 @@ export default function App() {
       }
     }
   },[])
+
 
   useEffect(()=>{
     setTimeout(() => {

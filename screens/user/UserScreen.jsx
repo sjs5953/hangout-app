@@ -20,9 +20,9 @@ export default ({
     <View style={{flex:1}}>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
         <View style={{justifyContent:'center', alignItems:'center', height:100}}>
-          <Text style={{fontWeight:'bold', fontSize:20}}>{userInfo.userName}</Text>
+          <Text style={{fontWeight:'bold', fontSize:20}}>{userInfo.name}</Text>
           <Text></Text>
-          <Text style={{fontWeight:'bold'}}>{userInfo.email}</Text>
+          {/* <Text style={{fontWeight:'bold'}}>{userInfo.email}</Text> */}
         </View>
         <Button raised theme={{ roundness: 3 }} onPress={()=> signOut()}>
           Logout

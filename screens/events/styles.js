@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
     toggleContainer:{
       position:'absolute',
       bottom:20,
-      right:25
+      right:10
     },
     loadingContainer: {
       justifyContent:'center',

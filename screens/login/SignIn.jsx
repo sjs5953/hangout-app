@@ -47,14 +47,9 @@ const SignIn = ({navigation}) => {
         let index = url.indexOf('=');
         let arr = url.split("");
         let id = arr.splice(index+1).join("")
-        // console.log(index)
-        // console.log(authResult);
-        // console.log(arr)
-        // console.log(id)
-        const token = id
-        // signIn(token);
-        setUserToken(token);
-        console.log("signin as ", token)
+        
+        signIn(id);
+       
       } else {
         alert("Login was failed");
       }

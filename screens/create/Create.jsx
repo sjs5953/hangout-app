@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useContext} from "react";
 import { Alert, Platform } from "react-native";
 import axios from 'axios';
 import CreateScreenIOS from './CreateScreen-ios'
@@ -6,6 +6,8 @@ import CreateScreenAndroid from './CreatScreen-andriod'
 import LoadingScreen from '../../shared/LoadingScreen'
 import convertDate from '../../helpers/convertDate'
 import * as yup from "yup";
+
+import { AuthContext } from '../../context'
 
 const isIos = Platform.OS === 'ios'
 
@@ -31,10 +33,24 @@ export default Create = ({navigation}) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const { userToken } = useContext(AuthContext);
+
   const submitForm = (values, actions) => {
+
+    const options =  {
+      method: 'POST',
+      timeout:4000,
+      url: `https://meetnow.herokuapp.com/events`,
+      headers: {
+          'Authorization': `Bearer ${userToken}`,
+          // 'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: values
+    }
+
     setIsLoading(true);
     console.log("Submitted: ", values)
-    axios.post('https://meetnow.herokuapp.com/events',values)
+    axios(options)
       .then((res) => {
         const eventKey = res.data;
         Alert.alert("Success!", "Event has been sucessfully deleted.", [

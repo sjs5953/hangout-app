@@ -10,9 +10,9 @@ import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 const User = ({navigation,route}) => {
   const { userToken,signOut } = useContext(AuthContext);
   // const context = useContext(AuthContext)
-  // console.log(context)
+  console.log(" Current user token: ", userToken)
 
-  const [ userInfo, setUserInfo ] = useState({userName:'Jay Seo',email:"sjs5953@hotmail.com"});
+  const [ userInfo, setUserInfo ] = useState({});
   const [ state, setState ] = useState({
     events:[],
     currentPage:1,
@@ -26,7 +26,8 @@ const User = ({navigation,route}) => {
     return (
       {
         method: 'GET',
-        url: `https://meetnow.herokuapp.com/events?limit=5&page=${page}`,
+        timeout:4000,
+        url: `https://meetnow.herokuapp.com/events/me?limit=5&page=${page}`,
         headers: {
             'Authorization': `Bearer ${userToken}`,
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -45,12 +46,13 @@ const User = ({navigation,route}) => {
           'Content-Type': 'application/x-www-form-urlencoded'
       },
     }
-    // axios(optionsForUserInfo)
-    //   .then(res=> {
-    //     const userInfoFromBack = res.data.userInfo;
-    //     // setUserInfo(userInfoFromBack)
-    //   })
-    //   .catch(err=>console.log(err.message))
+    axios(optionsForUserInfo)
+      .then(res=> {
+        const userInfoFromBack = res.data;
+        console.log("userInfo from back: ", userInfoFromBack)
+        setUserInfo(userInfoFromBack)
+      })
+      .catch(err=>console.log("ERROR from getting USERINFO : ",err.message))
    
     const optionsForUserPosts = getOptions(1)
     console.log("optionsForUserPosts: ", optionsForUserPosts.url)
@@ -66,8 +68,7 @@ const User = ({navigation,route}) => {
             status:""
           });
       })
-      .catch(err=>console.log(err.message))
-
+      .catch(err=>console.log("ERROR from getting User Posts ",err.message))
   },[])
 
  
