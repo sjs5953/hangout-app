@@ -15,11 +15,8 @@ const Notifications = ({navigation,route}) => {
     status:LOADING
   });
 
-  const { user } = useContext(AuthContext);
+  const { userToken } = useContext(AuthContext);
   // put that in the header
-  const userId = user.id;
-
-  console.log("User Id: ",userId)
 
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;

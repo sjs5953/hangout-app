@@ -12,31 +12,15 @@ import SearchEvents from './components/SearchEvents'
 import NoResults from './components/NoResults'
 import FloatingButtons from './components/FloatingButtons'
 
-export default ({navigation, onRefresh, loadMore, status, events, searchEvents}) => {
+export default function ListScreen ({navigation, onRefresh, loadMore, status, events}) {
 
   const renderFooter = () => {
     if (status == "loading-more")
     return <ActivityIndicator animating size='large'/>
   }
 
-  if (status=='error') {
-    return (
-      <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
-    )
-  }
-
-  const [selectedItem, setSelectedItem] = useState("");
-
-
   return (
     <View style={{flex:1}}>
-      <View>
-        {/*Floating Buttons*/}
-        <FloatingButtons selectedItem={selectedItem} setSelectedItem={setSelectedItem} searchEvents={searchEvents} onRefresh={onRefresh}/>
-      </View>
-
-      <SearchEvents selectedItem={selectedItem} searchEvents={searchEvents}/>
-
       {status == LOADING ?
       <LoadingScreen/>
         :

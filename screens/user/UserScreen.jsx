@@ -3,7 +3,6 @@ import { Text, View, ScrollView } from 'react-native'
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
 import { Button } from 'react-native-paper';
-import EventsListScreen from '../events/EventsListScreen'
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 import UserPosts from './components/userPosts'
 

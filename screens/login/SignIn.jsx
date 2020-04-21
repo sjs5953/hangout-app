@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { globalStyles } from '../../styles/global'
 import { AuthContext } from '../../context'
 import { Button } from 'react-native-paper';
-import FBLoginButton from './components/FBLoginButton'
-import GoogleButton from './components/GoogleButton'
+// import FBLoginButton from './components/FBLoginButton'
+
 import { AuthSession,Linking} from 'expo'
 import * as WebBrowser from 'expo-web-browser'
 import { auth } from 'firebase';

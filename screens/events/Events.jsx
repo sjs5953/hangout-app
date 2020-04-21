@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { View, SafeAreaView, Platform } from 'react-native'
 import {globalStyles} from '../../styles/global'
-import * as mockData from '../../mockData/mockData';
 import axios from 'axios';
-import ListScreen from './EventsListScreen'
-import MapScreen from './EventsMapScreen'
+import EventsScreen from './EventsScreen'
 import ToggleButton from './components/ToggleButton'
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 import { Button } from 'react-native-paper';
@@ -130,35 +128,16 @@ const Events = ({navigation,route}) => {
 
  
   return (
-    <View style={isIos?{...globalStyles.container}:globalStyles.container}>   
-    {/* <Button onPress={()=>{
-        axios.get('http://localhost:3000/events')
-          .then(console.log)
-          .catch(err=>{
-            console.log(err.message)
-          })
-      }}> 
-        Click
-      </Button>   */}
-       {state.listView?
-         <ListScreen 
-         navigation={navigation} 
-         onRefresh={onRefresh} 
-         loadMore={loadMore} 
-         status={state.status}
-         events={state.events}
-         searchEvents={searchEvents}
+    <View style={isIos?{...globalStyles.container}:globalStyles.container}>
+         <EventsScreen 
+          navigation={navigation} 
+          onRefresh={onRefresh} 
+          loadMore={loadMore} 
+          status={state.status}
+          events={state.events}
+          listView={state.listView}
+          searchEvents={searchEvents}
        />
-      :
-      <MapScreen 
-      navigation={navigation} 
-      onRefresh={onRefresh} 
-      loadMore={loadMore} 
-      status={state.status}
-      events={state.events}
-      searchEvents={searchEvents}
-    />
-    }
       <ToggleButton listView={state.listView} toggleView={toggleView}/>
     </View>
   ) 
