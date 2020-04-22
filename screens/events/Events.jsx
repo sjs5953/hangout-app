@@ -50,20 +50,22 @@ const Events = ({navigation,route}) => {
   }};
 
   const getLocation = async () => {
-
+    let location=null;
     try {
-      let { locationStatus } = await Permissions.getAsync(Permissions.LOCATION);
-      if (locationStatus !== 'granted') {
-        const { response } = await Permissions.askAsync(Permissions.LOCATION);
-        if (response !== 'granted') {
-          // alert('Permission to access was denied')
+      const { status } = await Permissions.getAsync(Permissions.LOCATION);
+      if (status !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+          console.log("here?", response)
+          // throw Error('Permission to access was denied!')
         }
+      } else {
+        location = await Location.getCurrentPositionAsync({});
       }
-      let location = await Location.getCurrentPositionAsync({});
       return location
     }
     catch (err) {
-      // console.error("ERROR FROM GETTING LOCAITON: ",err)
+      console.log("Failed getLocation()")
       let status = await Location.getProviderStatusAsync();
       if (!status.locationServicesEnabled) {
         setState({...state,isLocationModalVisible:true})
@@ -80,6 +82,7 @@ const Events = ({navigation,route}) => {
       
       let resultingLocation = await getLocation()
       if (!resultingLocation) {
+        // throw Error("Failed to find location")
         return
       }
       const userLocation = {
@@ -94,20 +97,25 @@ const Events = ({navigation,route}) => {
 
       console.log("successfully fetched! ",newEvents.length)
       console.log("refreshing options: ",options)
-      setState({
+      setState((prev)=>{
+        console.log('setting state')
+        return {
           ...state,
           location:userLocation,
           events:newEvents,
           currentPage:1,
           totalPages:result.totalPages,
           status:""
-        });
+        }
+      });
     } catch (error) {
       console.log("failed to refresh: ",error);
+
       setState({...state, status:ERROR})
+
     }
   }
-
+  console.log(state.status)
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;
     
@@ -177,24 +185,25 @@ const Events = ({navigation,route}) => {
       console.error(error);
     }
   }
- 
-  useEffect(() => {
-    AppState.addEventListener('change', handleChange);  
-  
-    return () => {
-      AppState.removeEventListener('change', handleChange);  
-    }
-  }, []);
-  
 
   const handleChange = (nextAppState) => {
-    if(state.appState.match(/inactive|background/) && nextAppState === 'active') {
+    console.log("Handle Change")
+  //  
+    if( /*state.appState.match(/inactive|background/) &&*/ nextAppState === 'active') {
       console.log('App has come to the foreground!');
       onRefresh(LOADING)
     }
     setState({...state, appState: nextAppState });
   };
-
+ 
+  useEffect(() => {
+    console.log("USEFFECT WITH handle change ran")
+    AppState.addEventListener('change', handleChange);  
+  
+    return () => {
+      AppState.removeEventListener('change', handleChange);  
+    }
+  }, [state.openSetting]);
 
    useEffect(()=>{
     console.log("refreshed")
@@ -244,48 +253,3 @@ const Events = ({navigation,route}) => {
 }
 
 export default Events
-
-
-  // useEffect(()=>{
-  //   Location.requestPermissionsAsync()
-  //   .then(({status})=>{
-  //     if (status !== 'granted') {
-  //       setState({...state, status:ERROR})
-  //     }
-  //     return Location.getCurrentPositionAsync({})
-  //     })
-  //   .then(res=>{
-      // const userLocation = {
-      //   latitude: res.coords.latitude,
-      //   longitude: res.coords.longitude
-      // }
-  //     console.log("==========Setting Location ==========")
-  //     setState({...state, location:userLocation});
-  //     const settings = {
-  //       "url": 'https://meetnow.herokuapp.com/events?limit=5&page=1',
-  //       "method": "GET",
-  //       "timeout": 0,
-  //       "headers": {
-  //         "Content-Type": "application/json"
-  //       },
-  //       "data": JSON.stringify(userLocation),
-  //     };
-  //     // console.log("userlocation: ", userLocation)
-  //     return axios(settings)
-  //   })
-  //   .then(res=>{
-  //     const result = res.data;
-  //     const fectchedEvetns = result.events;
-  //     setState({
-  //       ...state,
-  //       events:fectchedEvetns,
-  //       currentPage: 1,
-  //       totalPages: result.totalPages,
-  //       status:""
-  //     });
-  //   })
-  //   .catch(err=>{
-  //     setState({...state, status:ERROR})
-  //     console.log(err)
-  //   })
-  // },[])
