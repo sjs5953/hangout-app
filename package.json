@@ -20,6 +20,7 @@
     "expo": "~36.0.0",
     "expo-app-auth": "~8.0.0",
     "expo-google-sign-in": "~8.0.0",
+    "expo-location": "~8.0.0",
     "expo-web-browser": "~8.0.0",
     "firebase": "^7.14.0",
     "formik": "^2.1.4",

@@ -53,8 +53,7 @@ const Event = ({navigation, route}) => {
       { cancelable: false }
     )
   }
-
-
+  
   useEffect(()=>{
     axios.get(`https://meetnow.herokuapp.com/events/${eventKey}`)
     .then(res=>{

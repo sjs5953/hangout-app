@@ -4,7 +4,8 @@ export const globalStyles = StyleSheet.create({
   container: {
     flex:1,
     paddingHorizontal:10,
-    paddingVertical:15
+    paddingVertical:15,
+    // paddingBottom:0
   },
   title: {
     // fontFamily:'nunito-bold',

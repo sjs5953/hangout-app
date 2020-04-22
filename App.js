@@ -17,7 +17,7 @@ export default function App() {
   // }
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState('')
+  const [userToken, setUserToken] = useState(null)
   
   const authContext = useMemo(()=>{
     return {
@@ -26,6 +26,7 @@ export default function App() {
       signIn: (token) => {
         // setIsLoading(false);
         setUserToken(prev=>{
+          if (token==null) return
           console.log("Signed In as: ", token);
           return token
         });

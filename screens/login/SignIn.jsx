@@ -47,9 +47,10 @@ const SignIn = ({navigation}) => {
         let index = url.indexOf('=');
         let arr = url.split("");
         let id = arr.splice(index+1).join("")
-        
+        if (!id){
+          throw new Error('Failed to login')
+        }
         signIn(id);
-       
       } else {
         alert("Login was failed");
       }
