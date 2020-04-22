@@ -38,6 +38,36 @@ export default function MapScreen ({navigation, onRefresh, loadMore, status, eve
           // region={} pass region prop to change focus
           >
             {/* some markers */}
+            <Marker
+              coordinate={{
+                latitude: 49.2576509,
+                longitude: -123.2009871,
+              }}
+              title="You are here"
+              description={"something inmportant"}
+              pinColor="yellow"
+            />
+            <Marker
+              coordinate={{
+                latitude: 49.2576508,
+                longitude: -123.2236871,
+              }}
+              title="You are here"
+              description={"something inmportant"}
+              pinColor="red"
+            />
+            <Marker
+              // draggable
+              onPress={()=>console.log('im pressed')}
+              coordinate={{
+                latitude: 49.2576508,
+                longitude: -123.2536871,
+              }}
+              title="You are here"
+              description={"something inmportant"}
+              pinColor="blue"
+            />
+            
           </MapView>
       </View>
     </View>
