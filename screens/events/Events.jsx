@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { View, SafeAreaView, Platform } from 'react-native'
+import { View, SafeAreaView, Platform, Linking, AppState, Dimensions } from 'react-native'
+import * as IntentLauncher from 'expo-intent-launcher';
 import {globalStyles} from '../../styles/global'
 import axios from 'axios';
 import EventsScreen from './EventsScreen'
@@ -8,7 +9,7 @@ import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 import { Button } from 'react-native-paper';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
-
+import Modal from 'react-native-modal'
 const isIos = Platform.OS === 'ios'
 
 const Events = ({navigation,route}) => { 
@@ -19,14 +20,28 @@ const Events = ({navigation,route}) => {
     currentPage:1,
     totalPages:null,
     status:LOADING,
-    listView: true
+    listView: true,
+    isLocationModalVisible:false,
+    appState: AppState.currentState
   });
+
+  const openSetting = () => {
+    if (isIos) {
+      Linking.openURL('app-settings:')
+      return
+    } 
+
+    IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS);
+
+
+    setState({...state, openSetting:false})
+  }
   
   const getOptions = (page, location) => {
     return {
     "url": `https://meetnow.herokuapp.com/events?limit=5&page=${page}`,
     "method": "GET",
-    "timeout": 0,
+    "timeout": 3000,
     "headers": {
       "Content-Type": "application/json"
     },
@@ -69,7 +84,7 @@ const Events = ({navigation,route}) => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
         setState({...state, status:ERROR});
-        alert('Permission to access location was denied')
+        throw new Error('Permisson not given')
       }
       
       let resultingLocation = await Location.getCurrentPositionAsync({});
@@ -77,6 +92,7 @@ const Events = ({navigation,route}) => {
         latitude: resultingLocation.coords.latitude,
         longitude: resultingLocation.coords.longitude
       }
+     
       const options = getOptions(1,userLocation)
       let res = await axios(options)
       const result = res.data;
@@ -93,12 +109,14 @@ const Events = ({navigation,route}) => {
           status:""
         });
     } catch (error) {
+      console.log("failed to refresh: ",error);
       setState({...state, status:ERROR})
-      console.error(error);
+      let status = Location.getProviderStatusAsync();
+      if (!status.locationServicesEnabled) {
+        setState({...state,isLocationModalVisible:true})
+      }
     }
   }
-
-  
   const toggleView = () => {
     setState({...state, status:LOADING})
     Promise.resolve({data:"Map Data Here"})
@@ -123,7 +141,7 @@ const Events = ({navigation,route}) => {
     let options = getOptions(1,state.location);
     options.url = url;
     console.log('Search Request',options)
-    
+
     try {
       let res = await axios(options)
       const result = res.data;
@@ -143,6 +161,24 @@ const Events = ({navigation,route}) => {
     }
   }
  
+  useEffect(() => {
+    AppState.addEventListener('change', handleChange);  
+  
+    return () => {
+      AppState.removeEventListener('change', handleChange);  
+    }
+  }, []);
+  
+
+  const handleChange = (nextAppState) => {
+    if(state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!');
+      onRefresh(LOADING)
+    }
+    setState({...state, appState: nextAppState });
+  };
+
+
    useEffect(()=>{
     console.log("refreshed")
     onRefresh(LOADING)
@@ -150,6 +186,32 @@ const Events = ({navigation,route}) => {
   
   return (
     <View style={globalStyles.container}>
+        <Modal
+          onModalHide={state.openSetting?openSetting:undefined} 
+          isVisible={state.isLocationModalVisible}
+          style={{
+            height: '100%',
+            width:'100%',
+            margin:0,
+            alignItems:'center',
+            justifyContent:'center',
+            // backgroundColor:'white'
+          }}
+        >
+          <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+            <Button onPress={()=>{
+              setState({
+                ...state,
+                isLocationModalVisible:false,
+                openSetting:true
+              })
+            }}>
+              Enable Location Services
+            </Button>
+          </View>
+
+        </Modal>
+
          <EventsScreen 
           navigation={navigation} 
           onRefresh={onRefresh} 

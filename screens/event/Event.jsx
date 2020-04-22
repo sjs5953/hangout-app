@@ -1,7 +1,8 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState, useContext} from 'react'
 import { Alert } from 'react-native'
 import axios from 'axios';
-import {eventsFromBackend} from '../../mockData/mockData'
+import { AuthContext } from '../../context'
+
 import LoadingScreen from '../../shared/LoadingScreen'
 import EventScreen from  './EventScreen';
 import { ERROR, LOADING } from '../../shared/status'
@@ -10,6 +11,8 @@ import { ERROR, LOADING } from '../../shared/status'
 const Event = ({navigation, route}) => {
 
   const eventKey = route.params.eventKey;
+  const userToken = useContext(AuthContext).userToken;
+  console.log("userToken is: ",userToken)
 
   console.log("eventkey: ", eventKey)
 

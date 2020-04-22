@@ -10,7 +10,7 @@ import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 const User = ({navigation,route}) => {
   const { userToken,signOut } = useContext(AuthContext);
   // const context = useContext(AuthContext)
-  console.log(" Current user token: ", userToken)
+  // console.log(" Current user token: ", userToken)
 
   const [ userInfo, setUserInfo ] = useState({});
   const [ state, setState ] = useState({
@@ -20,7 +20,7 @@ const User = ({navigation,route}) => {
     status:LOADING
   });
 
-  console.log("userToken: ", userToken)
+  // console.log("userToken: ", userToken)
 
   const getOptions = (page) => {
     return (

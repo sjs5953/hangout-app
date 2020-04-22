@@ -19,28 +19,18 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null)
   
-  const authContext = useMemo(()=>{
+  let authContext = useMemo(()=>{
     return {
-      userToken,
-      setUserToken,
       signIn: (token) => {
-        // setIsLoading(false);
-        setUserToken(prev=>{
-          if (token==null) return
-          console.log("Signed In as: ", token);
-          return token
-        });
+        console.log("========Attempting Login========", token);
+
+        setUserToken(token);
       },
-      // signUp: (user) => {
-      //   // setIsLoading(false);
-      //   setUserToken(user);
-      //   console.log("Signed Up");
-      // },
       signOut: () => {
-        // setIsLoading(false);
         setUserToken(null);
         console.log("Signed Out");
-      }
+      },
+      userToken
     }
   },[])
 
@@ -70,7 +60,6 @@ export default function App() {
     },
   };
   
-
   return (
     <AuthContext.Provider value={authContext}>
       <PaperProvider theme={theme}>
