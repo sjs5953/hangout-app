@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, SafeAreaView, Platform, Linking, AppState, Dimensions } from 'react-native'
+import { View,Alert, SafeAreaView, Platform, Linking, AppState, Dimensions } from 'react-native'
 import * as IntentLauncher from 'expo-intent-launcher';
 import {globalStyles} from '../../styles/global'
 import axios from 'axios';
@@ -9,6 +9,7 @@ import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
 import { Button } from 'react-native-paper';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import Modal from 'react-native-modal'
 const isIos = Platform.OS === 'ios'
 
@@ -48,6 +49,62 @@ const Events = ({navigation,route}) => {
     "data": location,
   }};
 
+  const getLocation = async () => {
+
+    try {
+      let { locationStatus } = await Permissions.getAsync(Permissions.LOCATION);
+      if (locationStatus !== 'granted') {
+        const { response } = await Permissions.askAsync(Permissions.LOCATION);
+        if (response !== 'granted') {
+          // alert('Permission to access was denied')
+        }
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      return location
+    }
+    catch (err) {
+      // console.error("ERROR FROM GETTING LOCAITON: ",err)
+      let status = await Location.getProviderStatusAsync();
+      if (!status.locationServicesEnabled) {
+        setState({...state,isLocationModalVisible:true})
+      }
+    }
+  }
+
+  const onRefresh = async (loading) => {
+    const loadingStatus = loading || REFRESHING
+    setState({...state, status:loadingStatus})
+    console.log("fetching data...")
+ 
+    try {
+      
+      let resultingLocation = await getLocation()
+      const userLocation = {
+        latitude: resultingLocation.coords.latitude,
+        longitude: resultingLocation.coords.longitude
+      }
+     
+      const options = getOptions(1,userLocation)
+      let res = await axios(options)
+      const result = res.data;
+      let newEvents = result.events;
+
+      console.log("successfully fetched! ",newEvents.length)
+      console.log("refreshing options: ",options)
+      setState({
+          ...state,
+          location:userLocation,
+          events:newEvents,
+          currentPage:1,
+          totalPages:result.totalPages,
+          status:""
+        });
+    } catch (error) {
+      console.log("failed to refresh: ",error);
+      setState({...state, status:ERROR})
+    }
+  }
+
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;
     
@@ -74,54 +131,6 @@ const Events = ({navigation,route}) => {
       })
   }
 
-  const onRefresh = async (loading) => {
-    const loadingStatus = loading || REFRESHING
-    setState({...state, status:loadingStatus})
-    console.log("fetching data...")
- 
-    try {
-
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        setState({...state, status:ERROR});
-        throw new Error('Permisson not given')
-      }
-      
-      let resultingLocation = await Location.getCurrentPositionAsync({});
-      const userLocation = {
-        latitude: resultingLocation.coords.latitude,
-        longitude: resultingLocation.coords.longitude
-      }
-     
-      const options = getOptions(1,userLocation)
-      let res = await axios(options)
-      const result = res.data;
-      let newEvents = result.events;
-
-      console.log("successfully fetched! ",newEvents.length)
-      console.log("refreshing options: ",options)
-      setState({
-          ...state,
-          location:userLocation,
-          events:newEvents,
-          currentPage:1,
-          totalPages:result.totalPages,
-          status:""
-        });
-    } catch (error) {
-      console.log("failed to refresh: ",error);
-
-      let status = await Location.getProviderStatusAsync();
-      console.log("status.locationServicesEnabled ", status.locationServicesEnabled)
-      if (!status.locationServicesEnabled) {
-        console.log("Location Not enabled, Opennign MODAL")
-        setState({...state,isLocationModalVisible:true, status:LOADING})
-      } else {
-        console.log("SETTING ERROR")
-        setState({...state, status:ERROR})
-      }
-    }
-  }
   const toggleView = () => {
     setState({...state, status:LOADING})
     Promise.resolve({data:"Map Data Here"})
