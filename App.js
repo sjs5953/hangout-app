@@ -17,7 +17,7 @@ export default function App() {
   // }
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState("Jay")
+  const [userToken, setUserToken] = useState("")
   
   let authContext = useMemo(()=>{
     return {
@@ -32,7 +32,7 @@ export default function App() {
       },
       userToken
     }
-  },[])
+  },[userToken])
 
 
   useEffect(()=>{
