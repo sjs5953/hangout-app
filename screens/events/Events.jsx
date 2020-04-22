@@ -110,10 +110,15 @@ const Events = ({navigation,route}) => {
         });
     } catch (error) {
       console.log("failed to refresh: ",error);
-      setState({...state, status:ERROR})
-      let status = Location.getProviderStatusAsync();
+
+      let status = await Location.getProviderStatusAsync();
+      console.log("status.locationServicesEnabled ", status.locationServicesEnabled)
       if (!status.locationServicesEnabled) {
-        setState({...state,isLocationModalVisible:true})
+        console.log("Location Not enabled, Opennign MODAL")
+        setState({...state,isLocationModalVisible:true, status:LOADING})
+      } else {
+        console.log("SETTING ERROR")
+        setState({...state, status:ERROR})
       }
     }
   }
@@ -195,7 +200,7 @@ const Events = ({navigation,route}) => {
             margin:0,
             alignItems:'center',
             justifyContent:'center',
-            // backgroundColor:'white'
+            backgroundColor:'white'
           }}
         >
           <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
