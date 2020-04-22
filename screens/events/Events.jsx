@@ -79,6 +79,9 @@ const Events = ({navigation,route}) => {
     try {
       
       let resultingLocation = await getLocation()
+      if (!resultingLocation) {
+        return
+      }
       const userLocation = {
         latitude: resultingLocation.coords.latitude,
         longitude: resultingLocation.coords.longitude
