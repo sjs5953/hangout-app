@@ -6,7 +6,8 @@ import {
   Keyboard,
   StyleSheet,
   Picker,
-  ScrollView
+  ScrollView,
+  
 } from "react-native";
 import { Button } from "react-native-paper";
 import { globalStyles } from "../../styles/global";
@@ -15,7 +16,7 @@ import { FlatButton } from "../../shared/Button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import convertDate from '../../helpers/convertDate'
 import TextField from './components/TextInput'
-
+import GooglePlacesInput from './components/GooglePlacesInput'
 
 const dateModal = 'date';
 
@@ -48,8 +49,7 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
-
-          <ScrollView >
+          {/* <ScrollView > */}
             <Formik
               style={{flex:1}}
               initialValues={{
@@ -157,6 +157,7 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                       {props.touched.startTime && props.errors.startTime}
                     </Text>
 
+                    
                     <View style={styles.submitButton}>
                       <FlatButton text="submit" onPress={props.handleSubmit} />
                     </View>
@@ -164,7 +165,7 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                 );
               }}
             </Formik>
-          </ScrollView>
+          {/* </ScrollView> */}
       </View>
     </TouchableWithoutFeedback>
   );

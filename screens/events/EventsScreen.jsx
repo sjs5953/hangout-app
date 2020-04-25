@@ -12,12 +12,13 @@ import MapScreen from './MapScreen'
 import SearchEvents from './components/SearchEvents'
 import NoResults from './components/NoResults'
 import FloatingButtons from './components/FloatingButtons'
+import Error from './components/Error';
 
 export default ({navigation, onRefresh, loadMore, status, events, searchEvents, listView}) => {
 
   if (status=='error') {
     return (
-      <Text style={globalStyles.titleText}>Failed to load, try again!</Text>
+      <Error onRefresh={onRefresh}/>
     )
   }
 

@@ -37,7 +37,6 @@ export default function MapScreen ({navigation, onRefresh, loadMore, status, eve
           onRegionChange={onRegionChange}
           // region={} pass region prop to change focus
           >
-            {/* some markers */}
             <Marker
               coordinate={{
                 latitude: 49.2576509,

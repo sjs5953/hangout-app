@@ -42,7 +42,6 @@ const Events = ({navigation,route}) => {
     return {
     "url": `https://meetnow.herokuapp.com/events?limit=5&page=${page}`,
     "method": "GET",
-    "timeout": 3000,
     "headers": {
       "Content-Type": "application/json"
     },
@@ -51,6 +50,7 @@ const Events = ({navigation,route}) => {
 
   const getLocation = async () => {
     let location=null;
+    console.log('getting location...')
     try {
       const { status } = await Permissions.getAsync(Permissions.LOCATION);
       if (status !== 'granted') {
@@ -89,8 +89,9 @@ const Events = ({navigation,route}) => {
         latitude: resultingLocation.coords.latitude,
         longitude: resultingLocation.coords.longitude
       }
-     
+      console.log("USER LOCATION: ", userLocation)
       const options = getOptions(1,userLocation)
+      console.log("Refresh request: ", options)
       let res = await axios(options)
       const result = res.data;
       let newEvents = result.events;
@@ -116,6 +117,7 @@ const Events = ({navigation,route}) => {
     }
   }
   console.log(state.status)
+
   const loadMore = () => {
     if (state.currentPage == state.totalPages) return;
     
@@ -138,7 +140,7 @@ const Events = ({navigation,route}) => {
       })
       .catch(err=>{
         setState({...state, status:ERROR})
-        console.log(err)
+        console.log("Error from Loading More: ",err)
       })
   }
 
