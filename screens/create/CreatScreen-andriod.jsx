@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Picker,
   ScrollView,
-  
+  Modal
 } from "react-native";
 import { Button } from "react-native-paper";
 import { globalStyles } from "../../styles/global";
@@ -21,11 +21,12 @@ import GooglePlacesInput from './components/GooglePlacesInput'
 const dateModal = 'date';
 
 
-export default ({ submitForm, reviewSchema, categories, nums  }) => {
+export default ({ submitForm, reviewSchema, categories, nums, userLocation }) => {
 
   const [visibility, setVisability] = useState("");
   const [selectedDate, setSelectedDate] = useState("Select Time");
   const [chooseCategory, setChooseCategory] = useState(false);
+  const [locModal, setLocModal] = useState(false);
 
   const showModal = (a) => {
     setVisability(a);
@@ -50,19 +51,18 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
 
-        <GooglePlacesInput/>
-          {/* <ScrollView >
+          <ScrollView  
+           keyboardShouldPersistTaps='always'
+           listViewDisplayed={false}
+           >
             <Formik
               style={{flex:1}}
               initialValues={{
                 name: "",
                 minimumParticipants: "",
-                location: {
-                  lat: 333,
-                  lng: 444
-                },
+                location: "",
                 description:"",
-                address: "My house",
+                address: "",
                 startTime: "",
                 category: ""
               }}
@@ -95,6 +95,7 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                     <Text style={globalStyles.errorText}>
                       {props.touched.description && props.errors.description}
                     </Text>
+                  
                   
                     <TextField
                       formikProps={props}
@@ -137,9 +138,9 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                     
                     </View>
 
-                      <Text style={globalStyles.errorText}>
-                    {props.touched.category && props.errors.category}
-                  </Text>
+                    <Text style={globalStyles.errorText}>
+                      {props.touched.category && props.errors.category}
+                    </Text>
 
                     <View style={{ ...globalStyles.input, padding: 4 }}>
                       <Button onPress={()=>showModal(dateModal)}>{selectedDate}</Button>
@@ -158,7 +159,16 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                       {props.touched.startTime && props.errors.startTime}
                     </Text>
 
+                   <View style={{ ...globalStyles.input, padding: 4 }}>
+                   
+                    <Button onPress={()=>setLocModal(!locModal)}>
+                      {props.values.address?  props.values.address: 'select location'}
+                    </Button>
                     
+                    <Modal visible={locModal}>
+                      <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue}/>
+                    </Modal>
+                   </View>
                     <View style={styles.submitButton}>
                       <FlatButton text="submit" onPress={props.handleSubmit} />
                     </View>
@@ -166,7 +176,7 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                 );
               }}
             </Formik>
-          </ScrollView> */}
+          </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -182,6 +192,13 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     margin: 30,
-    marginTop:0
+    marginTop:30
+  },
+  address:{
+    padding:7,
+    color: '#1faadb',
+    textAlign:'center',
+    textTransform:'uppercase',
+    fontWeight:'bold'
   }
 });

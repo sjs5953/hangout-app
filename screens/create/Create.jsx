@@ -6,7 +6,6 @@ import CreateScreenAndroid from './CreatScreen-andriod'
 import LoadingScreen from '../../shared/LoadingScreen'
 import convertDate from '../../helpers/convertDate'
 import * as yup from "yup";
-
 import { AuthContext } from '../../context'
 
 const isIos = Platform.OS === 'ios'
@@ -33,7 +32,7 @@ export default Create = ({navigation}) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { userToken } = useContext(AuthContext);
+  const { userToken, userLocation } = useContext(AuthContext);
 
   const submitForm = (values, actions) => {
 
@@ -121,24 +120,26 @@ export default Create = ({navigation}) => {
   }
 
 
-  if(!isIos) {
+  // if(!isIos) {
     return (
       <CreateScreenAndroid 
         submitForm={submitForm} 
         reviewSchema={reviewSchema}
         nums={nums}
         categories={categories}
+        userLocation={userLocation}
       />
     )
-  }
+  // }
 
-  return (
-    <CreateScreenIOS
-    submitForm={submitForm} 
-    categories={categories}
-    nums={nums}
-    reviewSchema={reviewSchema}
-    />
-  )
+  // return (
+  //   <CreateScreenIOS
+  //   submitForm={submitForm} 
+  //   categories={categories}
+  //   nums={nums}
+  //   reviewSchema={reviewSchema}
+  //  userLocation={userLocation}
+  //   />
+  // )
 }
 
