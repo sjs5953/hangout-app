@@ -5,7 +5,7 @@ import { AuthContext } from '../../context'
 import UserScreen from './UserScreen'
 import axios from 'axios';
 import {ERROR, REFRESHING, LOADING, LOADINGMORE} from '../../shared/status'
-
+import Error from '../../shared/Error'
 
 const User = ({navigation,route}) => {
   const { userToken,signOut } = useContext(AuthContext);
@@ -68,7 +68,10 @@ const User = ({navigation,route}) => {
             status:""
           });
       })
-      .catch(err=>console.log("ERROR from getting User Posts ",err.message))
+      .catch(err=>{
+        console.log("ERROR from getting User Posts ",err.message)
+        setState({...state, status:ERROR})
+      })
   },[])
 
  
@@ -134,7 +137,12 @@ const User = ({navigation,route}) => {
   //   onRefresh(LOADING)
   // },[route.params])
 
-
+  if (state.status=='error') {
+    return (
+      <Error onRefresh={onRefresh}/>
+    )
+  }
+  
   return (
    <UserScreen 
     userInfo={userInfo}

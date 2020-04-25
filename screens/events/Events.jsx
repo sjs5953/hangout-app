@@ -27,15 +27,16 @@ const Events = ({navigation,route}) => {
 
   
   const { userLocation, setUserLocation } = useContext(AuthContext)
-
-  const getOptions = (page) => {
+  console.log("=====user=====", userLocation)
+ 
+  const getOptions = (page,location) => {
     return {
-    "url": `https://meetnow.herokuapp.com/events?limit=5&page=${page}`,
+    "url": `https://meetnow.herokuapp.com/events?page=${page}`,
     "method": "GET",
     "headers": {
       "Content-Type": "application/json"
     },
-    "data": userLocation,
+    "data": location,
   }};
 
 
@@ -53,10 +54,12 @@ const Events = ({navigation,route}) => {
       }
   
       console.log("USER LOCATION: ", userLocation)
-      const options = getOptions(1)
+      const options = getOptions(1,resultingLocation)
       console.log("Refresh request: ", options)
       let res = await axios(options)
       const result = res.data;
+      console.log("=====result=====");
+      console.log(result)
       let newEvents = result.events;
 
       console.log("successfully fetched! ",newEvents.length)
@@ -80,12 +83,14 @@ const Events = ({navigation,route}) => {
   console.log(state.status)
 
   const loadMore = () => {
-    if (state.currentPage == state.totalPages) return;
+    console.log('===========LOADING MORE ==========');
+    console.log(state.currentPage, state.totalPages)
+    if (state.currentPage == state.totalPages || state.totalPages == null) return;
     
     console.log("loaded more")
     setState({...state, status:LOADINGMORE})
 
-    const options = getOptions(state.currentPage+1)
+    const options = getOptions(state.currentPage+1,userLocation)
     console.log("Load More request: ", options)
     axios(options)
       .then(res=>{
@@ -126,7 +131,7 @@ const Events = ({navigation,route}) => {
       url += `&${searchField2}=${searchValue2}`
     }
     
-    let options = getOptions(1);
+    let options = getOptions(1,userLocation);
     options.url = url;
     console.log('Search Request',options)
 
