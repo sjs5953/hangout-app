@@ -9,7 +9,13 @@ import { globalStyles } from "../../../styles/global";
 
 export default function GooglePlacesInput ({userLocation, setLocModal, setFieldValue}){
   const currentLocation = { description: 'Current Location', geometry: { location: { lat: userLocation.latitude, lng: userLocation.longitude } }};
-  const [ selectedLoc, setSelectedLoc ] = useState(null);
+  const [ selectedLoc, setSelectedLoc ] = useState({
+    address:"",
+    geometry:{
+      lat:"",
+      lng:""
+    }
+  });
   
   return (
     <SafeAreaView style={{...globalStyles.container}}>
@@ -32,9 +38,11 @@ export default function GooglePlacesInput ({userLocation, setLocModal, setFieldV
         fetchDetails={true}
         renderDescription={row => row.description} // custom description render
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-          // console.log("=====data====",data);
           console.log ("=====details====",details);
-          setSelectedLoc(details.formatted_address)
+          setSelectedLoc({
+            address:details.formatted_address,
+            geometry:details.geometry.location
+          })
         }}
   
         getDefaultValue={() => ''}
@@ -72,7 +80,7 @@ export default function GooglePlacesInput ({userLocation, setLocModal, setFieldV
         
         GooglePlacesDetailsQuery={{
           // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
-          fields: 'formatted_address',
+          fields: 'formatted_address,geometry',
         }}
   
         filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
@@ -83,7 +91,9 @@ export default function GooglePlacesInput ({userLocation, setLocModal, setFieldV
         //   setLocModal(false)
         // }}>Cancel</Button></View>}
         renderRightButton={() => <View style={{marginTop:3}}><Button onPress={()=>{
-          setFieldValue('address', selectedLoc)
+          console.log("selected: ",selectedLoc)
+          setFieldValue('address', selectedLoc.address)
+          setFieldValue('location', selectedLoc.geometry)
           setLocModal(false)
         }}>Save</Button></View>}
       />

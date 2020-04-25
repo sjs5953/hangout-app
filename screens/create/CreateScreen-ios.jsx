@@ -7,7 +7,8 @@ import {
   Keyboard,
   StyleSheet,
   Platform,
-  ScrollView
+  ScrollView,
+  Modal
 } from "react-native";
 import { Button } from "react-native-paper";
 import { globalStyles } from "../../styles/global";
@@ -21,14 +22,17 @@ import Axios from "axios";
 const minModal = 'minimum-participants';
 const cateModal = 'category';
 const dateModal = 'date';
+import GooglePlacesInput from './components/GooglePlacesInput'
+
 
 let minimumParticipants;
 let category;
 
-export default ({ submitForm, categories, nums, reviewSchema }) => {
+export default ({ submitForm, categories, nums, reviewSchema, userLocation }) => {
 
   const [visibility, setVisability] = useState("");
   const [selectedDate, setSelectedDate] = useState("Select Time");
+  const [locModal, setLocModal] = useState(false);
 
   const showModal = (a) => {
     setVisability(a);
@@ -52,18 +56,18 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-      <ScrollView style={globalStyles.container}>
+      <ScrollView style={globalStyles.container}    
+        keyboardShouldPersistTaps='always'
+        listViewDisplayed={false}
+      >
 
         <Formik
           initialValues={{
             name: "",
             minimumParticipants: "",
-            location: {
-              lat: 333,
-              lng: 444
-            },
+            location:"",
             description:"",
-            address: "My house",
+            address: "",
             startTime: "",
             category: ""
           }}
@@ -154,6 +158,16 @@ export default ({ submitForm, categories, nums, reviewSchema }) => {
                   {props.touched.startTime && props.errors.startTime}
                 </Text>
 
+                <View style={{ ...globalStyles.input, padding: 4 }}>
+                   
+                   <Button onPress={()=>setLocModal(!locModal)}>
+                     {props.values.address?  props.values.address: 'select location'}
+                   </Button>
+                   
+                   <Modal visible={locModal}>
+                     <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue}/>
+                   </Modal>
+                  </View>
 
                 <View style={styles.submitButton}>
                   <FlatButton text="submit" onPress={props.handleSubmit} />

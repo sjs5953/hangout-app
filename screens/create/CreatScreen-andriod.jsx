@@ -60,7 +60,7 @@ export default ({ submitForm, reviewSchema, categories, nums, userLocation }) =>
               initialValues={{
                 name: "",
                 minimumParticipants: "",
-                location: "",
+                location:"",
                 description:"",
                 address: "",
                 startTime: "",
@@ -68,6 +68,8 @@ export default ({ submitForm, reviewSchema, categories, nums, userLocation }) =>
               }}
               validationSchema={reviewSchema}
               onSubmit={(values, actions) => {
+                console.log("Attempint to submit....")
+                console.log(values)
                 resetDate();
                 submitForm(values, actions);
               }}
@@ -169,6 +171,7 @@ export default ({ submitForm, reviewSchema, categories, nums, userLocation }) =>
                       <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue}/>
                     </Modal>
                    </View>
+                   
                     <View style={styles.submitButton}>
                       <FlatButton text="submit" onPress={props.handleSubmit} />
                     </View>

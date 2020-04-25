@@ -120,7 +120,7 @@ export default Create = ({navigation}) => {
   }
 
 
-  // if(!isIos) {
+  if(!isIos) {
     return (
       <CreateScreenAndroid 
         submitForm={submitForm} 
@@ -130,16 +130,16 @@ export default Create = ({navigation}) => {
         userLocation={userLocation}
       />
     )
-  // }
+  }
 
-  // return (
-  //   <CreateScreenIOS
-  //   submitForm={submitForm} 
-  //   categories={categories}
-  //   nums={nums}
-  //   reviewSchema={reviewSchema}
-  //  userLocation={userLocation}
-  //   />
-  // )
+  return (
+    <CreateScreenIOS
+    submitForm={submitForm} 
+    categories={categories}
+    nums={nums}
+    reviewSchema={reviewSchema}
+   userLocation={userLocation}
+    />
+  )
 }
 
