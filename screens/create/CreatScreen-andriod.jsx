@@ -49,7 +49,9 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={globalStyles.container}>
-          {/* <ScrollView > */}
+
+        <GooglePlacesInput/>
+          {/* <ScrollView >
             <Formik
               style={{flex:1}}
               initialValues={{
@@ -139,7 +141,6 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                     {props.touched.category && props.errors.category}
                   </Text>
 
-                    {/* DATE */}
                     <View style={{ ...globalStyles.input, padding: 4 }}>
                       <Button onPress={()=>showModal(dateModal)}>{selectedDate}</Button>
                       <DateTimePickerModal
@@ -165,7 +166,7 @@ export default ({ submitForm, reviewSchema, categories, nums  }) => {
                 );
               }}
             </Formik>
-          {/* </ScrollView> */}
+          </ScrollView> */}
       </View>
     </TouchableWithoutFeedback>
   );
