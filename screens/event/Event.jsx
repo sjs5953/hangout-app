@@ -61,6 +61,7 @@ const Event = ({navigation, route}) => {
     axios.get(`https://meetnow.herokuapp.com/events/${eventKey}`)
     .then(res=>{
       const result = res.data;
+      console.log("event: ", result)
       setState({...state, event:result, status:""})
     })
     .catch((err)=>{

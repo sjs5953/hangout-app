@@ -27,7 +27,6 @@ const Events = ({navigation,route}) => {
 
   
   const { userLocation, setUserLocation } = useContext(AuthContext)
-  console.log("=====user=====", userLocation)
  
   const getOptions = (page,location) => {
     return {
