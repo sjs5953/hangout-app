@@ -6,24 +6,25 @@ import MapView,{ PROVIDER_GOOGLE,  Marker, AnimatedRegion, Animated } from 'reac
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 
-export default function Maps ({name, address, coordinates, userLocation, setSelectedLoc}) {
+export default function Maps ({name, address, coordinates, userLocation, setSelectedLoc, savedLocation}) {
 
   const initialLat = userLocation.latitude;
   const initialLng = userLocation.longitude;
   const markerLat = coordinates.lat;
   const markerLng = coordinates.lng;
 
+  console.log("coordinates ", coordinates)
+  console.log("userlocation: ", userLocation)
+  console.log("savedLocation ", savedLocation)
   const initialRegion = {
-    latitude: userLocation.latitude || 49.2576508,
-    longitude: userLocation.longtitude || -123.2536871,
-    // latitude:  49.2576508,
-    // longitude: -123.2536871,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421, 
+    latitude: savedLocation.lat ? savedLocation.lat: userLocation.latitude  ,
+    longitude: savedLocation.lng ? savedLocation.lng: userLocation.longitude,
+    latitudeDelta: savedLocation.lat ? 0.03 : 0.0922,
+    longitudeDelta: savedLocation.lat ? 0.01 : 0.0421, 
   }
    const [ region, setRegion ] = useState(initialRegion);
-   const [ map, setMap ] = useState(null); 
-    
+   const [ map, setMap ] = useState({}); 
+
    const onRegionChange = (newRegion) => {
      setRegion(newRegion)
    }
@@ -35,8 +36,10 @@ export default function Maps ({name, address, coordinates, userLocation, setSele
   
   console.log("initialLat ", initialLat)
   console.log("initialLng ",initialLng)
+  console.log("savedLat ",savedLocation.lat)
+  console.log("savedLng ",savedLocation.lng) 
   console.log("markerLat ",markerLat)
-  console.log("marketLng ",markerLng)
+  console.log("markerLng ",markerLng)
   // console.log("map ", map)
 
   useEffect(() => {
@@ -48,6 +51,12 @@ export default function Maps ({name, address, coordinates, userLocation, setSele
         latitudeDelta: 0.03,
         longitudeDelta: 0.01, 
       })
+      // setRegion({
+      //   latitude: markerLat,
+      //   longitude: markerLng,
+      //   latitudeDelta: 0.03,
+      //   longitudeDelta: 0.01, 
+      // })
     }
   }, [markerLat,markerLng])
 
@@ -61,21 +70,16 @@ export default function Maps ({name, address, coordinates, userLocation, setSele
           showsMyLocationButton={true}
           style={customStyles.mapStyle}
           ref={map => setMap(map)}
-          // initialRegion={{
-          //     latitude: 0,
-          //     longitude: 0,
-          //     latitudeDelta: 0,
-          //     longitudeDelta: 0, 
-          //   }}
+          initialRegion={region}
           // onRegionChange={onRegionChange}
-          region={region}
+          // region={region}
           >
-            {coordinates.lat? 
+            {savedLocation.lat||coordinates.lat? 
             <Marker
               draggable={true}
               onPress={()=>map.animateToRegion({
-                latitude: markerLat,
-                longitude: markerLng,
+                latitude: markerLat ? markerLat : savedLocation.lat,
+                longitude: markerLng ? markerLng : savedLocation.lng,
                 latitudeDelta: 0.008,
                 longitudeDelta: 0.008, 
               })}
@@ -89,14 +93,14 @@ export default function Maps ({name, address, coordinates, userLocation, setSele
                 })
                 }}
               coordinate={{
-                latitude: coordinates.lat,
-                longitude:coordinates.lng,
+                latitude: markerLat ? markerLat : savedLocation.lat,
+                longitude: markerLng ? markerLng : savedLocation.lng,
               }}
               title={'Event Location'}
               description={address}
             />        
               :
-              null 
+              console.log("Marker not Generated!!!!")
               }
           </MapView>
       </View>

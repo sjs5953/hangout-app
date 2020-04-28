@@ -167,6 +167,7 @@ const Events = ({navigation,route}) => {
           events={state.events}
           listView={state.listView}
           searchEvents={searchEvents}
+          userLocation={userLocation}
        />
       <ToggleButton listView={state.listView} toggleView={toggleView}/>
     </View>

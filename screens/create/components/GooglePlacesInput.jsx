@@ -7,7 +7,7 @@ import { globalStyles } from "../../../styles/global";
 import Maps from './Maps';
 // const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 
-export default function GooglePlacesInput ({userLocation, setLocModal, setFieldValue, name}){
+export default function GooglePlacesInput ({userLocation, setLocModal, setFieldValue, name ,values}){
   const currentLocation = { description: 'Current Location', geometry: { location: { lat: userLocation.latitude, lng: userLocation.longitude } }};
   const [ selectedLoc, setSelectedLoc ] = useState({
     address:"",
@@ -99,6 +99,7 @@ export default function GooglePlacesInput ({userLocation, setLocModal, setFieldV
       />
       <Maps name={name} address={selectedLoc.address} coordinates={selectedLoc.geometry} userLocation={userLocation} 
         setSelectedLoc={setSelectedLoc}
+        savedLocation={values.location}
       />
     </SafeAreaView>
   );

@@ -7,20 +7,15 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 
 
-export default function MapScreen ({navigation, onRefresh, loadMore, status, events, searchEvents}) {
+export default function MapScreen ({navigation, onRefresh, loadMore, status, events, searchEvents,userLocation}) {
   
-   const initialRegion = new AnimatedRegion({
-    latitude: 49.2576508,
-    longitude: -123.2536871,
+  const initialRegion = {
+    latitude: userLocation.latitude || 49.2576508,
+    longitude: userLocation.longitude || -123.2536871,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
-  })
-   const [ region, setRegion ] = useState({});
-   const [ markers, setMarkers ]= useState([]);
-   
-   const onRegionChange = (newRegion) => {
-     setRegion(newRegion)
-   }
+  }
+  const [ map, setMap ] = useState({})
 
   return (
     <View style={customStyles.container}>
@@ -31,44 +26,30 @@ export default function MapScreen ({navigation, onRefresh, loadMore, status, eve
           followsUserLocation={true}
           showsMyLocationButton={true}
           style={customStyles.mapStyle}
-          initialRegion={{
-            latitude: 49.2576508,
-            longitude: -123.2536871,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          onRegionChange={onRegionChange}
-          // region={} pass region prop to change focus
+          ref={map => setMap(map)}
+          // initialRegion={initialRegion}
+          // onRegionChange={onRegionChange}
+          region={initialRegion}
           >
-            <Marker
-              coordinate={{
-                latitude: 49.2576509,
-                longitude: -123.2009871,
-              }}
-              title="You are here"
-              description={"something inmportant"}
-              pinColor="yellow"
-            />
-            <Marker
-              coordinate={{
-                latitude: 49.2576508,
-                longitude: -123.2236871,
-              }}
-              title="You are here"
-              description={"something inmportant"}
-              pinColor="red"
-            />
-            <Marker
-              // draggable
-              onPress={()=>console.log('im pressed')}
-              coordinate={{
-                latitude: 49.2576508,
-                longitude: -123.2536871,
-              }}
-              title="You are here"
-              description={"something inmportant"}
-              pinColor="blue"
-            />
+            {events.map(event=>{
+              return(
+                <Marker
+                  key={event._id}
+                  onPress={()=>map.animateToRegion({
+                    latitude: event.location.coordinates[0],
+                    longitude: event.location.coordinates[1],
+                    latitudeDelta: 0.07,
+                    longitudeDelta: 0.07, 
+                  })}
+                  coordinate={{
+                    latitude: event.location.coordinates[0],
+                    longitude: event.location.coordinates[1]
+                  }}
+                title={event.name}
+                description={event.address}
+              />  
+              )
+            })}
             
           </MapView>
       </View>

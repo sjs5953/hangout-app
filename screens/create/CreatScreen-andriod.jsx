@@ -168,9 +168,14 @@ export default ({ submitForm, reviewSchema, categories, nums, userLocation }) =>
                     </Button>
                     
                     <Modal visible={locModal}>
-                      <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue} name={props.values.name}/>
+                      <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue} name={props.values.name}
+                      values={props.values}
+                      />
                     </Modal>
                    </View>
+                    <Text style={globalStyles.errorText}>
+                      {props.touched.address && props.errors.address}
+                    </Text>
                    
                     <View style={styles.submitButton}>
                       <FlatButton text="submit" onPress={props.handleSubmit} />
@@ -194,8 +199,7 @@ const styles = StyleSheet.create({
     height: 150
   },
   submitButton: {
-    margin: 30,
-    marginTop:30
+    marginTop:0
   },
   address:{
     padding:7,

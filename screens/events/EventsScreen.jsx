@@ -14,7 +14,7 @@ import NoResults from './components/NoResults'
 import FloatingButtons from './components/FloatingButtons'
 import Error from '../../shared/Error';
 
-export default ({navigation, onRefresh, loadMore, status, events, searchEvents, listView}) => {
+export default ({navigation, onRefresh, loadMore, status, events, searchEvents, listView, userLocation}) => {
 
   if (status=='error') {
     return (
@@ -48,6 +48,7 @@ export default ({navigation, onRefresh, loadMore, status, events, searchEvents, 
           loadMore={loadMore} 
           status={status}
           events={events}
+          userLocation={userLocation}
         />
       }
     </View>

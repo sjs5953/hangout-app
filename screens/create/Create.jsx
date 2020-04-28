@@ -112,7 +112,11 @@ export default Create = ({navigation}) => {
     description: yup
       .string()
       .required()
-      .min(4)
+      .min(4),
+    address: yup
+      .string()
+      .required()
+      .min(1)
   });
 
   if(isLoading) {
