@@ -6,9 +6,9 @@ import axios from 'axios';
 import {globalStyles} from '../../styles/global'
 import {styles} from './styles'
 import { Button } from 'react-native-paper';
+import Map from './components/Map'
 
 export default ({handlePress, event, status}) => {
-
 
   return (
     <View style={styles.container}>
@@ -27,6 +27,7 @@ export default ({handlePress, event, status}) => {
        <Button raised color='red' theme={{ roundness: 3 }} onPress={handlePress}>
          Delete
       </Button>
+      <Map event={event}/>
      </>
     }
     </View>

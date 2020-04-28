@@ -22,7 +22,8 @@ export default function Maps ({name, address, coordinates, userLocation, setSele
     longitudeDelta: 0.0421, 
   }
    const [ region, setRegion ] = useState(initialRegion);
-   const [ map, setMap ] = useState(null);  
+   const [ map, setMap ] = useState(null); 
+    
    const onRegionChange = (newRegion) => {
      setRegion(newRegion)
    }
