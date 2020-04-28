@@ -18,7 +18,7 @@ const isIos = Platform.OS === 'ios'
 export default function App() {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [userToken, setUserToken] = useState("asdasdasdsadsa")
+  const [userToken, setUserToken] = useState("")
   const [userLocation, setUserLocation] = useState({})
   
   const [state, setState] = useState({
@@ -30,7 +30,6 @@ export default function App() {
     return {
       signIn: (token) => {
         console.log("========Attempting Login========", token);
-
         setUserToken(token);
       },
       signOut: () => {
@@ -78,6 +77,7 @@ export default function App() {
           longitude: result.coords.longitude
         }
       }
+      console.log("result: ", location)
       return location
     }
     catch (err) {

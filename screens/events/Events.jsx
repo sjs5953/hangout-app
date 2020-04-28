@@ -30,12 +30,11 @@ const Events = ({navigation,route}) => {
  
   const getOptions = (page,location) => {
     return {
-    "url": `https://meetnow.herokuapp.com/events?page=${page}`,
+    "url": `https://meetnow.herokuapp.com/events?lat=${location.latitude}&lng=${location.longtitude}&page=${page}`,
     "method": "GET",
     "headers": {
       "Content-Type": "application/json"
-    },
-    "data": location,
+    }
   }};
 
 

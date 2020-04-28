@@ -4,10 +4,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Button } from "react-native-paper";
 import { API_KEY } from '../../../api_key'
 import { globalStyles } from "../../../styles/global";
-
+import Maps from './Maps';
 // const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 
-export default function GooglePlacesInput ({userLocation, setLocModal, setFieldValue}){
+export default function GooglePlacesInput ({userLocation, setLocModal, setFieldValue, name}){
   const currentLocation = { description: 'Current Location', geometry: { location: { lat: userLocation.latitude, lng: userLocation.longitude } }};
   const [ selectedLoc, setSelectedLoc ] = useState({
     address:"",
@@ -84,7 +84,7 @@ export default function GooglePlacesInput ({userLocation, setLocModal, setFieldV
         }}
   
         filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-        predefinedPlaces={[currentLocation]}
+        // predefinedPlaces={[currentLocation]}
   
         debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
         // renderLeftButton={()  => <View style={{marginTop:3}}><Button onPress={()=>{
@@ -96,6 +96,9 @@ export default function GooglePlacesInput ({userLocation, setLocModal, setFieldV
           setFieldValue('location', selectedLoc.geometry)
           setLocModal(false)
         }}>Save</Button></View>}
+      />
+      <Maps name={name} address={selectedLoc.address} coordinates={selectedLoc.geometry} userLocation={userLocation} 
+        setSelectedLoc={setSelectedLoc}
       />
     </SafeAreaView>
   );

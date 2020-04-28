@@ -165,7 +165,7 @@ export default ({ submitForm, categories, nums, reviewSchema, userLocation }) =>
                    </Button>
                    
                    <Modal visible={locModal}>
-                     <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue}/>
+                     <GooglePlacesInput userLocation={userLocation} setLocModal={setLocModal} setFieldValue={props.setFieldValue} name={props.values.name} />
                    </Modal>
                   </View>
 

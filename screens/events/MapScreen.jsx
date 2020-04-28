@@ -27,6 +27,9 @@ export default function MapScreen ({navigation, onRefresh, loadMore, status, eve
       <View style={customStyles.mapContainer}>
         <MapView
           provider={PROVIDER_GOOGLE}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          showsMyLocationButton={true}
           style={customStyles.mapStyle}
           initialRegion={{
             latitude: 49.2576508,
