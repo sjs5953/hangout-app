@@ -36,14 +36,14 @@ export default function MapScreen ({navigation, onRefresh, loadMore, status, eve
                 <Marker
                   key={event._id}
                   onPress={()=>map.animateToRegion({
-                    latitude: event.location.coordinates[0],
-                    longitude: event.location.coordinates[1],
+                    latitude: event.location[1],
+                    longitude: event.location[0],
                     latitudeDelta: 0.07,
                     longitudeDelta: 0.07, 
                   })}
                   coordinate={{
-                    latitude: event.location.coordinates[0],
-                    longitude: event.location.coordinates[1]
+                    latitude: event.location[1],
+                    longitude: event.location[0]
                   }}
                 title={event.name}
                 description={event.address}

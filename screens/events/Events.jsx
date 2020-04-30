@@ -26,13 +26,14 @@ const Events = ({navigation,route}) => {
   });
 
   
-  const { userLocation, setUserLocation } = useContext(AuthContext)
+  const { userLocation, setUserLocation, userToken } = useContext(AuthContext)
  
   const getOptions = (page,location) => {
     return {
-    "url": `https://meetnow.herokuapp.com/events?lat=${location.latitude}&lng=${location.longtitude}&page=${page}`,
+    "url": `https://meetnow.herokuapp.com/events?lat=${location.latitude}&lng=${location.longitude}&page=${page}`,
     "method": "GET",
     "headers": {
+    'Authorization': `Bearer ${userToken}`,
       "Content-Type": "application/json"
     }
   }};
@@ -124,7 +125,7 @@ const Events = ({navigation,route}) => {
   
   const searchEvents = async (searchField, searchValue, searchField2, searchValue2) => {
     setState({...state, status:LOADING})
-    let url = `https://meetnow.herokuapp.com/events?limit=5&page=1&${searchField}=${searchValue}`
+    let url = `https://meetnow.herokuapp.com/events?lat=${userLocation.latitude}&lng=${userLocation.longitude}&page=1&${searchField}=${searchValue}`
     if(searchField2 && searchValue2) {
       url += `&${searchField2}=${searchValue2}`
     }
@@ -137,7 +138,7 @@ const Events = ({navigation,route}) => {
       let res = await axios(options)
       const result = res.data;
       let newEvents = result.events;
-      console.log("successfully fetched! ",newEvents.length)
+      console.log("successfully fetched! ",newEvents)
       setState({
         ...state,
         events:newEvents,

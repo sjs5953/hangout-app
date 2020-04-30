@@ -11,11 +11,13 @@ export default function Map ({event}) {
   let lat = 0;
   let lng = 0;
   if (event.location){
-    lat = event.location.coordinates[0]
-    lng = event.location.coordinates[1]
+    lat = event.location[1]
+    lng = event.location[0]
   }
  
   console.log("event: ",event)
+  console.log('lat: ', lat)
+  console.log('lng: ',lng)
 
   const initialRegion = {
     latitude:lat,

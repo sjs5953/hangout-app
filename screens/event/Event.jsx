@@ -24,8 +24,16 @@ const Event = ({navigation, route}) => {
   const deleteEvent = () => {
    
     setState({...state, status:LOADING})
+    const options = {
+      "url": `https://meetnow.herokuapp.com/events/${eventKey}`,
+      "method": "DELETE",
+      "headers": {
+      'Authorization': `Bearer ${userToken}`,
+        "Content-Type": "application/json"
+      }
+    }
    
-    axios.delete(`https://meetnow.herokuapp.com/events/${eventKey}`)
+    axios(options)
     .then(res=>{
       Alert.alert('Success!','Event has been sucessfully deleted.', [
         {text:'understood', onPress: ()=>  {
@@ -58,7 +66,15 @@ const Event = ({navigation, route}) => {
   }
   
   useEffect(()=>{
-    axios.get(`https://meetnow.herokuapp.com/events/${eventKey}`)
+    const options = {
+      "url": `https://meetnow.herokuapp.com/events/${eventKey}`,
+      "method": "GET",
+      "headers": {
+      'Authorization': `Bearer ${userToken}`,
+        "Content-Type": "application/json"
+      }
+    }
+    axios(options)
     .then(res=>{
       const result = res.data;
       console.log("event: ", result)
