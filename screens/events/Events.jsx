@@ -33,7 +33,7 @@ const Events = ({navigation,route}) => {
     "url": `https://meetnow.herokuapp.com/events?lat=${location.latitude}&lng=${location.longitude}&page=${page}`,
     "method": "GET",
     "headers": {
-    'Authorization': `Bearer ${userToken}`,
+      'Authorization': `Bearer ${userToken}`,
       "Content-Type": "application/json"
     }
   }};
@@ -55,6 +55,9 @@ const Events = ({navigation,route}) => {
       console.log("USER LOCATION: ", userLocation)
       const options = getOptions(1,resultingLocation)
       console.log("Refresh request: ", options)
+      axios.get(`https://meetnow.herokuapp.com/events?lat=${resultingLocation.latitude}&lng=${resultingLocation.longitude}&page=${1}`)
+      .then(console.log)
+      .catch((err)=>console.log("err from refresh axios request:   ", err))
       let res = await axios(options)
       const result = res.data;
       console.log("=====result=====");

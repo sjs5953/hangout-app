@@ -2,11 +2,11 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 
 
-const Card = (props) => {
+const Card = ({containerStyle,children}) => {
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        {props.children}
+        {children}
       </View>
     </View>
   )
@@ -14,7 +14,7 @@ const Card = (props) => {
 
 export default Card
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   card: {
     borderRadius:6,
     elevation:3,

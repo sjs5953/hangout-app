@@ -40,6 +40,15 @@ export const globalStyles = StyleSheet.create({
     marginLeft:5,
     marginBottom:20,
     // textAlign:'center'
+  },
+  horizontalCenter: {
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  verticalCenter: {
+    justifyContent:'center',
+    alignItems:'center'
   }
 })
 

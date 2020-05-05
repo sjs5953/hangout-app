@@ -22,7 +22,7 @@ export default function Map ({event}) {
   const initialRegion = {
     latitude:lat,
     longitude:lng,
-    latitudeDelta: 0.005,
+    latitudeDelta: 0.009,
     longitudeDelta: 0.008, 
   }
   return (

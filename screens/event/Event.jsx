@@ -52,6 +52,9 @@ const Event = ({navigation, route}) => {
     })
   };
 
+  
+ 
+
   const handlePress = () => {
  
     Alert.alert(
@@ -65,6 +68,31 @@ const Event = ({navigation, route}) => {
     )
   }
   
+  const [voted, setVoted] = useState(state.event.hasVoted||false);
+
+  const handleVote = async() => {
+    const voteState = voted? "unvote":"vote";
+   
+    const options = {
+      "url": `https://meetnow.herokuapp.com/events/${eventKey}/${voteState}`,
+      "method": voteState=='vote'?'POST':'PUT',
+      "headers": {
+      'Authorization': `Bearer ${userToken}`,
+        "Content-Type": "application/json"
+      }
+    }
+    console.log("try voting: ", voteState,options)
+
+    try{
+      await axios(options)
+      await setVoted(!voted)
+      console.log("voting finished: ", voteState)
+    }
+    catch (err) {
+      console.log("error from voting: ", err)
+    }
+  }
+
   useEffect(()=>{
     const options = {
       "url": `https://meetnow.herokuapp.com/events/${eventKey}`,
@@ -78,12 +106,13 @@ const Event = ({navigation, route}) => {
     .then(res=>{
       const result = res.data;
       console.log("event: ", result)
-      setState({...state, event:result, status:""})
+      setState({...state, event:result,status:""})
     })
     .catch((err)=>{
       setState({...state, status:ERROR})
     })
-  },[]);
+    console.log("==========I RAN!!!!!=======")
+  },[voted]);
 
   
   if(state.status == LOADING) {
@@ -91,7 +120,7 @@ const Event = ({navigation, route}) => {
   }
 
   return (
-    <EventScreen handlePress={handlePress} event={state.event} status={state.status} />
+    <EventScreen handlePress={handlePress} event={state.event} status={state.status} handleVote={handleVote} voted={voted}/>
   )
 }
 

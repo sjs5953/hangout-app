@@ -64,7 +64,7 @@ const SignIn = ({navigation}) => {
   }
 
   return (
-    <View style={{flex:1, justifyContent:'center', alignItems:'center',paddingBottom:100}}>
+    <View style={{flex:1, justifyContent:'center', alignItems:'center',paddingBottom:40}}>
 
       <Button onPress={handleOAuthLogin}>
         SignIn with Google

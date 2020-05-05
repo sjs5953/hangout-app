@@ -34,10 +34,10 @@ export default function TabNavigator ({ userToken, setUserToken }) {
           tabBarLabel:"Create",
           tabBarIcon: ({color}) => <FontAwesome name="plus-square-o" color={color} size={30} />
         }}/>
-        <Tabs.Screen name='NotificationsStack' component={NotificationsStackScreen} options={{
+        {/* <Tabs.Screen name='NotificationsStack' component={NotificationsStackScreen} options={{
           tabBarLabel:"Notification",
           tabBarIcon: ({color}) => <Ionicons name="ios-notifications-outline" color={color} size={33} />
-        }}/>
+        }}/> */}
         <Tabs.Screen name='UserStack' component={UserStackScreen} options={{
           tabBarLabel:"Profile",
           tabBarIcon: ({color}) => <AntDesign name="user" color={color} size={30} />

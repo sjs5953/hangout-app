@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.1.0",
     "@react-native-community/cli": "^4.7.0",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/masked-view": "0.1.5",
